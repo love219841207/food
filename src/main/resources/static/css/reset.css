@@ -1,0 +1,37 @@
+/* reset */
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, address, big, cite, code, del, em, img, ins, kbd,
+small, strong, sub, sup, b, u, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video, input {margin: 0;padding: 0;border: none;outline:0;font-size: 100%;font: inherit;vertical-align: baseline;}
+
+html, body{ -webkit-user-drag: none; -webkit-text-size-adjust: 100%;}
+a{text-decoration: none;}
+input{-webkit-user-modify: read-write-plaintext-only;}
+a,input,button,textarea,fieldset,ul,span,i{-webkit-tap-highlight-color: rgba(255,255,255,0);}
+input[type='text'] ,textarea ,fieldset{border: none;outline: none;}
+textarea{ overflow:auto;resize:none;}
+body, h1, h2, h3, h4, h5, h6, input[type='text'], textarea{font-family :"Microsoft YaHei", "Helvetica Neue",Helvetica,STHeiTi,sans-serif;}
+html, body, form, fieldset, p, div, h1, h2, h3, h4, h5, h6 {-webkit-text-size-adjust: none;}
+a, img {-webkit-touch-callout: none; /*  */ }
+article, aside, details, figcaption,figure, footer, header, hgroup, menu, nav, section {display: block;}
+ol, ul, ol li, ul li{list-style:none;}
+table {border-collapse: collapse;border-spacing: 0;}
+
+/* function */
+.fcb:before,.fcb:after{content: '';display:table;}
+.fcb:after{clear:both;}
+.fib{display:inline-block;}
+.fdn{display:none;}
+.flt{float: left;}
+.frt{float: right;}
+
+.f-wsn{white-space:nowrap;word-wrap:normal;}
+.f-toe{white-space:nowrap;word-wrap:normal;overflow:hidden;text-overflow:ellipsis;}
+.f-mtoe{overflow:hidden;text-overflow: ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.f-ntoe{overflow:hidden;text-overflow: ellipsis;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
+.f-wwb{white-space:normal;word-wrap:break-word;word-break:break-all;}
+
+/* model */
+.mask{position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0, .5);width:100%;height:100%;z-index:900;display:none;}

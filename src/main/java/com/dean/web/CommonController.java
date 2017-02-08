@@ -26,4 +26,14 @@ public class CommonController {
         boolean boo = commonService.regeditCodeRequest(phone,userVO.getWechatInfo().getOpenId());
         return boo;
     }
+
+    @RequestMapping("/verify/{phone}/{code}")
+    @ResponseBody
+    public boolean verify(HttpServletRequest request,
+                          @PathVariable String phone,
+                          @PathVariable String code){
+        UserVO userVO = (UserVO)request.getSession().getAttribute("userVO");
+        boolean boo = commonService.regeditCodeVerify(phone,code,userVO.getWechatInfo().getOpenId());
+        return boo;
+    }
 }
