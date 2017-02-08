@@ -15,7 +15,7 @@ public class FoodApplicationTests {
 	private UserService userService;
 	@Test
 	public void contextLoads() {
-		userService.createUser();
+
 	}
 
 }

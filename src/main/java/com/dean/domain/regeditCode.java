@@ -16,9 +16,18 @@ public class RegeditCode {
     @GeneratedValue
     private Long id;
     private String code;
+    private String phone;
     private Date createTime;
     private String openId;
     private int scene;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getOpenId() {
         return openId;

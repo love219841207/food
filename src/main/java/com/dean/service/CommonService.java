@@ -5,4 +5,6 @@ package com.dean.service;
  */
 public interface CommonService {
     public boolean regeditCodeRequest(String phone,String openId);
+
+    public boolean regeditCodeVerify(String phone,String code,String openId);
 }

@@ -4,6 +4,7 @@ import com.dean.dao.SmsRecordDao;
 import com.dean.domain.SmsRecord;
 import com.dean.service.SmsService;
 import com.dean.config.SmsProperties;
+import com.dean.util.Constants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
@@ -31,7 +32,6 @@ import java.util.Map;
 @EnableConfigurationProperties(SmsProperties.class)
 public class SmsServiceImpl implements SmsService {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private static final int SMS_SCENE_REGEDIT=1;
     @Autowired
     private SmsProperties smsProperties;
     @Autowired
@@ -41,7 +41,7 @@ public class SmsServiceImpl implements SmsService {
         logger.info("[短信发送,短信注册验证START]");
         String paremStr = "";
         Map<String,String> parem= new HashMap<String,String>();
-        parem.put("code",randomCode);
+        parem.put("code", randomCode);
         ObjectMapper mapper = new ObjectMapper();
         try {
             paremStr = mapper.writeValueAsString(parem);
@@ -49,7 +49,7 @@ public class SmsServiceImpl implements SmsService {
             logger.info("[短信发送,短信注册验证组装验证码错误{}]", e.getMessage());
         }
         //json.
-        boolean boo = this.sendSms(smsProperties.getTemplateCode(),phone,paremStr,openId,SMS_SCENE_REGEDIT);
+        boolean boo = this.sendSms(smsProperties.getTemplateCode(),phone,paremStr,openId, Constants.SMS_CODE_SCENE);
         logger.info("[短信发送,短信注册验证END,RETURN{}]", boo);
         return boo;
     }
@@ -69,6 +69,7 @@ public class SmsServiceImpl implements SmsService {
         SmsRecord smsRecord = new SmsRecord();
         smsRecord.setTemplateCode(templateCode);
         smsRecord.setParamStr(paramStr);
+        smsRecord.setOpenId(openId);
         smsRecord.setScene(scene);
         smsRecord.setPhone(phone);
         try{
@@ -92,6 +93,8 @@ public class SmsServiceImpl implements SmsService {
 
         if(!StringUtils.isEmpty(rsp.getErrorCode())){
             smsRecord.setState(rsp.getErrorCode());
+        }else{
+            smsRecord.setState(SMS_SEND_SUCCESS);
         }
         if(!StringUtils.isEmpty(rsp.getSubMsg())){
             smsRecord.setErrorMsg(rsp.getSubMsg());

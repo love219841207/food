@@ -18,7 +18,16 @@ public class WechatInfo {
     private String openId;
     private Date createTime;
     private Date lastLoginTime;
+    private String headImg;
     private Long userId;
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
 
     public Long getId() {
         return id;
