@@ -111,7 +111,7 @@ body.g-ptom{padding-bottom: 70px;}
 
 .g-center{font-size: .9rem;}
 .g-center .hd{background-color: #fff;padding: 5%;border-bottom: 1px solid #ccc;}
-.g-center .hd img{width: 50px;display: inline-block;border-radius: 50%;margin-right: .5rem;}
+.g-center .hd img{width: 50px;height:50px;display: inline-block;border-radius: 50%;margin-right: .5rem;}
 
 .g-center .center{background-color: #fff;border-bottom: 1px solid #ccc;margin: .7rem 0;}
 .g-center .center h2{background: url(../img/icon1.png) 5% 50% no-repeat;background-size: 20px;padding: .5rem 0 .5rem 40px;border-bottom: 1px solid #ccc;}
@@ -157,11 +157,8 @@ body.g-ptom{padding-bottom: 70px;}
 .g-case .case .dn img{width: 25%;border:1px solid #ccc;}
 .g-case .case .dn p{width: 72%;}
 .g-case .case .dn p i{display: block;color: #999;font-size: .6rem;margin-top: .3rem;}
-
-
-
-
-
+.g-gap {margin-top:15px;background-color:#f8d80b;}
+.g-cus {color:#f8d80b;}
 
 
 

@@ -48,7 +48,7 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public boolean regeditCodeVerify(String phone,String code, String openId) {
         boolean boo = false;
-        List<RegeditCode> list = regeditCodeDao.findByOpenIdAndSceneOrderByCreateTime(openId,Constants.SMS_CODE_SCENE, DateUtils.getDateByDelay(-1));
+        List<RegeditCode> list = regeditCodeDao.findByOpenIdAndSceneOrderByCreateTime(openId,Constants.SMS_CODE_SCENE, DateUtils.getDateByDelay(-3));
         if(list.size()>0){
             RegeditCode regeditCode = list.get(0);
             if(regeditCode.getCode().equals(code)

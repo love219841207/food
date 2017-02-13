@@ -4,6 +4,7 @@ import com.dean.dao.WechatApiTokenDao;
 import com.dean.domain.WechatApiToken;
 import com.dean.service.WechatService;
 import com.dean.config.WechatProperties;
+import com.dean.service.WechatUserInfoVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -117,7 +118,8 @@ public class WechatServiceImpl implements WechatService {
         return boo;
     }
 
-    public String getWechatHeadImg(String openId){
+    public WechatUserInfoVo getWechatHeadImg(String openId){
+        WechatUserInfoVo wechatUserInfoVo = new WechatUserInfoVo();
         WechatApiToken wechatApiToken = wechatApiTokenDao.findOne(1l);
         String url = String.format(ULR_GET_USERINFO_BY_OPENID, wechatApiToken.getAccessToken(),openId);
 
@@ -131,7 +133,6 @@ public class WechatServiceImpl implements WechatService {
         }
         logger.info("http获取wechat头像[{}]", jsonRet);
         JsonNode json = null;
-        String headimgurl = "";
         try {
             json =  new ObjectMapper().readTree(jsonRet);
         } catch (JsonProcessingException e) {
@@ -140,9 +141,27 @@ public class WechatServiceImpl implements WechatService {
             logger.error("解析获取wechat头像信息返回错误{}", e.getMessage());
         }
         if(json.has("headimgurl")){
-            headimgurl = json.path("headimgurl").asText();
+            wechatUserInfoVo.setHeadImg(json.path("headimgurl").asText());
         }
-        logger.info("解析获取wechat头像信息成功为[{}]", headimgurl);
-        return headimgurl;
+        if(json.has("nickname")){
+            wechatUserInfoVo.setNickName(json.path("nickname").asText());
+        }
+        if(json.has("sex")){
+            wechatUserInfoVo.setSex(json.path("sex").asInt());
+        }
+        if(json.has("subscribe")){
+            wechatUserInfoVo.setSubscribe(json.path("subscribe").asInt());
+        }
+        if(json.has("country")){
+            wechatUserInfoVo.setCountry(json.path("country").asText());
+        }
+        if(json.has("province")){
+            wechatUserInfoVo.setProvince(json.path("province").asText());
+        }
+        if(json.has("city")){
+            wechatUserInfoVo.setCity(json.path("city").asText());
+        }
+        logger.info("解析获取wechat头像信息成功为[{}],nick为[{}]", wechatUserInfoVo.getHeadImg(),wechatUserInfoVo.getNickName());
+        return wechatUserInfoVo;
     }
 }

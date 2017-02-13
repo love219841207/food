@@ -4,10 +4,7 @@ import com.dean.dao.UserDao;
 import com.dean.dao.WechatInfoDao;
 import com.dean.domain.UserInfo;
 import com.dean.domain.WechatInfo;
-import com.dean.service.SmsService;
-import com.dean.service.UserService;
-import com.dean.service.UserVO;
-import com.dean.service.WechatService;
+import com.dean.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,8 +70,9 @@ public class UserServiceImpl implements UserService {
                 wechatInfo.setCreateTime(new Date());
                 wechatInfo.setLastLoginTime(wechatInfo.getCreateTime());
                 wechatInfo.setOpenId(openId);
-                String headImg = wechatService.getWechatHeadImg(openId);
-                wechatInfo.setHeadImg(headImg);
+                WechatUserInfoVo wechatUserInfoVo = wechatService.getWechatHeadImg(openId);
+                wechatInfo.setHeadImg(wechatUserInfoVo.getHeadImg());
+                wechatInfo.setNickName(wechatUserInfoVo.getNickName());
                 wechatInfoDao.save(wechatInfo);
                 logger.info("根据openid获取UserVO，openId为[{}],openid不存在，已经创建",openId);
             }

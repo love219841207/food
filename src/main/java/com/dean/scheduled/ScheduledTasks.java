@@ -12,6 +12,7 @@ import java.util.Date;
 
 /**
  * Created by dongxu on 2017/2/8.
+ * 定时刷新微信的api调用凭证access-token
  */
 @Component
 public class ScheduledTasks {

@@ -19,7 +19,16 @@ public class WechatInfo {
     private Date createTime;
     private Date lastLoginTime;
     private String headImg;
+    private String nickName;
     private Long userId;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     public String getHeadImg() {
         return headImg;
