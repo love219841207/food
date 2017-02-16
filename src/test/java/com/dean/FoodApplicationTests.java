@@ -28,7 +28,7 @@ public class FoodApplicationTests {
 
 	@Test
 	public void contextLoads() throws IOException, InvalidFormatException {
-		//menuService.initMenuFromExcel();
+		menuService.initMenuFromExcel();
 	}
 
 }
