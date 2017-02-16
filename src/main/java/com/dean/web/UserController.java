@@ -1,8 +1,6 @@
 package com.dean.web;
 
 import com.dean.service.UserService;
-import com.dean.service.UserVO;
-import com.dean.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
