@@ -15,7 +15,7 @@ public class Constants {
 
     public static final String DATA_DIC_TYPE_MENU = "type_menu";
 
-    public static final String DATA_DIC_RIME_MENU = "time_menu";
+    public static final String DATA_DIC_TIME_MENU = "time_menu";
 
     public static final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 

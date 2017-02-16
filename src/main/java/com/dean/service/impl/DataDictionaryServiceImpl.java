@@ -23,7 +23,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     @Override
     public List<DataDictionary> findTimeMenu() {
-        return dataDictionaryDao.findByCode(Constants.DATA_DIC_RIME_MENU);
+        return dataDictionaryDao.findByCode(Constants.DATA_DIC_TIME_MENU);
     }
 
 }

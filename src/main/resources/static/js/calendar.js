@@ -73,7 +73,7 @@
         this.saveCheckedDate();
 
         var monthTag = $('.md_selectarea').find('.monthtag'),
-          num = ~~monthTag.data('month') + add;
+            num = ~~monthTag.data('month') + add;
         //月份变动发生了跨年
         if (num > 11) {
           num = 0;
@@ -101,7 +101,7 @@
         this.saveCheckedDate();
 
         var yearTag = $('.md_selectarea').find('.yeartag'),
-          num = ~~yearTag.data('year') + add;
+            num = ~~yearTag.data('year') + add;
         yearTag.text(num + '年').data('year', num);
         this.value.year = num;
 
@@ -140,11 +140,11 @@
         var currentMonthDays = F.getDaysInMonth(y, m);
         //判断是否超出允许的日期范围
         var startDay = 1,
-          endDay = currentMonthDays,
-          thisDate = new Date(y, m, d),
-          firstDate = new Date(y, m, 1);
+            endDay = currentMonthDays,
+            thisDate = new Date(y, m, d),
+            firstDate = new Date(y, m, 1);
         lastDate = new Date(y, m, currentMonthDays),
-          minDateDay = option.minDate.getDate();
+            minDateDay = option.minDate.getDate();
 
 
         if (option.minDate > lastDate) {
@@ -221,8 +221,8 @@
           date = new Date();
         }
         var y = this.value.year = date.getFullYear(),
-          m = this.value.month = date.getMonth(),
-          d = this.value.date = date.getDate();
+            m = this.value.month = date.getMonth(),
+            d = this.value.date = date.getDate();
         $('.yeartag').text(y).data('year', y);
         $('.monthtag').text(F.getMonth(m) + '月').data('month', m);
         var dayStr = this.getDateStr(y, m, d);
@@ -238,7 +238,7 @@
           } else {
             _this.renderHTML();
             var panel = $('.md_panel'),
-              mask = $('.md_mask');
+                mask = $('.md_mask');
             _this.afterShowPanel(mask, panel);
             setTimeout(function() {
               _this._showPanel();
@@ -267,6 +267,12 @@
           _this.input.trigger('input');
         }
         _this._hidePanel();
+        this.callback(_this.value.year + '-' + monthValue + '-' + dateValue);
+      },
+      callback:function(v){
+        if(option['callback']){
+          option['callback'](v);
+        }
       },
       afterShowPanel: function(mask, panel) {
         var _this = this;

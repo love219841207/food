@@ -5,10 +5,7 @@ import com.dean.dao.ScheduleMenuInfoDao;
 import com.dean.domain.DataDictionary;
 import com.dean.domain.PkgMenu;
 import com.dean.domain.ScheduleMenuInfo;
-import com.dean.service.DataDictionaryService;
-import com.dean.service.MenuService;
-import com.dean.service.TimeMenuVO;
-import com.dean.service.TypeMenuVO;
+import com.dean.service.*;
 import com.dean.util.Constants;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
@@ -135,6 +132,30 @@ public class MenuServiceImpl implements MenuService {
 
     }
 
+    @Override
+    public List<MenuInfoVO> findMenuDetail(String day, String typeMenu) {
+        List<ScheduleMenuInfo> list = scheduleMenuInfoDao.findByScheduleDayAndTypeMenu(day, typeMenu);
+        List<TimeMenuVO> timeMenus = this.findTimeMenu();
+        List<MenuInfoVO> menus = new ArrayList<MenuInfoVO>();
+        MenuInfoVO menuInfoVO = null;
+        for (ScheduleMenuInfo smi : list){
+            menuInfoVO = new MenuInfoVO();
+            menuInfoVO.setTimeMenu(this.getTimeMenuName(smi.getTimeMenu(),timeMenus));
+            menuInfoVO.setTypeMenu(smi.getTypeMenu());
+            menuInfoVO.setCoarseGrain(smi.getCoarseGrain());
+            menuInfoVO.setDrink(smi.getDrink());
+            menuInfoVO.setId(smi.getId());
+            menuInfoVO.setKcal(smi.getKcal());
+            menuInfoVO.setMainInfo(smi.getMainInfo());
+            menuInfoVO.setMinor(smi.getMinor());
+            menuInfoVO.setOther(smi.getOther());
+            menuInfoVO.setScheduleDay(smi.getScheduleDay());
+            menuInfoVO.setStapleFood(smi.getStapleFood());
+            menus.add(menuInfoVO);
+        }
+        return menus;
+    }
+
 
     @Transactional
     private void updateDateFromExcel(List<ScheduleMenuInfo> scheduleMenuInfos,List<PkgMenu> pkgMenus){
@@ -159,6 +180,15 @@ public class MenuServiceImpl implements MenuService {
         for(TimeMenuVO tm : timeMenus){
             if(tm.getName().equals(name)){
                 return tm.getId();
+            }
+        }
+        return null;
+    }
+
+    private String getTimeMenuName(String id,List<TimeMenuVO> timeMenus){
+        for(TimeMenuVO tm : timeMenus){
+            if(tm.getId().equals(id)){
+                return tm.getName();
             }
         }
         return null;
