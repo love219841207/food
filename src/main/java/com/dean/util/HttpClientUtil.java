@@ -78,8 +78,7 @@ public class HttpClientUtil {
 		//使用GET方法，如果服务器需要通过HTTPS连接，那只需要将下面URL中的http换成https  
 		// HttpMethod method = new GetMethod("http://10.1.14.20:8088/workflowController/service/todo/addTask");   
 		//使用POST方法  
-		PostMethod method = new PostMethod(url);   
-
+		PostMethod method = new PostMethod(url);
 		((PostMethod) method).setRequestBody(body);
 
 		HttpMethodParams param = method.getParams();  
