@@ -20,29 +20,29 @@
 
 
 <div class="g-cald1 fcb">
-    请选择日期  <input type="text" class="j-calendar frt" value="${.now?string("yyyy-MM-dd")}" readonly>
+    请选择日期  <input type="text" class="j-calendar frt" value="${chooseDay}" readonly>
 </div>
 
 <div class="g-tab">
     <div class="u-hd fcb j-tab">
     <#list menus as menu>
         <a href="#" class="
-        <#if menu_index ==0>
-        flt on
-        <#else>
-        frt
-        </#if>
-        ">${menu.timeMenu} <img src="${springMacroRequestContext.contextPath}/img/ar_cdn.png"></a>
+            <#if menu_index ==0>
+            flt on
+            <#else>
+            frt
+            </#if>
+        " v="${menu.timeMenuVal}">${menu.timeMenu} <img src="${springMacroRequestContext.contextPath}/img/ar_cdn.png"></a>
     </#list>
     </div>
 
 
 <#list menus as menu>
     <div class="g-con
-     <#if menu_index ==0>
-        u-block
-     </#if>
-   ">
+          <#if menu_index ==0>
+             u-block
+           </#if>
+       ">
         <div class="g-tcon">
             <p> <span class="fhd">主菜</span> <em>${menu.mainInfo}</em></p>
             <p> <span>配菜</span> <em>${menu.minor}</em></p>
@@ -50,44 +50,34 @@
             <p> <span>主食</span> <em>${menu.stapleFood}</em></p>
             <p> <span>饮品</span> <em>${menu.drink}</em></p>
             <p> <span>其他</span> <em>${menu.other}</em></p>
-
             <div class="u-kcal">${menu.kcal} <b>kcal</b></div>
         </div>
     </div>
 </#list>
-
-    <#--<div class="g-con u-block">
-
-        <div class="g-tcon">
-            <p> <span class="fhd">主菜</span> <em>酸菜鱼</em></p>
-            <p> <span>配菜</span> <em>素炒菜心</em><em>香煎杏鲍菇</em><em>手撕包菜</em><em>手撕包菜</em><em>手撕包菜</em><em>手撕包菜</em><em>手撕包菜</em></p>
-            <p> <span>粗粮</span> <em>南瓜</em><em>玉米</em></p>
-            <p> <span>主食</span> <em>杂粮饭</em></p>
-            <p> <span>饮品</span> <em>乌龙玛奇朵</em></p>
-            <p> <span>其他</span> <em>粗粮餐包</em></p>
-
-            <div class="u-kcal">238 <b>kcal</b></div>
-        </div>
-    </div>
-
-    <div class="g-con">
-        <div class="g-tcon">
-            <p> <span class="fhd">主菜</span> <em>酸菜鱼</em></p>
-            <p> <span>配菜</span> <em>素炒菜心</em><em>香煎杏鲍菇</em></p>
-            <p> <span>粗粮</span> <em>南瓜</em><em>玉米</em></p>
-            <p> <span>主食</span> <em>杂粮饭</em></p>
-            <p> <span>饮品</span> <em>乌龙玛奇朵</em></p>
-            <p> <span>其他</span> <em>粗粮餐包</em></p>
-
-            <div class="u-kcal">2438 <b>kcal</b></div>
-        </div>
-    </div>-->
 </div>
 
+<#--
 <div class="g-detal">
-    <img src="${springMacroRequestContext.contextPath}/img/img2.jpg" alt="">
-    <img src="${springMacroRequestContext.contextPath}/img/img2.jpg" alt="">
-    <img src="${springMacroRequestContext.contextPath}/img/img2.jpg" alt="">
+    <img src="${springMacroRequestContext.contextPath}/drift/${chooseDay}-${type}-${timeType}-1.jpg" alt="">
+    <img src="${springMacroRequestContext.contextPath}/drift/${chooseDay}-${type}-${timeType}-2.jpg" alt="">
+    <img src="${springMacroRequestContext.contextPath}/drift/${chooseDay}-${type}-${timeType}-3.jpg" alt="">
+</div>
+-->
+
+<div class="g-detal">
+    <div>
+        <img src="img/img2.jpg" alt="">
+        <img src="img/img2.jpg" alt="">
+        <img src="img/img2.jpg" alt="">
+    </div>
+</div>
+
+<div class="g-detal u-hide">
+    <div>
+        <img src="img/img1.jpg" alt="">
+        <img src="img/img2.jpg" alt="">
+        <img src="img/img2.jpg" alt="">
+    </div>
 </div>
 
 <div class="g-bottom">
@@ -120,15 +110,21 @@
     $('.j-calendar').mdater({
         minDate: _startDay,
         callback:function(v){
-            location.href="${springMacroRequestContext.contextPath}/book/typemenu/1?timeType=2&chooseDay=2017-2-21";
+            var timeType = $('.j-tab a').filter('.on').attr('v');
+            //如果没有排餐、那么就获取本次请求的timeType
+            if(timeType==undefined){
+                timeType = '${timeType}';
+            }
+            location.href="${springMacroRequestContext.contextPath}/book/typemenu/${type}?timeType="+timeType+"&chooseDay="+v;
         }
     });
 
     //页面tab切换
-    $('.j-tab a').tap(function(){
+    $('.j-tab a').click(function(){
         var _this = $(this),_num = _this.index();
         _this.addClass('on').siblings().removeClass('on');
         $('.g-con').eq(_num).show().siblings('.g-con').hide();
+        $('.g-detal').eq(_num).show().siblings('.g-detal').hide();
     });
 
     //点击预定套餐出现弹窗

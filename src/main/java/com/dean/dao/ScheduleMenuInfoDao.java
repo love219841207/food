@@ -9,5 +9,5 @@ import java.util.List;
  * Created by dongxu on 2017/2/15.
  */
 public interface ScheduleMenuInfoDao extends CrudRepository<ScheduleMenuInfo,Long>{
-    public List<ScheduleMenuInfo> findByScheduleDayAndTypeMenu(String day,String timeMenu);
+    public List<ScheduleMenuInfo> findByScheduleDayAndTypeMenuOrderByTimeMenu(String day,String timeMenu);
 }

@@ -62,7 +62,6 @@ public class BookController {
         logger.info("init套餐详情页面,type为[{}],timeType为[{}],day为[{}]", type, timeType, chooseDay);
 
         List<MenuInfoVO> menus = menuService.findMenuDetail(chooseDay, timeType);
-
         model.put("menus",menus);
         model.put("type", type);
         model.put("timeType",timeType);

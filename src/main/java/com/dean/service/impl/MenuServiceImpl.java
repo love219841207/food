@@ -140,7 +140,8 @@ public class MenuServiceImpl implements MenuService {
         MenuInfoVO menuInfoVO = null;
         for (ScheduleMenuInfo smi : list){
             menuInfoVO = new MenuInfoVO();
-            menuInfoVO.setTimeMenu(this.getTimeMenuName(smi.getTimeMenu(),timeMenus));
+            menuInfoVO.setTimeMenu(this.getTimeMenuName(smi.getTimeMenu(), timeMenus));
+            menuInfoVO.setTimeMenuVal(smi.getTimeMenu());
             menuInfoVO.setTypeMenu(smi.getTypeMenu());
             menuInfoVO.setCoarseGrain(smi.getCoarseGrain());
             menuInfoVO.setDrink(smi.getDrink());

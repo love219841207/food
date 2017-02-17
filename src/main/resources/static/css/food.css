@@ -79,6 +79,7 @@ body.g-ptom{padding-bottom: 70px;}
 .g-tab .u-block{display: block;}
 
 .g-detal{width: 90%;margin: 1rem auto;}
+.g-detal.u-hide{display: none;}
 .g-detal img{width: 100%;display: block;margin-bottom: 1rem;}
 
 .g-bottom{position: fixed;bottom: 0;left: 0;background-color: #fff;border-top:1px solid #ccc;width: 100%;}

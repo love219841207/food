@@ -8,6 +8,7 @@ public class MenuInfoVO {
     private String scheduleDay;
     private String typeMenu;
     private String timeMenu;
+    private String timeMenuVal;
     private String mainInfo;
     private String minor;
     private String coarseGrain;
@@ -15,6 +16,14 @@ public class MenuInfoVO {
     private String drink;
     private String other;
     private String kcal;
+
+    public String getTimeMenuVal() {
+        return timeMenuVal;
+    }
+
+    public void setTimeMenuVal(String timeMenuVal) {
+        this.timeMenuVal = timeMenuVal;
+    }
 
     public Long getId() {
         return id;
