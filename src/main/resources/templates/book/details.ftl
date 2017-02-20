@@ -63,8 +63,20 @@
     <img src="${springMacroRequestContext.contextPath}/drift/${chooseDay}-${type}-${timeType}-3.jpg" alt="">
 </div>
 -->
-
-<div class="g-detal">
+<#list menus as menu>
+    <div class="g-detal
+        <#if menu_index gt 0>
+             u-hide
+        </#if>
+    ">
+         <div>
+            <#list menu.imgs as img>
+                <img src="${springMacroRequestContext.contextPath}/drift/${img}" alt="">
+            </#list>
+        </div>
+    </div>
+</#list>
+<#--<div class="g-detal">
     <div>
         <img src="img/img2.jpg" alt="">
         <img src="img/img2.jpg" alt="">
@@ -78,7 +90,7 @@
         <img src="img/img2.jpg" alt="">
         <img src="img/img2.jpg" alt="">
     </div>
-</div>
+</div>-->
 
 <div class="g-bottom">
     <a href="#" class="j-wid">预定套餐</a>

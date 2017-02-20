@@ -26,7 +26,16 @@ public class ScheduleMenuInfo {
     private String drink;
     private String other;
     private String kcal;
+    private String imgPaths;
     private Date updateTime;
+
+    public String getImgPaths() {
+        return imgPaths;
+    }
+
+    public void setImgPaths(String imgPaths) {
+        this.imgPaths = imgPaths;
+    }
 
     public Long getId() {
         return id;

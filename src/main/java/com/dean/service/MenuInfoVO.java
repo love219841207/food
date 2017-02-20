@@ -1,5 +1,11 @@
 package com.dean.service;
 
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by dongxu on 2017/2/16.
  */
@@ -16,6 +22,20 @@ public class MenuInfoVO {
     private String drink;
     private String other;
     private String kcal;
+    private List<String> imgs;
+
+    public List<String> getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(String imgPaths) {
+        if(!StringUtils.isEmpty(imgPaths)){
+            String[] arr = imgPaths.split(",");
+            this.imgs = Arrays.asList(arr);
+        }else{
+            this.imgs = new ArrayList<String>();
+        }
+    }
 
     public String getTimeMenuVal() {
         return timeMenuVal;

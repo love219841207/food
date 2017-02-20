@@ -100,6 +100,7 @@ public class MenuServiceImpl implements MenuService {
                 scheduleMenuInfo.setDrink(al.get(7));
                 scheduleMenuInfo.setOther(al.get(8));
                 scheduleMenuInfo.setKcal(al.get(9));
+                scheduleMenuInfo.setImgPaths(al.get(10));
                 scheduleMenuInfo.setUpdateTime(new Date());
                 scheduleMenuInfos.add(scheduleMenuInfo);
             }
@@ -134,7 +135,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuInfoVO> findMenuDetail(String day, String typeMenu) {
-        List<ScheduleMenuInfo> list = scheduleMenuInfoDao.findByScheduleDayAndTypeMenu(day, typeMenu);
+        List<ScheduleMenuInfo> list = scheduleMenuInfoDao.findByScheduleDayAndTypeMenuOrderByTimeMenu(day, typeMenu);
         List<TimeMenuVO> timeMenus = this.findTimeMenu();
         List<MenuInfoVO> menus = new ArrayList<MenuInfoVO>();
         MenuInfoVO menuInfoVO = null;
@@ -152,6 +153,7 @@ public class MenuServiceImpl implements MenuService {
             menuInfoVO.setOther(smi.getOther());
             menuInfoVO.setScheduleDay(smi.getScheduleDay());
             menuInfoVO.setStapleFood(smi.getStapleFood());
+            menuInfoVO.setImgs(smi.getImgPaths());
             menus.add(menuInfoVO);
         }
         return menus;
