@@ -56,13 +56,6 @@
 </#list>
 </div>
 
-<#--
-<div class="g-detal">
-    <img src="${springMacroRequestContext.contextPath}/drift/${chooseDay}-${type}-${timeType}-1.jpg" alt="">
-    <img src="${springMacroRequestContext.contextPath}/drift/${chooseDay}-${type}-${timeType}-2.jpg" alt="">
-    <img src="${springMacroRequestContext.contextPath}/drift/${chooseDay}-${type}-${timeType}-3.jpg" alt="">
-</div>
--->
 <#list menus as menu>
     <div class="g-detal
         <#if menu_index gt 0>
@@ -76,21 +69,6 @@
         </div>
     </div>
 </#list>
-<#--<div class="g-detal">
-    <div>
-        <img src="img/img2.jpg" alt="">
-        <img src="img/img2.jpg" alt="">
-        <img src="img/img2.jpg" alt="">
-    </div>
-</div>
-
-<div class="g-detal u-hide">
-    <div>
-        <img src="img/img1.jpg" alt="">
-        <img src="img/img2.jpg" alt="">
-        <img src="img/img2.jpg" alt="">
-    </div>
-</div>-->
 
 <div class="g-bottom">
     <a href="#" class="j-wid">预定套餐</a>
