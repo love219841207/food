@@ -23,6 +23,15 @@ public class MenuInfoVO {
     private String other;
     private String kcal;
     private List<String> imgs;
+    private List<PkgMenuVO> pkgMenuVOs;
+
+    public List<PkgMenuVO> getPkgMenuVOs() {
+        return pkgMenuVOs;
+    }
+
+    public void setPkgMenuVOs(List<PkgMenuVO> pkgMenuVOs) {
+        this.pkgMenuVOs = pkgMenuVOs;
+    }
 
     public List<String> getImgs() {
         return imgs;

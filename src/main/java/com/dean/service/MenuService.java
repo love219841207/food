@@ -16,4 +16,5 @@ public interface MenuService {
     public void initMenuFromExcel() throws IOException, InvalidFormatException;
 
     public List<MenuInfoVO> findMenuDetail(String day,String typeMenu);
+
 }

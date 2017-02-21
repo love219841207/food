@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,12 @@ public class FixedController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/index")
-    public String fixed(HttpServletRequest request){
+    @RequestMapping(value="/index/{type}/{timeType}/{pkgDays}")
+    public String fixed(HttpServletRequest request,
+                        @PathVariable("type") String type,
+                        @PathVariable("timeType") String timeType,
+                        @PathVariable("pkgDays") int pkgDays){
+        logger.info("/index/{}/{}/{}",type,timeType,pkgDays);
         return "fixed/index";
     }
 }

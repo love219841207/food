@@ -154,9 +154,27 @@ public class MenuServiceImpl implements MenuService {
             menuInfoVO.setScheduleDay(smi.getScheduleDay());
             menuInfoVO.setStapleFood(smi.getStapleFood());
             menuInfoVO.setImgs(smi.getImgPaths());
+            menuInfoVO.setPkgMenuVOs(this.findPkgMenuVO(typeMenu,smi.getTimeMenu()));
             menus.add(menuInfoVO);
         }
         return menus;
+    }
+
+    private List<PkgMenuVO> findPkgMenuVO(String typeMenu,String timeMenu) {
+        List<PkgMenuVO> pkgMenuVOs = new ArrayList<PkgMenuVO>();
+        List<PkgMenu> pkgMenus = pkgMenuDao.findByTypeMenuAndTimeMenuOrderByTimeMenu(typeMenu, timeMenu);
+        PkgMenuVO pkgMenuVO = null;
+        for (PkgMenu pkgMenu : pkgMenus){
+            pkgMenuVO = new PkgMenuVO();
+            pkgMenuVO.setId(pkgMenu.getId());
+            pkgMenuVO.setOriginalPrice(pkgMenu.getOriginalPrice());
+            pkgMenuVO.setSalePrice(pkgMenu.getSalePrice());
+            pkgMenuVO.setTypeMenu(pkgMenu.getTypeMenu());
+            pkgMenuVO.setPkgMenu(pkgMenu.getPkgMenu());
+            pkgMenuVO.setPkgDays(pkgMenu.getPkgDays());
+            pkgMenuVOs.add(pkgMenuVO);
+        }
+        return pkgMenuVOs;
     }
 
 

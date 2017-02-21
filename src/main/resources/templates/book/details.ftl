@@ -79,17 +79,18 @@
     <img src="${springMacroRequestContext.contextPath}/img/z-del.png" class="j-del">
     <h2>预约套餐</h2>
     <span>选择方案</span>
-    <div class="u-det j-sel">
-        <a href="#">午餐：纤体1日</a>
-        <a href="#">午餐：纤体1日</a>
-        <a href="#">午餐：纤体1日</a>
-        <a href="#">午餐：纤体1日</a>
-        <a href="#">午餐：纤体1日</a>
-        <a href="#">午餐：纤体1日</a>
-    </div>
+    <#list menus as menu>
+        <div class="u-det j-sel">
+            <#list menu.pkgMenuVOs as pkgMenuVO>
+                 <a href="#" v="${pkgMenuVO.pkgDays}"  class="<#if pkgMenuVO_index == 0>on</#if>" orip="${pkgMenuVO.originalPrice}" salep="${pkgMenuVO.salePrice}">${pkgMenuVO.pkgMenu}</a>
+            </#list>
+
+        </div>
+    </#list>
 
     <div class="u-btn">
-        <a href="#">下单</a>
+        <span>¥<em class="u-now j-now"></em>¥<em class="u-org j-org"></em> </span>
+        <a href="#" id="j-book">下单</a>
     </div>
 </div>
 
@@ -115,6 +116,7 @@
         _this.addClass('on').siblings().removeClass('on');
         $('.g-con').eq(_num).show().siblings('.g-con').hide();
         $('.g-detal').eq(_num).show().siblings('.g-detal').hide();
+        $('.u-det').eq(_num).show().siblings('.u-det').hide();
     });
 
     //点击预定套餐出现弹窗
@@ -122,6 +124,7 @@
     $('.j-wid').tap(function(){
         _mask.show();
         _wid.show();
+        initPkgMenu();
     });
 
     $('.j-del').tap(function(){
@@ -132,10 +135,29 @@
     // 弹窗里的单选
     $('.j-sel a').tap(function(){
         $(this).addClass('on').siblings().removeClass('on');
+        $('.j-org').text($(this).attr('orip'));
+        $('.j-now').text($(this).attr('salep'));
     });
 
+    //初始化选择pkg_menu
+    var initPkgMenu = function(){
+        var _o = $('.j-sel a:visible').filter('.on');
+        if(_o.length==0){
+            $('.j-sel a:visible').first().trigger('tap');
+        }else{
+            _o.first().trigger('tap');
+        }
+    }
 
-
+    $('#j-book').tap(function(){
+        var _typeMenu = '${type}';
+        var d = $('.j-tab a').filter(".on");
+        var _timeMenu = d.attr('v');
+        var _o = $('.j-sel a:visible').filter('.on');
+        var pkg = _o.attr('v');
+        console.log();
+        location.href="${springMacroRequestContext.contextPath}/fixed/index/"+_typeMenu+"/"+_timeMenu+"/"+pkg;
+    })
 
 
 </script>
