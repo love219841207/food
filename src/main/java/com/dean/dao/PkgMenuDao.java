@@ -9,5 +9,8 @@ import java.util.List;
  * Created by dongxu on 2017/2/15.
  */
 public interface PkgMenuDao extends CrudRepository<PkgMenu,Long>{
-    public List<PkgMenu> findByTypeMenuAndTimeMenuOrderByTimeMenu(String typeMenu,String timeMenu);
+    List<PkgMenu> findByTypeMenuAndTimeMenuOrderByTimeMenu(String typeMenu, String timeMenu);
+
+
+    List<PkgMenu> findByTypeMenuAndTimeMenuAndPkgDaysOrderByTimeMenu(String typeMenu, String timeMenu, int pkgDays);
 }

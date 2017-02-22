@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @EnableConfigurationProperties(WechatRouteProperties.class)
-public class ShorController {
+public class ShortController {
     @Autowired
     private WechatService wechatService;
     @Autowired

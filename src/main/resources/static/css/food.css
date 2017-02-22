@@ -143,8 +143,7 @@ body.g-ptom{padding-bottom: 70px;}
 
 .g-qcon{background-color: #fff;margin-top: .7rem;font-size: .9rem;}
 .g-qcon p{border-bottom: 1px solid #ccc;padding: .3rem 5%;line-height: 1.7rem;}
-.g-qcon p a{color: #333;background: url(../img/link_s.png) 100% 50% no-repeat;background-size: 8px;
-	padding-right: 15px;}
+.g-qcon p a{color: #333;background-size: 8px;}
 .g-qcon p span{background: url(../img/ico_n.png) 0 0 no-repeat;background-size: 100%;width: 20px;height: 20px;display: block;margin-top: .25rem;}
 .g-qcon p span.on{background-image: url(../img/ico_y.png);}
 .g-qcon p input{width: 40%;border:1px solid #ccc;padding-left: 10px;}

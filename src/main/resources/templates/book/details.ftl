@@ -80,7 +80,7 @@
     <h2>预约套餐</h2>
     <span>选择方案</span>
     <#list menus as menu>
-        <div class="u-det j-sel">
+        <div class="u-det j-sel <#if menu_index gt 0>u-hide</#if>">
             <#list menu.pkgMenuVOs as pkgMenuVO>
                  <a href="#" v="${pkgMenuVO.pkgDays}"  class="<#if pkgMenuVO_index == 0>on</#if>" orip="${pkgMenuVO.originalPrice}" salep="${pkgMenuVO.salePrice}">${pkgMenuVO.pkgMenu}</a>
             </#list>
@@ -147,7 +147,7 @@
         }else{
             _o.first().trigger('tap');
         }
-    }
+    };
 
     $('#j-book').tap(function(){
         var _typeMenu = '${type}';
@@ -155,8 +155,7 @@
         var _timeMenu = d.attr('v');
         var _o = $('.j-sel a:visible').filter('.on');
         var pkg = _o.attr('v');
-        console.log();
-        location.href="${springMacroRequestContext.contextPath}/fixed/index/"+_typeMenu+"/"+_timeMenu+"/"+pkg;
+        location.href="${springMacroRequestContext.contextPath}/order/create/"+_typeMenu+"/"+_timeMenu+"/"+pkg;
     })
 
 
