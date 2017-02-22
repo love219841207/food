@@ -10,5 +10,5 @@ public interface WechatService {
 
     boolean refreshApiToken();
 
-    WechatUserInfoVo getWechatHeadImg(String openId);
+    WechatUserInfoVO getWechatHeadImg(String openId);
 }

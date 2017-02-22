@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
                 wechatInfo.setCreateTime(new Date());
                 wechatInfo.setLastLoginTime(wechatInfo.getCreateTime());
                 wechatInfo.setOpenId(openId);
-                WechatUserInfoVo wechatUserInfoVo = wechatService.getWechatHeadImg(openId);
+                WechatUserInfoVO wechatUserInfoVo = wechatService.getWechatHeadImg(openId);
                 wechatInfo.setHeadImg(wechatUserInfoVo.getHeadImg());
                 wechatInfo.setNickName(wechatUserInfoVo.getNickName());
                 wechatInfoDao.save(wechatInfo);
