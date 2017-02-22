@@ -45,6 +45,7 @@ public class OrderServiceImpl implements OrderService {
         if(totalPrice!=null){
             orderInfo.setTotalPrice(totalPrice);
             orderInfo.setStatus(Constants.ORDER_STATUS_PREPARE);
+            orderInfo.setLastPrice(totalPrice);
             orderInfoDao.save(orderInfo);
             orderInfoVO = new OrderInfoVO();
             BeanUtils.copyProperties(orderInfo, orderInfoVO);
