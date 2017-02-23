@@ -1,16 +1,16 @@
 package com.dean.service.impl;
 
+import com.dean.config.WechatProperties;
 import com.dean.dao.WechatApiTokenDao;
 import com.dean.domain.WechatApiToken;
 import com.dean.service.WechatService;
-import com.dean.config.WechatProperties;
-import com.dean.service.WechatUserInfoVo;
+import com.dean.service.WechatUserInfoVO;
+import com.dean.util.HttpClientUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.dean.util.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
@@ -118,8 +118,8 @@ public class WechatServiceImpl implements WechatService {
         return boo;
     }
 
-    public WechatUserInfoVo getWechatHeadImg(String openId){
-        WechatUserInfoVo wechatUserInfoVo = new WechatUserInfoVo();
+    public WechatUserInfoVO getWechatHeadImg(String openId){
+        WechatUserInfoVO wechatUserInfoVo = new WechatUserInfoVO();
         WechatApiToken wechatApiToken = wechatApiTokenDao.findOne(1l);
         String url = String.format(ULR_GET_USERINFO_BY_OPENID, wechatApiToken.getAccessToken(),openId);
 

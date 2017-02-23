@@ -14,7 +14,8 @@
     <script src="${springMacroRequestContext.contextPath}/js/zepto.min.js"></script>
 </head>
 <body class="g-ptom">
-
+<form action="${springMacroRequestContext.contextPath}/order/charge" method="post" id="confirm_form">
+    <input type="hidden" name="id" value="${orderInfoVO.id}">
 <div class="g-qhd">
 <#-- <a href="#"><img src="${springMacroRequestContext.contextPath}/img/icon3.png" alt="">请选择收货地址</a>-->
     <div class="u-bd fcb">
@@ -26,25 +27,26 @@
 
 <div class="g-qcon">
     <p class="fcb">送餐时间 <a href="#" class="frt"><#if orderInfoVO.timeMenu == '1'>11:30-12:30<#else>17:30-18:30</#if> </a></p>
-    <#if couponVO??>
-        <p class="fcb">抵用券 <span class="frt j-selt" v='${couponVO.price}' ></span></p>
-    </#if>
-<#--
-    <p class="fcb">备注 <input type="text" placeholder="其它需求" class="frt"> </p>-->
+<#if couponVO??>
+    <p class="fcb">抵用券 <span class="frt j-selt" v='${couponVO.price}' couponId='${couponVO.id}'></span></p>
+    <input type="hidden" name="couponId" value="" id="couponId">
+    <input type="hidden" name="couponPrice" value="" id="couponPrice">
+</#if>
+    <p class="fcb">备注 <input type="text" placeholder="其它需求" class="frt" name="remark"> </p>
 </div>
 
 <div class="g-qcon">
     <p class="fcb">配送费 <em class="frt">${orderInfoVO.logisticsPrice!'0.00'}￥</em></p>
-    <#if couponVO??>
-        <p class="fcb j-con">抵用券 <em class="frt" >0.00￥</em></p>
-    </#if>
+<#if couponVO??>
+    <p class="fcb j-con">抵用券 <em class="frt" >0.00￥</em></p>
+</#if>
     <p class="fcb u-col">实际支付 <em class="frt" v="${orderInfoVO.lastPrice}">${orderInfoVO.lastPrice}￥</em></p>
 </div>
 
 <div class="g-bottom">
     <a href="#" class="j-wid">确认支付</a>
 </div>
-
+</form>
 <script>
 
     $('.j-selt').tap(function(){
@@ -54,12 +56,19 @@
             var _lastPrice = $('.u-col .frt').attr('v');
             var _couPrice = $(this).attr('v');
             (_lastPrice>_couPrice)?_lastPrice=_lastPrice-_couPrice : _lastPrice='0.00';
-            console.log(Number(_lastPrice).toFixed(2)+'￥');
             $('.u-col .frt').text(Number(_lastPrice).toFixed(2) +'￥');
+            $('#couponId').val($(this).attr('couponId'));
+            $('#couponPrice').val($(this).attr('v'));
         }else{
             $('.j-con .frt').text('0.00￥');
             $('.u-col .frt').text($('.u-col .frt').attr('v')+'￥');
+            $('#couponId').val('');
+            $('#couponPrice').val('');
         }
+    });
+
+    $('.j-wid').tap(function(){
+        $('#confirm_form').submit();
     })
 
 

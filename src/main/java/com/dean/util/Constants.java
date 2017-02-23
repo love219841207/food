@@ -32,7 +32,16 @@ public class Constants {
     //订单支付失败
     public static final int ORDER_STATUS_FAIL = 4;
 
+    //订单异常
+    public static final int ORDER_STATUS_ERROR = 8;
+
     //订单作废
     public static final int ORDER_STATUS_WASTE = 9;
+
+    //优惠券可用
+    public static final int COUPON_STATUS_VALID = 1;
+
+    //优惠券使用
+    public static final int COUPON_STATUS_USED = 2;
 
 }

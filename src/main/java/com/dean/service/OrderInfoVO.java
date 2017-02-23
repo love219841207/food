@@ -16,8 +16,44 @@ public class OrderInfoVO {
     private BigDecimal totalPrice;
     private BigDecimal logisticsPrice;
     private Long couponId;
+    private BigDecimal couponPrice;
     private BigDecimal lastPrice;
     private Integer status;
+    private String pkgMenu;
+    private BigDecimal pkgSalePrice;
+    private String remark;
+
+    public BigDecimal getCouponPrice() {
+        return couponPrice;
+    }
+
+    public void setCouponPrice(BigDecimal couponPrice) {
+        this.couponPrice = couponPrice;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public BigDecimal getPkgSalePrice() {
+        return pkgSalePrice;
+    }
+
+    public void setPkgSalePrice(BigDecimal pkgSalePrice) {
+        this.pkgSalePrice = pkgSalePrice;
+    }
+
+    public String getPkgMenu() {
+        return pkgMenu;
+    }
+
+    public void setPkgMenu(String pkgMenu) {
+        this.pkgMenu = pkgMenu;
+    }
 
     public String getId() {
         return id;

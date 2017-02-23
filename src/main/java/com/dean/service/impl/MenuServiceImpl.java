@@ -1,7 +1,9 @@
 package com.dean.service.impl;
 
+import com.dean.dao.AddressInfoDao;
 import com.dean.dao.PkgMenuDao;
 import com.dean.dao.ScheduleMenuInfoDao;
+import com.dean.domain.AddressInfo;
 import com.dean.domain.DataDictionary;
 import com.dean.domain.PkgMenu;
 import com.dean.domain.ScheduleMenuInfo;
@@ -35,6 +37,8 @@ public class MenuServiceImpl implements MenuService {
     private ScheduleMenuInfoDao scheduleMenuInfoDao;
     @Autowired
     private PkgMenuDao pkgMenuDao;
+    @Autowired
+    private AddressInfoDao addressInfoDao;
 
     public List<TypeMenuVO> findTypeMenu() {
         List<DataDictionary> list = dataDictionaryService.findTypeMenu();
@@ -67,7 +71,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void initMenuFromExcel() throws IOException, InvalidFormatException {
         List<ArrayList<ArrayList<String>>> excelInfo = this.ReadMenuFormExcel();
-        if(excelInfo.size()!=2){
+        if(excelInfo.size()!=3){
             logger.info("解析menuexcel异常,sheet数量不对");
         }else{
             List<TypeMenuVO> typeMenus = this.findTypeMenu();
@@ -128,7 +132,19 @@ public class MenuServiceImpl implements MenuService {
                 pkgMenu.setUpdateTime(new Date());
                 pkgMenus.add(pkgMenu);
             }
-            this.updateDateFromExcel(scheduleMenuInfos,pkgMenus);
+
+            List<AddressInfo> addressInfos = new ArrayList<AddressInfo>();
+            AddressInfo addressInfo = null;
+            ArrayList<ArrayList<String>> addressexcels = excelInfo.get(2);
+            for (ArrayList<String> al : addressexcels){
+                addressInfo = new AddressInfo();
+                if(!StringUtils.isEmpty(al.get(0))){
+                    addressInfo.setAddress(al.get(0));
+                }
+                addressInfos.add(addressInfo);
+            }
+
+            this.updateDateFromExcel(scheduleMenuInfos,pkgMenus,addressInfos);
         }
 
     }
@@ -179,13 +195,15 @@ public class MenuServiceImpl implements MenuService {
 
 
     @Transactional
-    private void updateDateFromExcel(List<ScheduleMenuInfo> scheduleMenuInfos,List<PkgMenu> pkgMenus){
-        logger.info("跟新排餐、套餐配置属性进入数据库,start...");
+    private void updateDateFromExcel(List<ScheduleMenuInfo> scheduleMenuInfos,List<PkgMenu> pkgMenus,List<AddressInfo> addressInfos){
+        logger.info("跟新排餐、套餐配置属性、地址进入数据库,start...");
         scheduleMenuInfoDao.deleteAll();
         scheduleMenuInfoDao.save(scheduleMenuInfos);
         pkgMenuDao.deleteAll();
         pkgMenuDao.save(pkgMenus);
-        logger.info("跟新排餐、套餐配置属性进入数据库,...");
+        addressInfoDao.deleteAll();
+        addressInfoDao.save(addressInfos);
+        logger.info("跟新排餐、套餐配置属性、地址进入数据库,...");
     }
 
     private String getTypeMenuVal(String name,List<TypeMenuVO> typeMenus){

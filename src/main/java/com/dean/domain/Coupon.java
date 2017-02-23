@@ -17,13 +17,20 @@ public class Coupon {
     @GeneratedValue
     private Long id;
     private Long userId;
-    private int type;
     private BigDecimal price;
     private Date createTime;
-    private Date use_time;
+    private Date useTime;
     private int status;
     private Date startTime;
     private Date endTime;
+
+    public Date getUseTime() {
+        return useTime;
+    }
+
+    public void setUseTime(Date useTime) {
+        this.useTime = useTime;
+    }
 
     public Long getId() {
         return id;
@@ -39,14 +46,6 @@ public class Coupon {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public BigDecimal getPrice() {
@@ -65,13 +64,6 @@ public class Coupon {
         this.createTime = createTime;
     }
 
-    public Date getUse_time() {
-        return use_time;
-    }
-
-    public void setUse_time(Date use_time) {
-        this.use_time = use_time;
-    }
 
     public int getStatus() {
         return status;

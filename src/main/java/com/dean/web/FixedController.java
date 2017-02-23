@@ -19,15 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/fixed")
 public class FixedController {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private UserService userService;
 
-   /* @RequestMapping(value="/index/{type}/{timeType}/{pkgDays}")
-    public String fixed(HttpServletRequest request,
-                        @PathVariable("type") String type,
-                        @PathVariable("timeType") String timeType,
-                        @PathVariable("pkgDays") int pkgDays){
-        logger.info("/index/{}/{}/{}",type,timeType,pkgDays);
+    @RequestMapping(value="/index")
+    public String fixed(){
+        logger.info("/fixed/index");
         return "fixed/index";
-    }*/
+    }
 }

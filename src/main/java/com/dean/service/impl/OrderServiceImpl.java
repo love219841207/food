@@ -4,6 +4,7 @@ import com.dean.dao.OrderInfoDao;
 import com.dean.dao.PkgMenuDao;
 import com.dean.domain.OrderInfo;
 import com.dean.domain.PkgMenu;
+import com.dean.service.CouponService;
 import com.dean.service.OrderInfoVO;
 import com.dean.service.OrderService;
 import com.dean.util.Constants;
@@ -13,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +28,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderInfoDao orderInfoDao;
     @Autowired
+    private CouponService couponService;
+    @Autowired
     private PkgMenuDao pkgMenuDao;
 
     //配送费默认不需要
@@ -34,37 +38,68 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderInfoVO createOrderInfo(String typeMenu,String timeMenu,Long userId,int pkgDays) {
         OrderInfo orderInfo = new OrderInfo();
-        OrderInfoVO orderInfoVO = null;
+        OrderInfoVO orderInfoVO =  new OrderInfoVO();
         orderInfo.setCreateTime(new Date());
         orderInfo.setTypeMenu(typeMenu);
         orderInfo.setTimeMenu(timeMenu);
         orderInfo.setUserId(userId);
         orderInfo.setPkgDays(pkgDays);
         orderInfo.setLogisticsPrice(logisticsPrice);
-        BigDecimal totalPrice = this.getTotalPrice(typeMenu,timeMenu,pkgDays,logisticsPrice);
-        if(totalPrice!=null){
-            orderInfo.setTotalPrice(totalPrice);
+
+        PkgMenu pkgMenu = this.findPkgMenu(typeMenu, timeMenu, pkgDays);
+        if(pkgMenu!=null&&pkgMenu.getSalePrice()!=null){
+            orderInfo.setPkgSalePrice(pkgMenu.getSalePrice());
+            orderInfo.setTotalPrice(this.getTotalPrice(pkgMenu.getSalePrice(), logisticsPrice));
             orderInfo.setStatus(Constants.ORDER_STATUS_PREPARE);
-            orderInfo.setLastPrice(totalPrice);
-            orderInfoDao.save(orderInfo);
-            orderInfoVO = new OrderInfoVO();
-            BeanUtils.copyProperties(orderInfo, orderInfoVO);
+            orderInfo.setPkgMenu(pkgMenu.getPkgMenu());
+            orderInfo.setLastPrice(orderInfo.getTotalPrice());
         }else{
-            logger.info("生成订单失败，由于totalprice计算出来为null");
+            logger.info("生成订单失败");
+            orderInfo.setStatus(Constants.ORDER_STATUS_ERROR);
         }
+        orderInfoDao.save(orderInfo);
+        BeanUtils.copyProperties(orderInfo, orderInfoVO);
         return orderInfoVO;
     }
 
-    private BigDecimal getTotalPrice(String typeMenu,String timeMenu,int pkgDays,BigDecimal logisticsPrice){
-        List<PkgMenu> list = pkgMenuDao.findByTypeMenuAndTimeMenuAndPkgDaysOrderByTimeMenu(typeMenu,timeMenu,pkgDays);
-        BigDecimal total = null;
-        if(list.size()>0){
-            total = list.get(0).getSalePrice();
-            if(logisticsPrice!=null){
-                total = total.add(logisticsPrice);
+    @Override
+    @Transactional
+    public boolean chargeOrderInfo(OrderInfoVO orderInfoVO) {
+        boolean boo = false;
+        OrderInfo orderInfo = orderInfoDao.findOne(orderInfoVO.getId());
+        if(orderInfo!=null){
+            orderInfo.setRemark(orderInfoVO.getRemark());
+            orderInfo.setCouponId(orderInfoVO.getCouponId());
+            orderInfo.setCouponPrice(orderInfoVO.getCouponPrice());
+            BigDecimal lastPrice = orderInfo.getLastPrice();
+            if(orderInfoVO.getCouponPrice()!=null){
+                if(lastPrice.compareTo(orderInfoVO.getCouponPrice())>0){
+                    lastPrice = lastPrice.subtract(orderInfoVO.getCouponPrice());
+                }else{
+                    lastPrice = new BigDecimal("0.00");
+                }
+                couponService.couponUse(orderInfoVO.getCouponId());
             }
-        }else{
-            logger.info("生成订单错误,通过type、time、days查找打包价钱无数据.参数为[{},{},{}]", typeMenu, timeMenu,pkgDays);
+            orderInfo.setLastPrice(lastPrice);
+            orderInfo.setStatus(Constants.ORDER_STATUS_PAYED);
+            orderInfoDao.save(orderInfo);
+        }
+        boo = true;
+        return boo;
+    }
+
+    private PkgMenu findPkgMenu(String typeMenu,String timeMenu,int pkgDays){
+        PkgMenu pkgMenu = null;
+        List<PkgMenu> list = pkgMenuDao.findByTypeMenuAndTimeMenuAndPkgDaysOrderByTimeMenu(typeMenu,timeMenu,pkgDays);
+        if(list.size()>0){
+            pkgMenu = list.get(0);
+        }
+        return pkgMenu;
+    }
+    private BigDecimal getTotalPrice(BigDecimal salePrice, BigDecimal logisticsPrice){
+        BigDecimal total = salePrice;
+        if(logisticsPrice!=null){
+            total = total.add(logisticsPrice);
         }
         return total;
     }

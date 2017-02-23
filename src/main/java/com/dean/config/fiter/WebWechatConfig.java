@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 /**
  * Created by dongxu on 2017/2/9.
  */
-@Configuration
+/*@Configuration*/
 public class WebWechatConfig extends WebMvcConfigurerAdapter {
 
     @Bean

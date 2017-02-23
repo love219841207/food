@@ -6,4 +6,7 @@ package com.dean.service;
 public interface OrderService {
 
     OrderInfoVO createOrderInfo(String typeMenu, String timeMenu, Long userId, int pkgDays);
+
+    boolean chargeOrderInfo(OrderInfoVO orderInfoVO);
+
 }
