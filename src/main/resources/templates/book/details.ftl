@@ -155,7 +155,8 @@
         var _timeMenu = d.attr('v');
         var _o = $('.j-sel a:visible').filter('.on');
         var pkg = _o.attr('v');
-        location.href="${springMacroRequestContext.contextPath}/order/create/"+_typeMenu+"/"+_timeMenu+"/"+pkg;
+       // location.href="${springMacroRequestContext.contextPath}/order/create/"+_typeMenu+"/"+_timeMenu+"/"+pkg;
+        location.href="${springMacroRequestContext.contextPath}/order/create?type="+_typeMenu+"&timeMenu="+_timeMenu+"&pkgDays="+pkg;
     })
 
 

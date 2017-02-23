@@ -9,7 +9,9 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * 提供http操作
@@ -17,7 +19,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class HttpClientUtil {
-	private static Logger log = Logger.getLogger(HttpClientUtil.class);  
+	protected final static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
 	/**
 	   httpClient的get请求方式2
 	 * @return
@@ -45,7 +47,7 @@ public class HttpClientUtil {
 			int statusCode = httpClient.executeMethod(getMethod);
 			/* 4 判断访问的状态码 */
 			if (statusCode != HttpStatus.SC_OK) {
-				log.error("请求出错: "+ getMethod.getStatusLine());
+				logger.error("请求出错:{} ",getMethod.getStatusLine());
 			}
 			/* 5 处理 HTTP 响应内容 */
 			// HTTP响应头部信息，这里简单打印
@@ -60,10 +62,10 @@ public class HttpClientUtil {
 			// InputStream response = getMethod.getResponseBodyAsStream();
 		} catch (HttpException e) {
 			// 发生致命的异常，可能是协议不对或者返回的内容有问题
-			log.error("请检查输入的URL!");
+			logger.error("请检查输入的URL!");
 		} catch (IOException e) {
 			// 发生网络异常
-			log.error("发生网络异常!");
+			logger.error("发生网络异常!");
 		} finally {
 			/* 6 .释放连接 */
 			getMethod.releaseConnection();
@@ -79,7 +81,7 @@ public class HttpClientUtil {
 		// HttpMethod method = new GetMethod("http://10.1.14.20:8088/workflowController/service/todo/addTask");   
 		//使用POST方法  
 		PostMethod method = new PostMethod(url);
-		((PostMethod) method).setRequestBody(body);
+		method.setRequestBody(body);
 
 		HttpMethodParams param = method.getParams();  
 		param.setContentCharset(charset);  
@@ -87,17 +89,17 @@ public class HttpClientUtil {
 		try {
 			int statusCode = client.executeMethod(method);
 			if (statusCode != HttpStatus.SC_OK) {
-				log.error("请求出错: "+ method.getStatusLine());
+				logger.error("请求出错:{} ", method.getStatusLine());
 			}
 			str = method.getResponseBodyAsString();
 		} catch (HttpException e) {
-			log.error("请检查输入的URL!");
+			logger.error("请检查输入的URL!");
 		} catch (IOException e) {
-			log.error("发生网络异常!");
+			logger.error("发生网络异常!");
 		}finally{
 			method.releaseConnection();  
 		}
-		log.info(str.toString());
+		logger.info(str.toString());
 		//释放连接  
 		return str;
 

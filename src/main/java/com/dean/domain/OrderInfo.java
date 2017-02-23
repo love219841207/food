@@ -32,7 +32,25 @@ public class OrderInfo {
     private BigDecimal couponPrice;
     private BigDecimal lastPrice;
     private Integer status;
+    private Date payTime;
+    private Date arrivalTime;
     private String remark;
+
+    public Date getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(Date payTime) {
+        this.payTime = payTime;
+    }
+
+    public Date getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(Date arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
 
     public BigDecimal getCouponPrice() {
         return couponPrice;

@@ -21,8 +21,10 @@ public class Constants {
 
 
     //订单预生成
-    public static final int ORDER_STATUS_PREPARE = 1;
+    public static final int ORDER_STATUS_PREPARE = 0;
 
+    //确认后申请微信支付，使用优惠券等，确认最后支付金额
+    public static final int ORDER_STATUS_CHECK = 1;
     //订单页面支付成功，未到账
     public static final int ORDER_STATUS_PAYED = 2;
 

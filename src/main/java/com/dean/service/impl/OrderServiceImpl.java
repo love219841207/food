@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public boolean chargeOrderInfo(OrderInfoVO orderInfoVO) {
+    public boolean checkOrderInfo(OrderInfoVO orderInfoVO) {
         boolean boo = false;
         OrderInfo orderInfo = orderInfoDao.findOne(orderInfoVO.getId());
         if(orderInfo!=null){
@@ -81,9 +81,20 @@ public class OrderServiceImpl implements OrderService {
                 couponService.couponUse(orderInfoVO.getCouponId());
             }
             orderInfo.setLastPrice(lastPrice);
-            orderInfo.setStatus(Constants.ORDER_STATUS_PAYED);
+            orderInfo.setStatus(Constants.ORDER_STATUS_CHECK);
             orderInfoDao.save(orderInfo);
         }
+        boo = true;
+        return boo;
+    }
+
+    @Override
+    public boolean chargeOrderInfo(OrderInfoVO orderInfoVO) {
+        boolean boo = false;
+        OrderInfo orderInfo = orderInfoDao.findOne(orderInfoVO.getId());
+        orderInfo.setPayTime(new Date());
+        orderInfo.setStatus(Constants.ORDER_STATUS_PAYED);
+        orderInfoDao.save(orderInfo);
         boo = true;
         return boo;
     }

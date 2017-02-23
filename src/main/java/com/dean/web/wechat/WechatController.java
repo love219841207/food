@@ -31,4 +31,19 @@ public class WechatController {
 
         out.print(echostr);
     }
+
+    @RequestMapping("/notify")
+    public void core(){
+       /* String echostr = request.getParameter("echostr");
+        logger.info("echostr is {}",echostr);
+        //dfc31eac75a12afcae2a43d8c11c94c1
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        out.print(echostr);*/
+    }
 }
