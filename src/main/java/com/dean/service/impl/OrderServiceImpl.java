@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,7 +72,6 @@ public class OrderServiceImpl implements OrderService {
                 orderInfo.setPkgMenu(pkgMenu.getPkgMenu());
             }
             orderInfo.setCreateTime(new Date());
-            orderInfo.setStatus(Constants.ORDER_STATUS_PREPARE);
         }else{
             orderInfo = orderInfoDao.findOne(orderInfoVO.getId());
         }
@@ -87,8 +87,22 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         orderInfo.setLastPrice(lastPrice);
-        orderInfoDao.save(orderInfo);
-        BeanUtils.copyProperties(orderInfo,orderInfoVO);
+        //需要付钱
+        boolean coupon = true;
+        if(lastPrice.compareTo(BigDecimal.ZERO)>0){
+            orderInfo.setStatus(Constants.ORDER_STATUS_PREPARE);
+        }else{
+            orderInfo.setStatus(Constants.ORDER_STATUS_NOT_PAY);
+            if(orderInfo.getCouponId()!=null){
+                coupon = couponService.couponUse(orderInfo.getCouponId());
+            }
+        }
+        if(!coupon){
+            orderInfoVO.setErrorMsg("优惠券无法使用!");
+        }else{
+            orderInfoDao.save(orderInfo);
+            BeanUtils.copyProperties(orderInfo, orderInfoVO);
+        }
         return orderInfoVO;
     }
 
@@ -131,6 +145,19 @@ public class OrderServiceImpl implements OrderService {
             orderInfo.setArrivalTime(new Date());
             orderInfoDao.save(orderInfo);
         }
+    }
+
+    @Override
+    public List<OrderInfoVO> getList(Long userId) {
+        List<OrderInfo> infos = orderInfoDao.findByUserIdOrderByCreateTimeDesc(userId);
+        List<OrderInfoVO> orderInfoVOs = new ArrayList<OrderInfoVO>();
+        OrderInfoVO orderInfoVO = null;
+        for(OrderInfo orderInfo : infos){
+            orderInfoVO = new OrderInfoVO();
+            BeanUtils.copyProperties(orderInfo,orderInfoVO);
+            orderInfoVOs.add(orderInfoVO);
+        }
+        return orderInfoVOs;
     }
 
     private PkgMenu findPkgMenu(String typeMenu,String timeMenu,int pkgDays){

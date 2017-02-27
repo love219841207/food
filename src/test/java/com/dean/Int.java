@@ -1,6 +1,7 @@
 package com.dean;
 
 import javax.persistence.Convert;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -9,12 +10,15 @@ import java.util.Calendar;
  */
 public class Int {
     public static void main(String[] arg0){
-        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+       /* SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
        // cal.setTime(sf.parse(nowDate));
         cal.add(Calendar.DAY_OF_YEAR, 1);
         String nextDate_1 = sf.format(cal.getTime());
         System.out.println(nextDate_1);
-
+*/
+        BigDecimal a = new BigDecimal("10.0204");
+        a = a.multiply(new BigDecimal(100));
+        System.out.println(a.intValue());
     }
 }

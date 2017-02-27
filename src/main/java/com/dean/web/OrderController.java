@@ -7,12 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +51,16 @@ public class OrderController {
     @RequestMapping(value="/payment")
     public String payment(HttpServletRequest request,OrderInfoVO orderInfoVO){
         orderService.payOrderInfo(orderInfoVO);
-        return "forward:/fixed/index";
+        return "forward:/order/list";
+
+    }
+
+    @RequestMapping(value="/list")
+    public String list(HttpServletRequest request,ModelMap model){
+        UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        List<OrderInfoVO> orders = orderService.getList(userVO.getUserInfo().getId());
+        model.put("orders",orders);
+        return "order/list";
 
     }
 
@@ -57,18 +69,28 @@ public class OrderController {
     public Map paymentAjax(HttpServletRequest request,OrderInfoVO orderInfoVO){
         orderInfoVO = orderService.createOrderInfo(orderInfoVO);
         Map map  = new HashMap();
-        WxConfig config = wechatService.createWxConfig(LOCALURL);
-        map.put("orderInfoVO", orderInfoVO);
-        map.put("config", config);
-        UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
-        String openId = userVO.getWechatInfo().getOpenId();//session获取自己的openid
-        String orderId = orderInfoVO.getId();//"获取自己商城的订单id"
-        String ip ="8.8.8.8";//获取请求的ip
-        int fee = 1;//单位分
-        String body = "商品名称";
-        String attach = "test";
-        PayConfig pconfig = wechatService.createPayConfig(openId, orderId,attach,body, ip, fee, config);
-        map.put("pconfig", pconfig);
+        if(!StringUtils.isEmpty(orderInfoVO.getErrorMsg())){
+            map.put("error_msg",orderInfoVO.getErrorMsg());
+        }else{
+            if(orderInfoVO.getStatus()==Constants.ORDER_STATUS_NOT_PAY){
+                map.put("not_pay",true);
+            }else{
+                WxConfig config = wechatService.createWxConfig(LOCALURL);
+                map.put("orderInfoVO", orderInfoVO);
+                map.put("config", config);
+                UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+                String openId = userVO.getWechatInfo().getOpenId();//session获取自己的openid
+                String orderId = orderInfoVO.getId();//"获取自己商城的订单id"
+                String ip ="8.8.8.8";//获取请求的ip
+                BigDecimal lastPrice = orderInfoVO.getLastPrice();
+                lastPrice = lastPrice.multiply(new BigDecimal(100));
+                int fee = lastPrice.intValue();//单位分
+                String body = "商品名称";
+                String attach = "test";
+                PayConfig pconfig = wechatService.createPayConfig(openId, orderId,attach,body, ip, fee, config);
+                map.put("pconfig", pconfig);
+            }
+        }
         return map;
     }
 }

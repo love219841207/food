@@ -8,5 +8,5 @@ public interface CouponService {
 
     CouponVO getById(Long id);
 
-    void couponUse(Long couponId);
+    boolean couponUse(Long couponId);
 }

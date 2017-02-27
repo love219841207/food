@@ -1,5 +1,7 @@
 package com.dean.service;
 
+import java.util.List;
+
 /**
  * Created by dongxu on 2017/2/21.
  */
@@ -14,5 +16,7 @@ public interface OrderService {
     void paySuccess(String orderId);
 
     void payFail(String orderId);
+
+    List<OrderInfoVO> getList(Long userId);
 
 }

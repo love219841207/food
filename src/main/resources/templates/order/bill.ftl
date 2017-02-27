@@ -83,6 +83,15 @@
             success: function(response){
                 var config = response.config;
                 var pconfig = response.pconfig;
+                var not_pay = response.not_pay;
+                var error_msg = response.error_msg;
+                if(error_msg!=undefined &&error_msg!=''){
+                    alert(error_msg);
+                    location.reload();
+                }
+                if(not_pay!=undefined&&not_pay){
+                    location.href = "${springMacroRequestContext.contextPath}/order/list";
+                }
                 var orderInfoVO = response.orderInfoVO;
                 $('#id').val(orderInfoVO.id);
                 wx.config({

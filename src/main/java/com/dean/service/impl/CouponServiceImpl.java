@@ -42,13 +42,17 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void couponUse(Long couponId) {
+    public boolean couponUse(Long couponId) {
+        boolean boo = false;
         Coupon coupon = couponDao.findOne(couponId);
-        if(coupon.getStatus()==Constants.COUPON_STATUS_USED){
-            logger.error("优惠券已经使用，重复了[{}]", couponId);
+        if(coupon!=null&&coupon.getStatus()==Constants.COUPON_STATUS_VALID){
+            coupon.setUseTime(new Date());
+            coupon.setStatus(Constants.COUPON_STATUS_USED);
+            couponDao.save(coupon);
+            boo = true;
+        }else{
+            logger.error("优惠券已经使用或者无效重复了[{}]", couponId);
         }
-        coupon.setUseTime(new Date());
-        coupon.setStatus(Constants.COUPON_STATUS_USED);
-        couponDao.save(coupon);
+        return boo;
     }
 }

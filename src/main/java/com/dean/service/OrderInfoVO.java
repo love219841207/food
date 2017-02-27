@@ -22,6 +22,15 @@ public class OrderInfoVO {
     private String pkgMenu;
     private BigDecimal pkgSalePrice;
     private String remark;
+    private String errorMsg;
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
 
     public BigDecimal getCouponPrice() {
         return couponPrice;

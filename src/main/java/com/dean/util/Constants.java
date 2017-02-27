@@ -31,6 +31,9 @@ public class Constants {
 
     //订单支付失败
     public static final int ORDER_STATUS_FAIL = 4;
+    //订单不需要现金支付
+    public static final int ORDER_STATUS_NOT_PAY = 5;
+
 
     //订单异常
     public static final int ORDER_STATUS_ERROR = 8;
