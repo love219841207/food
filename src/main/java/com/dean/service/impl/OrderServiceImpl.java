@@ -93,11 +93,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public boolean payOrderInfo(OrderInfoVO orderInfoVO) {
         boolean boo = false;
-        OrderInfo orderInfo = orderInfoDao.findOne(orderInfoVO.getId());
+        OrderInfo orderInfo = orderInfoDao.findById(orderInfoVO.getId());
+        if(orderInfo.getStatus()!=null
+                &&orderInfo.getStatus()<Constants.ORDER_STATUS_PAYED_ARRIVAL){
+            orderInfo.setStatus(Constants.ORDER_STATUS_PAYED);
+        }
         orderInfo.setPayTime(new Date());
-        orderInfo.setStatus(Constants.ORDER_STATUS_PAYED);
         orderInfoDao.save(orderInfo);
         boo = true;
         return boo;
