@@ -5,10 +5,14 @@ package com.dean.service;
  */
 public interface OrderService {
 
-    OrderInfoVO createOrderInfo(String typeMenu, String timeMenu, Long userId, int pkgDays);
+    OrderInfoVO initOrderInfo(String typeMenu, String timeMenu, Long userId, int pkgDays);
 
-    boolean checkOrderInfo(OrderInfoVO orderInfoVO);
+    OrderInfoVO createOrderInfo(OrderInfoVO orderInfoVO);
 
-    boolean chargeOrderInfo(OrderInfoVO orderInfoVO);
+    boolean payOrderInfo(OrderInfoVO orderInfoVO);
+
+    void paySuccess(String orderId);
+
+    void payFail(String orderId);
 
 }

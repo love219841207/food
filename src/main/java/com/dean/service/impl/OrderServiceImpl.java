@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -36,60 +37,63 @@ public class OrderServiceImpl implements OrderService {
     private BigDecimal logisticsPrice = null;
 
     @Override
-    public OrderInfoVO createOrderInfo(String typeMenu,String timeMenu,Long userId,int pkgDays) {
-        OrderInfo orderInfo = new OrderInfo();
+    public OrderInfoVO initOrderInfo(String typeMenu,String timeMenu,Long userId,int pkgDays) {
         OrderInfoVO orderInfoVO =  new OrderInfoVO();
-        orderInfo.setCreateTime(new Date());
-        orderInfo.setTypeMenu(typeMenu);
-        orderInfo.setTimeMenu(timeMenu);
-        orderInfo.setUserId(userId);
-        orderInfo.setPkgDays(pkgDays);
-        orderInfo.setLogisticsPrice(logisticsPrice);
-
+        orderInfoVO.setTypeMenu(typeMenu);
+        orderInfoVO.setTimeMenu(timeMenu);
+        orderInfoVO.setUserId(userId);
+        orderInfoVO.setPkgDays(pkgDays);
+        orderInfoVO.setLogisticsPrice(logisticsPrice);
         PkgMenu pkgMenu = this.findPkgMenu(typeMenu, timeMenu, pkgDays);
         if(pkgMenu!=null&&pkgMenu.getSalePrice()!=null){
-            orderInfo.setPkgSalePrice(pkgMenu.getSalePrice());
-            orderInfo.setTotalPrice(this.getTotalPrice(pkgMenu.getSalePrice(), logisticsPrice));
-            orderInfo.setStatus(Constants.ORDER_STATUS_PREPARE);
-            orderInfo.setPkgMenu(pkgMenu.getPkgMenu());
-            orderInfo.setLastPrice(orderInfo.getTotalPrice());
-        }else{
-            logger.info("生成订单失败");
-            orderInfo.setStatus(Constants.ORDER_STATUS_ERROR);
+            orderInfoVO.setPkgSalePrice(pkgMenu.getSalePrice());
+            orderInfoVO.setTotalPrice(this.getTotalPrice(pkgMenu.getSalePrice(), logisticsPrice));
+            orderInfoVO.setPkgMenu(pkgMenu.getPkgMenu());
+            orderInfoVO.setLastPrice(orderInfoVO.getTotalPrice());
         }
-        orderInfoDao.save(orderInfo);
-        BeanUtils.copyProperties(orderInfo, orderInfoVO);
         return orderInfoVO;
     }
 
     @Override
     @Transactional
-    public boolean checkOrderInfo(OrderInfoVO orderInfoVO) {
-        boolean boo = false;
-        OrderInfo orderInfo = orderInfoDao.findOne(orderInfoVO.getId());
-        if(orderInfo!=null){
-            orderInfo.setRemark(orderInfoVO.getRemark());
-            orderInfo.setCouponId(orderInfoVO.getCouponId());
-            orderInfo.setCouponPrice(orderInfoVO.getCouponPrice());
-            BigDecimal lastPrice = orderInfo.getLastPrice();
-            if(orderInfoVO.getCouponPrice()!=null){
-                if(lastPrice.compareTo(orderInfoVO.getCouponPrice())>0){
-                    lastPrice = lastPrice.subtract(orderInfoVO.getCouponPrice());
-                }else{
-                    lastPrice = new BigDecimal("0.00");
-                }
-                couponService.couponUse(orderInfoVO.getCouponId());
+    public OrderInfoVO createOrderInfo(OrderInfoVO orderInfoVO) {
+        OrderInfo orderInfo = null;
+        if(StringUtils.isEmpty(orderInfoVO.getId())){
+            orderInfo = new OrderInfo();
+            orderInfo.setTimeMenu(orderInfoVO.getTimeMenu());
+            orderInfo.setPkgDays(orderInfoVO.getPkgDays());
+            orderInfo.setUserId(orderInfoVO.getUserId());
+            orderInfo.setTypeMenu(orderInfoVO.getTypeMenu());
+            PkgMenu pkgMenu = this.findPkgMenu(orderInfoVO.getTypeMenu(), orderInfoVO.getTimeMenu(), orderInfoVO.getPkgDays());
+            if(pkgMenu!=null&&pkgMenu.getSalePrice()!=null){
+                orderInfo.setPkgSalePrice(pkgMenu.getSalePrice());
+                orderInfo.setTotalPrice(this.getTotalPrice(pkgMenu.getSalePrice(), logisticsPrice));
+                orderInfo.setPkgMenu(pkgMenu.getPkgMenu());
             }
-            orderInfo.setLastPrice(lastPrice);
-            orderInfo.setStatus(Constants.ORDER_STATUS_CHECK);
-            orderInfoDao.save(orderInfo);
+            orderInfo.setCreateTime(new Date());
+            orderInfo.setStatus(Constants.ORDER_STATUS_PREPARE);
+        }else{
+            orderInfo = orderInfoDao.findOne(orderInfoVO.getId());
         }
-        boo = true;
-        return boo;
+        orderInfo.setRemark(orderInfoVO.getRemark());
+        orderInfo.setCouponId(orderInfoVO.getCouponId());
+        orderInfo.setCouponPrice(orderInfoVO.getCouponPrice());
+        BigDecimal lastPrice = orderInfo.getTotalPrice();
+        if(orderInfoVO.getCouponPrice()!=null){
+            if(lastPrice.compareTo(orderInfoVO.getCouponPrice())>0){
+                lastPrice = lastPrice.subtract(orderInfoVO.getCouponPrice());
+            }else{
+                lastPrice = new BigDecimal("0.00");
+            }
+        }
+        orderInfo.setLastPrice(lastPrice);
+        orderInfoDao.save(orderInfo);
+        BeanUtils.copyProperties(orderInfo,orderInfoVO);
+        return orderInfoVO;
     }
 
     @Override
-    public boolean chargeOrderInfo(OrderInfoVO orderInfoVO) {
+    public boolean payOrderInfo(OrderInfoVO orderInfoVO) {
         boolean boo = false;
         OrderInfo orderInfo = orderInfoDao.findOne(orderInfoVO.getId());
         orderInfo.setPayTime(new Date());
@@ -97,6 +101,32 @@ public class OrderServiceImpl implements OrderService {
         orderInfoDao.save(orderInfo);
         boo = true;
         return boo;
+    }
+
+    @Override
+    @Transactional
+    public void paySuccess(String orderId) {
+        OrderInfo orderInfo = orderInfoDao.findOne(orderId);
+        if(orderInfo.getStatus()!=null
+                &&orderInfo.getStatus()!=Constants.ORDER_STATUS_PAYED_ARRIVAL){
+            orderInfo.setStatus(Constants.ORDER_STATUS_PAYED_ARRIVAL);
+            orderInfo.setArrivalTime(new Date());
+            orderInfoDao.save(orderInfo);
+            if(orderInfo.getCouponId()!=null){
+                couponService.couponUse(orderInfo.getCouponId());
+            }
+        }
+    }
+
+    @Override
+    public void payFail(String orderId) {
+        OrderInfo orderInfo = orderInfoDao.findOne(orderId);
+        if(orderInfo.getStatus()!=null
+                &&orderInfo.getStatus()!=Constants.ORDER_STATUS_PAYED_ARRIVAL){
+            orderInfo.setStatus(Constants.ORDER_STATUS_FAIL);
+            orderInfo.setArrivalTime(new Date());
+            orderInfoDao.save(orderInfo);
+        }
     }
 
     private PkgMenu findPkgMenu(String typeMenu,String timeMenu,int pkgDays){

@@ -17,7 +17,12 @@
 </head>
 <body class="g-ptom">
 <form action="${springMacroRequestContext.contextPath}/order/charge" method="post" id="confirm_form">
-    <input type="hidden" name="id" value="${orderInfoVO.id}">
+    <input type="hidden" name="id" id = "id" value="">
+    <input type="hidden" name="typeMenu"  value="${orderInfoVO.typeMenu}">
+    <input type="hidden" name="timeMenu"  value="${orderInfoVO.timeMenu}">
+    <input type="hidden" name="pkgDays"  value="${orderInfoVO.pkgDays}">
+    <input type="hidden" name="userId"  value="${orderInfoVO.userId}">
+    <input type="hidden" name="pkgMenu"  value="${orderInfoVO.pkgMenu}">
     <div class="g-qhd">
     <#-- <a href="#"><img src="${springMacroRequestContext.contextPath}/img/icon3.png" alt="">请选择收货地址</a>-->
         <div class="u-bd fcb">
@@ -70,7 +75,7 @@
     });
 
     $('.j-wid').tap(function(){
-        $.ajax({
+       $.ajax({
             type: 'GET',
             url: '${springMacroRequestContext.contextPath}/order/charge',
             timeout: 3000,
@@ -78,8 +83,10 @@
             success: function(response){
                 var config = response.config;
                 var pconfig = response.pconfig;
+                var orderInfoVO = response.orderInfoVO;
+                $('#id').val(orderInfoVO.id);
                 wx.config({
-                    debug : true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId : config.appId, // 必填，公众号的唯一标识
                     timestamp : config.timestamp, // 必填，生成签名的时间戳
                     nonceStr : config.nonce, // 必填，生成签名的随机串
@@ -97,8 +104,12 @@
                         signType : 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
                         paySign : pconfig.paySign, // 支付签名
                         success : function(res) {
-                            if(res.err_msg=='get_brand_wcpay_request:ok'){
-                                location.href = "${springMacroRequestContext.contextPath}/order/payment?id="+${orderInfoVO.id};
+                            if(res.errMsg=='chooseWXPay:ok'){
+                                location.href = "${springMacroRequestContext.contextPath}/order/payment?id="+orderInfoVO.id;
+                            }else if(res.errMsg=='chooseWXPay:cancel'){
+
+                            }else if(res.errMsg=='chooseWXPay:fail'){
+
                             }
                         }
                     });

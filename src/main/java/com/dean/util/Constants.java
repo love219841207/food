@@ -21,10 +21,8 @@ public class Constants {
 
 
     //订单预生成
-    public static final int ORDER_STATUS_PREPARE = 0;
+    public static final int ORDER_STATUS_PREPARE = 1;
 
-    //确认后申请微信支付，使用优惠券等，确认最后支付金额
-    public static final int ORDER_STATUS_CHECK = 1;
     //订单页面支付成功，未到账
     public static final int ORDER_STATUS_PAYED = 2;
 
@@ -45,5 +43,13 @@ public class Constants {
 
     //优惠券使用
     public static final int COUPON_STATUS_USED = 2;
+
+
+    //微信的生成的prepayid
+    public static final int ORDER_WECHAT_PAY_CREATE = 1;
+    //微信的支付成功后回调成功
+    public static final int ORDER_WECHAT_PAY_SUCCESS = 2;
+    //微信的支付成功后回调失败
+    public static final int ORDER_WECHAT_PAY_FAIL = 3;
 
 }

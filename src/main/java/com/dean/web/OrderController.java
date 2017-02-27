@@ -1,14 +1,12 @@
 package com.dean.web;
 
 import com.dean.service.*;
-import com.dean.util.BaseUtil;
 import com.dean.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,7 +38,7 @@ public class OrderController {
                           @RequestParam(value = "pkgDays") int pkgDays){
         logger.info("/create/{}/{}/{}", type, timeMenu, pkgDays);
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
-        OrderInfoVO orderInfoVO = orderService.createOrderInfo(type, timeMenu, userVO.getUserInfo().getId(), pkgDays);
+        OrderInfoVO orderInfoVO = orderService.initOrderInfo(type, timeMenu, userVO.getUserInfo().getId(), pkgDays);
         model.put("orderInfoVO", orderInfoVO);
         CouponVO couponVO = couponService.findByUserId(userVO.getUserInfo().getId());
         model.put("couponVO", couponVO);
@@ -49,7 +47,7 @@ public class OrderController {
 
     @RequestMapping(value="/payment")
     public String payment(HttpServletRequest request,OrderInfoVO orderInfoVO){
-        orderService.chargeOrderInfo(orderInfoVO);
+        orderService.payOrderInfo(orderInfoVO);
         return "forward:/fixed/index";
 
     }
@@ -57,9 +55,10 @@ public class OrderController {
     @RequestMapping("/charge")
     @ResponseBody
     public Map paymentAjax(HttpServletRequest request,OrderInfoVO orderInfoVO){
-        orderService.checkOrderInfo(orderInfoVO);
+        orderInfoVO = orderService.createOrderInfo(orderInfoVO);
         Map map  = new HashMap();
         WxConfig config = wechatService.createWxConfig(LOCALURL);
+        map.put("orderInfoVO", orderInfoVO);
         map.put("config", config);
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
         String openId = userVO.getWechatInfo().getOpenId();//session获取自己的openid

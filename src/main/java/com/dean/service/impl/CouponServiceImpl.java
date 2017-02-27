@@ -5,6 +5,8 @@ import com.dean.domain.Coupon;
 import com.dean.service.CouponService;
 import com.dean.service.CouponVO;
 import com.dean.util.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.List;
  */
 @Service
 public class CouponServiceImpl implements CouponService {
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private CouponDao couponDao;
     @Override
@@ -41,6 +44,9 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public void couponUse(Long couponId) {
         Coupon coupon = couponDao.findOne(couponId);
+        if(coupon.getStatus()==Constants.COUPON_STATUS_USED){
+            logger.error("优惠券已经使用，重复了[{}]", couponId);
+        }
         coupon.setUseTime(new Date());
         coupon.setStatus(Constants.COUPON_STATUS_USED);
         couponDao.save(coupon);

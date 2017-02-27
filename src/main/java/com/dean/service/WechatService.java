@@ -15,4 +15,6 @@ public interface WechatService {
     WxConfig createWxConfig(String url);
 
     PayConfig createPayConfig(String openId, String orderId, String attach, String body, String ip, int fee, WxConfig config);
+
+    void orderCallBack(String xml);
 }

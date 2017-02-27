@@ -46,7 +46,7 @@ public class XmlUtil {
         Map<String,String> map = new HashMap<String, String>();
         String name = "";
         String text = "";
-          logger.info("=====================WEIXIN PLACEORDER BODY START=============================");
+          logger.info("=====================XML BODY START=============================");
         for(int j=0;j<nodes.getLength();j++){
             name = nodes.item(j).getNodeName();
             text = nodes.item(j).getTextContent();
@@ -55,7 +55,7 @@ public class XmlUtil {
             }
             map.put(name, text);
         }
-          logger.info("===================WEIXIN PLACEORDER BODY END===============================");
+          logger.info("===================XML BODY END===============================");
         return map;
     }
 

@@ -1,7 +1,10 @@
 package com.dean.service.impl;
 
 import com.dean.config.WechatProperties;
+import com.dean.dao.OrderWechatPaymentDao;
 import com.dean.dao.WechatApiTokenDao;
+import com.dean.domain.OrderInfo;
+import com.dean.domain.OrderWechatPayment;
 import com.dean.domain.WechatApiToken;
 import com.dean.service.*;
 import com.dean.util.BaseUtil;
@@ -19,9 +22,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -36,6 +42,10 @@ public class WechatServiceImpl implements WechatService {
     private WechatProperties wechatProperties;
     @Autowired
     private WechatApiTokenDao wechatApiTokenDao;
+    @Autowired
+    private OrderWechatPaymentDao orderWechatPaymentDao;
+    @Autowired
+    private OrderService orderService;
     //获取openid
     private String URL_GET_OPENID = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
     //获取用户信息
@@ -196,7 +206,7 @@ public class WechatServiceImpl implements WechatService {
 
     private String getSignature(String noncestr,String timestamp,String url){
         String jsApiTicket = this.getJsApiTicket();
-        String signatureUrl = String.format(signatureFormat,jsApiTicket,noncestr,timestamp,url);
+        String signatureUrl = String.format(signatureFormat, jsApiTicket, noncestr, timestamp, url);
         return DigestUtils.shaHex(signatureUrl);
     }
 
@@ -234,9 +244,23 @@ public class WechatServiceImpl implements WechatService {
         return jsApiTicket;
     }
 
+    private void saveOrderWechatPayment(String openId,String outTrade,String orderId,String prepayId){
+        OrderWechatPayment orderWechatPayment = new OrderWechatPayment();
+        orderWechatPayment.setCreateTime(new Date());
+        orderWechatPayment.setOrderId(orderId);
+        orderWechatPayment.setOpenId(openId);
+        orderWechatPayment.setOutTrade(outTrade);
+        orderWechatPayment.setPrepayId(prepayId);
+        orderWechatPayment.setStatus(Constants.ORDER_WECHAT_PAY_CREATE);
+        orderWechatPaymentDao.save(orderWechatPayment);
+
+    }
+
     @Override
     public PayConfig createPayConfig(String openId,String orderId, String attach, String body, String ip, int fee, WxConfig config){
-        String prepayId = placeOrder(openId, orderId, attach, body, ip, fee, config.getNonce());
+        String outTrade = BaseUtil.create_nonce_str();
+        String prepayId = placeOrder(openId, outTrade, attach, body, ip, fee, config.getNonce());
+        this.saveOrderWechatPayment(openId,outTrade,orderId, prepayId);
         PayConfig pconfig = new PayConfig();
         pconfig.setPrepayId("prepay_id=" + prepayId);
         String paySign = DigestUtils.md5Hex(String.format(paysign_Temp, wechatProperties.getAppid(), config.getNonce(), pconfig.getPrepayId(), config.getTimestamp(), wechatProperties.getMchkey()));
@@ -244,10 +268,10 @@ public class WechatServiceImpl implements WechatService {
         return pconfig;
     }
 
-    public String placeOrder(String openId,String orderId,String attach,String body,String ip,int fee,String nonce){
+    public String placeOrder(String openId,String outTrade,String attach,String body,String ip,int fee,String nonce){
         String strTemp = "appid=%s&attach=%s&body=%s&mch_id=%s&nonce_str=%s&notify_url=%s&openid=%s&out_trade_no=%s&spbill_create_ip=%s&total_fee=%s&trade_type=%s&key=%s";
         String signpams = String.format(strTemp,wechatProperties.getAppid(),attach,body,wechatProperties.getMchid()
-                ,nonce,wechatProperties.getPayNotify(),openId,orderId,ip,fee,PAY_TYPE,wechatProperties.getMchkey());
+                ,nonce,wechatProperties.getPayNotify(),openId,outTrade,ip,fee,PAY_TYPE,wechatProperties.getMchkey());
         String sign = null;
         try {
             sign = DigestUtils.md5Hex(signpams.getBytes("UTF-8")).toUpperCase();
@@ -263,7 +287,7 @@ public class WechatServiceImpl implements WechatService {
         str.append("<nonce_str><![CDATA[").append(nonce).append("]]></nonce_str>");
         str.append("<notify_url><![CDATA[").append(wechatProperties.getPayNotify()).append("]]></notify_url>");
         str.append("<openid><![CDATA[").append(openId).append("]]></openid>");
-        str.append("<out_trade_no><![CDATA[").append(orderId).append("]]></out_trade_no>");
+        str.append("<out_trade_no><![CDATA[").append(outTrade).append("]]></out_trade_no>");
         str.append("<spbill_create_ip><![CDATA[").append(ip).append("]]></spbill_create_ip>");
         str.append("<total_fee><![CDATA[").append(fee).append("]]></total_fee>");
         str.append("<trade_type><![CDATA[").append(PAY_TYPE).append("]]></trade_type>");
@@ -286,6 +310,39 @@ public class WechatServiceImpl implements WechatService {
         }
         logger.info("微信统一下单prepay_id为[{}]"+prepayId);
         return prepayId;
+    }
 
+    @Override
+    @Transactional
+    public void orderCallBack(String xml){
+        Map<String,String> map = XmlUtil.resolve(xml);
+        String returnCode = map.get("return_code");
+        String resultCode = map.get("result_code");
+        String outTradeNo = map.get("out_trade_no");
+        String openId = map.get("openid");
+        if(!StringUtils.isEmpty(outTradeNo)){
+            List<OrderWechatPayment> orderWechatPayments = orderWechatPaymentDao.findByOutTradeAndOpenId(outTradeNo, openId);
+            OrderWechatPayment orderWechatPayment = null;
+            if(orderWechatPayments.size()>0){
+                orderWechatPayment = orderWechatPayments.get(0);
+                if (!StringUtils.isEmpty(returnCode)
+                        &&returnCode.equals("SUCCESS")
+                        &&!StringUtils.isEmpty(resultCode)
+                        &&resultCode.equals("SUCCESS")){
+                    logger.info("支付回调成功，parmeter[{},{}]",openId,outTradeNo);
+                    orderWechatPayment.setStatus(Constants.ORDER_WECHAT_PAY_SUCCESS);
+                    orderService.paySuccess(orderWechatPayment.getOrderId());
+                }else{
+                    orderWechatPayment.setStatus(Constants.ORDER_WECHAT_PAY_FAIL);
+                    orderService.payFail(orderWechatPayment.getOrderId());
+                }
+                orderWechatPayment.setCallbackTime(new Date());
+                orderWechatPayment.setMsg(xml);
+            }else{
+                logger.info("支付回调对应不到订单id，parmeter[{},{},{}]",openId,outTradeNo,xml);
+            }
+        }else{
+            logger.info("支付回调异常无outTradeNo[{},{},{}]",openId,outTradeNo,xml);
+        }
     }
 }
