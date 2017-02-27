@@ -170,7 +170,7 @@ public class MenuServiceImpl implements MenuService {
             menuInfoVO.setScheduleDay(smi.getScheduleDay());
             menuInfoVO.setStapleFood(smi.getStapleFood());
             menuInfoVO.setImgs(smi.getImgPaths());
-            menuInfoVO.setPkgMenuVOs(this.findPkgMenuVO(typeMenu,smi.getTimeMenu()));
+            menuInfoVO.setPkgMenuVOs(this.findPkgMenuVO(typeMenu, smi.getTimeMenu()));
             menus.add(menuInfoVO);
         }
         return menus;
@@ -197,13 +197,24 @@ public class MenuServiceImpl implements MenuService {
     @Transactional
     private void updateDateFromExcel(List<ScheduleMenuInfo> scheduleMenuInfos,List<PkgMenu> pkgMenus,List<AddressInfo> addressInfos){
         logger.info("跟新排餐、套餐配置属性、地址进入数据库,start...");
-        scheduleMenuInfoDao.deleteAll();
-        scheduleMenuInfoDao.save(scheduleMenuInfos);
+        impScheduleMenu(scheduleMenuInfos);
         pkgMenuDao.deleteAll();
         pkgMenuDao.save(pkgMenus);
         addressInfoDao.deleteAll();
         addressInfoDao.save(addressInfos);
         logger.info("跟新排餐、套餐配置属性、地址进入数据库,...");
+    }
+
+    @Transactional
+    private void impScheduleMenu(List<ScheduleMenuInfo> scheduleMenuInfos){
+        List<ScheduleMenuInfo> ls = null;
+        for(ScheduleMenuInfo s : scheduleMenuInfos){
+            ls = scheduleMenuInfoDao.findByScheduleDayAndTimeMenuAndTypeMenuOrderByTimeMenu(s.getScheduleDay(),s.getTimeMenu(),s.getTypeMenu());
+            if(ls.size()>0){
+                s.setId(ls.get(0).getId());
+            }
+        }
+        scheduleMenuInfoDao.save(scheduleMenuInfos);
     }
 
     private String getTypeMenuVal(String name,List<TypeMenuVO> typeMenus){
