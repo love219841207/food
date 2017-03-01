@@ -71,7 +71,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void initMenuFromExcel() throws IOException, InvalidFormatException {
         List<ArrayList<ArrayList<String>>> excelInfo = this.ReadMenuFormExcel();
-        if(excelInfo.size()!=3){
+        if(excelInfo.size()!=2){
             logger.info("解析menuexcel异常,sheet数量不对");
         }else{
             List<TypeMenuVO> typeMenus = this.findTypeMenu();
@@ -133,7 +133,7 @@ public class MenuServiceImpl implements MenuService {
                 pkgMenus.add(pkgMenu);
             }
 
-            List<AddressInfo> addressInfos = new ArrayList<AddressInfo>();
+           /* List<AddressInfo> addressInfos = new ArrayList<AddressInfo>();
             AddressInfo addressInfo = null;
             ArrayList<ArrayList<String>> addressexcels = excelInfo.get(2);
             for (ArrayList<String> al : addressexcels){
@@ -142,9 +142,9 @@ public class MenuServiceImpl implements MenuService {
                     addressInfo.setAddress(al.get(0));
                 }
                 addressInfos.add(addressInfo);
-            }
+            }*/
 
-            this.updateDateFromExcel(scheduleMenuInfos,pkgMenus,addressInfos);
+            this.updateDateFromExcel(scheduleMenuInfos,pkgMenus);
         }
 
     }
@@ -195,14 +195,14 @@ public class MenuServiceImpl implements MenuService {
 
 
     @Transactional
-    private void updateDateFromExcel(List<ScheduleMenuInfo> scheduleMenuInfos,List<PkgMenu> pkgMenus,List<AddressInfo> addressInfos){
-        logger.info("跟新排餐、套餐配置属性、地址进入数据库,start...");
+    private void updateDateFromExcel(List<ScheduleMenuInfo> scheduleMenuInfos,List<PkgMenu> pkgMenus){
+        logger.info("跟新排餐、套餐配置属性,start...");
         impScheduleMenu(scheduleMenuInfos);
         pkgMenuDao.deleteAll();
         pkgMenuDao.save(pkgMenus);
-        addressInfoDao.deleteAll();
-        addressInfoDao.save(addressInfos);
-        logger.info("跟新排餐、套餐配置属性、地址进入数据库,...");
+        /*addressInfoDao.deleteAll();
+        addressInfoDao.save(addressInfos);*/
+        logger.info("跟新排餐、套餐配置属性,...");
     }
 
     @Transactional

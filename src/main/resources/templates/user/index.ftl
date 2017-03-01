@@ -27,8 +27,7 @@
 
     <div class="con">
         <a href="#"> <img src="${springMacroRequestContext.contextPath}/img/icon2.png" alt="">全部订单1</a>
-
-       <#-- <a href="#"> <img src="/food/img/icon3.png" alt="">配送地址</a>-->
+        <a href="${springMacroRequestContext.contextPath}/delivery/edit"> <img src="${springMacroRequestContext.contextPath}/img/icon3.png" alt="">配送地址</a>
         <a href="#"> <img src="${springMacroRequestContext.contextPath}/img/icon4.png" alt="">团体预定</a>
         <a href="#"> <img src="${springMacroRequestContext.contextPath}/img/icon5.png" alt="">剩余套餐</a>
     </div>

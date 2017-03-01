@@ -583,3 +583,133 @@ button.gray {
     font-size: 14px;
     margin: 0 0 0 10px;
 }
+
+.adr-box {
+    margin: 10px 0 0;
+    border-top: 1px solid #E6E6E6;
+}
+
+.adr-box .notice {
+    padding: 0 20px;
+    text-align: left;
+}
+
+.adr-box .form-list p {
+    font-size: 12px;
+}
+
+.adr {
+    /*background: url(../images/icon/arrow.png) no-repeat right 50%, url(../images/icon/select.png) no-repeat 20px 50% #fff;*/
+    background-size: 18px 18px;
+    padding: 15px 50px 15px 30px;
+    border-bottom: 1px solid #E6E6E6;
+    text-align: left;
+    font-weight: bold;
+    font-size: 14px;
+    background-color: #fff;
+    position: relative;
+}
+
+.adr .select {
+    background: url(../img/select.png) no-repeat center center;
+    background-size: 16px 16px;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: 30px;
+    height: 100%;
+}
+
+.adr.actived .select {
+    background: url(../img/select-on.png) no-repeat center center;
+    background-size: 16px 16px;
+}
+
+.adr .control {
+    background: url(../img/edit.png) no-repeat center center;
+    background-size: 16px 16px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    width: 30px;
+    height: 100%;
+}
+
+.adr-box select {
+    width: 100%;
+}
+
+.adr p {
+    display: block;
+    line-height: 20px;
+    color: #918FA0;
+    margin: 4px 0 0;
+}
+
+.adr span {
+    margin: 0 0 0 15px;
+}
+
+.adr-empty {
+    padding: 15px 50px 15px 50px;
+    border-bottom: 1px solid #E6E6E6;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    background-color: #fff;
+}
+
+.adr-box .search {
+    position: relative;
+}
+
+.adr-box .search-box {
+    border: 1px solid #ddd;
+    max-height: 250px;
+    background-color: #fff;
+    overflow: scroll;
+}
+
+.adr-box .search-box li {
+    font-size: 12px;
+    line-height: 14px;
+    padding: 8px 14px;
+}
+
+.adr-box .search-box li+li {
+    border-top: 1px solid #ddd;
+}
+
+.adr-box .search-box li p.title {
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.adr-box .adr-select-box {
+    background-color: #fff;
+    border-bottom: 1px solid #E6E6E6;
+    padding: 10px 20px;
+    text-align: left;
+}
+
+.adr-box .adr-select-box .title {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #999;
+}
+
+.adr-box .select-cell {
+    display: inline-block;
+    width: 80px;
+    margin-right: 5px;
+    outline: none;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 2px;
+    margin-top: -2px;
+    padding: 0 5px;
+    font-size: 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid #ddd;
+}
