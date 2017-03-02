@@ -10,12 +10,17 @@
     <meta name="description" id="description" content="YOTA 美食" />
     <link href="${springMacroRequestContext.contextPath}/css/user.css" rel="stylesheet" type="text/css">
     <script src="${springMacroRequestContext.contextPath}/js/zepto.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 </head>
 <body>
 <div class="adr-box">
 
         <#list list as deliver>
         <div class="adr" >
+            <#if (deliver.dft)??>
+                <div class="select"></div>
+            </#if>
+
             <div class="body j-sel">
                 ${deliver.name}<span>${deliver.phone}</span>
                 <p>${deliver.addressName} -> ${deliver.addressExtend}</p>
@@ -28,6 +33,9 @@
     <a href="javascript:void(0)" ><button class="btm-w80 j-btn">添加配送地址</button> </a>
 </div>
 <script language="JavaScript">
+    $(function() {
+        FastClick.attach(document.body);
+    });
     $(function(){
         $('.j-btn').tap(function(){
             location.href="${springMacroRequestContext.contextPath}/delivery/edit";

@@ -1,6 +1,9 @@
 package com.dean.web;
 
-import com.dean.service.*;
+import com.dean.service.AddressInfoService;
+import com.dean.service.DeliveryAddressService;
+import com.dean.service.DeliveryAddressVO;
+import com.dean.service.UserVO;
 import com.dean.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +46,12 @@ public class DeliveryAddressController {
         return "delivery/edit";
     }
 
+    @RequestMapping("/del")
+    public String del(@RequestParam(value = "id",required = false) Long id){
+        deliveryAddressService.delete(id);
+        return "forward:/delivery/list";
+    }
+
 
     @RequestMapping("/listAddress")
     @ResponseBody
@@ -59,9 +68,9 @@ public class DeliveryAddressController {
     }
 
     @RequestMapping("/list")
-    public String list(@RequestParam(value = "userId",required = true) Long userId
-                                    ,ModelMap model){
-        List<DeliveryAddressVO> list =  deliveryAddressService.findByUserId(userId);
+    public String list(ModelMap model ,HttpServletRequest request){
+        UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        List<DeliveryAddressVO> list =  deliveryAddressService.findByUserId(userVO.getUserInfo().getId());
         model.put("list",list);
         return "delivery/list";
     }

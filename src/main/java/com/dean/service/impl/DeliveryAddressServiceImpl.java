@@ -11,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,8 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserDeliveryAddressDao userDeliveryAddressDao;
+    @Autowired
+    private AddressInfoDao addressInfoDao;
 
     @Override
     public List<DeliveryAddressVO> findByUserId(Long userId) {
@@ -50,6 +54,7 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     }
 
     @Override
+    @Transactional
     public void save(DeliveryAddressVO deliveryAddressVO){
         UserDeliveryAddress deliveryAddress = null;
         if(deliveryAddressVO.getId()!=null){
@@ -60,15 +65,23 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
         }
         deliveryAddress.setName(deliveryAddressVO.getName());
         deliveryAddress.setPhone(deliveryAddressVO.getPhone());
+        if( StringUtils.isEmpty(deliveryAddress.getDft())
+                &&!StringUtils.isEmpty(deliveryAddressVO.getDft())){
+            deliveryAddress.setDft(deliveryAddressVO.getDft());
+            if(deliveryAddress.getId()!=null){
+                userDeliveryAddressDao.batchUpdateExId(deliveryAddress.getUserId(),deliveryAddress.getId());
+            }else{
+                userDeliveryAddressDao.batchUpdate(deliveryAddress.getUserId());
+            }
+        }
         deliveryAddress.setAddressExtend(deliveryAddressVO.getAddressExtend());
-        AddressInfo addressInfo = new AddressInfo();
-        addressInfo.setId(deliveryAddressVO.getAddressId());
+        AddressInfo addressInfo = addressInfoDao.findOne(deliveryAddressVO.getAddressId());
         deliveryAddress.setAddress(addressInfo);
         userDeliveryAddressDao.save(deliveryAddress);
     }
 
     @Override
     public void delete(Long id) {
-
+        userDeliveryAddressDao.delete(id);
     }
 }

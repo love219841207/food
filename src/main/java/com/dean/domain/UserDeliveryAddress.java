@@ -13,12 +13,21 @@ public class UserDeliveryAddress {
     private Long id;
     private Long userId;
     private String phone;
+    private String dft;
    /* private Long addressId;*/
     private String name;
     private String addressExtend;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name="address_id")
     private AddressInfo address;
+
+    public String getDft() {
+        return dft;
+    }
+
+    public void setDft(String dft) {
+        this.dft = dft;
+    }
 
     public String getName() {
         return name;

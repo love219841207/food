@@ -11,6 +11,15 @@ public class DeliveryAddressVO {
     private String addressName;
     private String addressExtend;
     private String name;
+    private String dft;
+
+    public String getDft() {
+        return dft;
+    }
+
+    public void setDft(String dft) {
+        this.dft = dft;
+    }
 
     public String getName() {
         return name;

@@ -601,7 +601,7 @@ button.gray {
 .adr {
     /*background: url(../images/icon/arrow.png) no-repeat right 50%, url(../images/icon/select.png) no-repeat 20px 50% #fff;*/
     background-size: 18px 18px;
-    padding: 15px 50px 15px 30px;
+    padding: 15px 50px 15px 50px;
     border-bottom: 1px solid #E6E6E6;
     text-align: left;
     font-weight: bold;
@@ -611,7 +611,7 @@ button.gray {
 }
 
 .adr .select {
-    background: url(../img/select.png) no-repeat center center;
+    background: url(../img/select-on.png) no-repeat center center;
     background-size: 16px 16px;
     position: absolute;
     top: 0;

@@ -18,27 +18,32 @@
 
 <div class="adr-box">
     <form action="${springMacroRequestContext.contextPath}/delivery/save" method="post" id="confirm_form">
-        <input type="hidden" name="id" value="${deliveryAddressVO.id!''}">
-        <input type="hidden" name="userId" value="${deliveryAddressVO.userId!''}">
-        <input type="hidden" name="addressId" value="${deliveryAddressVO.addressId!''}">
-        <div class="form-list">
-                <input type="text" id='picker' name="picker" placeholder="选择地址" value="${deliveryAddressVO.addressName!''}" data-values="${deliveryAddressVO.addressId!''}"/>
-        </div>
-        <div class="form-list">
-            <input type="text" name="addressExtend" id="addressExtend" placeholder="详情地址" value="${deliveryAddressVO.addressExtend!''}"/>
-        </div>
-        <div class="form-list">
-            <input type="text"  name="name" id="name" placeholder="联系人" value="${deliveryAddressVO.name!''}"    />
-        </div>
-        <div class="form-list">
-            <input type="number" name="phone" id="phone" placeholder="联系电话" value="${deliveryAddressVO.phone!''}"/>
-        </div>
-        <button class="btm-w80 button-click j-save">保存修改</button>
-        <button class="btm-w80 button-click j-dft">设置默认地址</button>
-        <button class="btm-w80 gray button-click j-del">删除</button>
+        <input type="hidden" name="id" id="id" value="${deliveryAddressVO.id!''}">
+        <input type="hidden" name="dft" id="dft" value="${deliveryAddressVO.dft!''}">
+    <input type="hidden" name="userId" value="${deliveryAddressVO.userId!''}">
+    <input type="hidden" name="addressId" id="addressId" value="${deliveryAddressVO.addressId!''}">
+    <div class="form-list">
+        <input type="text" id='picker' name="picker" placeholder="选择地址" value="${deliveryAddressVO.addressName!''}" data-values="${deliveryAddressVO.addressId!''}"/>
+    </div>
+    <div class="form-list">
+        <input type="text" name="addressExtend" id="addressExtend" placeholder="详情地址" maxlength="20" value="${deliveryAddressVO.addressExtend!''}"/>
+    </div>
+    <div class="form-list">
+        <input type="text"  name="name" id="name" placeholder="联系人" maxlength="10" value="${deliveryAddressVO.name!''}"    />
+    </div>
+    <div class="form-list">
+        <input type="tel" name="phone" id="phone" placeholder="联系电话" value="${deliveryAddressVO.phone!''}"/>
+    </div>
     </form>
+    <button class="btm-w80 j-save">保存修改</button>
+    <button class="btm-w80 j-dft">设置默认地址</button>
+    <button class="btm-w80 gray j-del">删除</button>
+
 </div>
 <script language="JavaScript">
+    $(function() {
+        FastClick.attach(document.body);
+    });
     $.ajax({
         type: 'GET',
         url: '${springMacroRequestContext.contextPath}/delivery/listAddress/',
@@ -57,18 +62,39 @@
 
 
     $('.j-del').click(function(){
-
+        var _id = $('#id').val();
+        location.href="${springMacroRequestContext.contextPath}/delivery/del?id="+_id;
     });
 
     $('.j-save').click(function(){
-        $('#addressId').val($('#picker').attr('data-values'));
-        $('#confirm_form').submit();
+        dosave();
     });
 
     $('.j-dft').click(function(){
+        $('#dft').val('1');
+        dosave();
+    });
 
-    })
-
+    function dosave(){
+        $('#addressId').val($('#picker').attr('data-values'));
+        if($('#picker').attr('data-values')==''){
+            $.alert("请选择地址!");
+            return false;
+        }
+        if($('#addressExtend').val()==''){
+            $.alert("请输入详细地址!");
+            return false;
+        }
+        if($('#name').val()==''){
+            $.alert("请输入联系人!");
+            return false;
+        }
+        if($('#phone').val().length!=11){
+            $.alert("请输入11位联系电话!");
+            return false;
+        }
+        $('#confirm_form').submit();
+    }
 </script>
 </body>
 

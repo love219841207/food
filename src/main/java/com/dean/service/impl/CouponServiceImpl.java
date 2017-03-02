@@ -34,6 +34,12 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    public Integer findCountByUserId(Long userId) {
+        List<Coupon> list = couponDao.findByUserIdAndStatus(userId, Constants.COUPON_STATUS_VALID);
+        return list.size();
+    }
+
+    @Override
     public CouponVO getById(Long id) {
         Coupon coupon = couponDao.findOne(id);
         CouponVO couponVO = new CouponVO();

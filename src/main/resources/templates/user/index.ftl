@@ -22,13 +22,13 @@
 
     <div class="center">
         <h2>我的钱包</h2>
-        <p><b>1</b>张 <em>抵用券</em></p>
+        <p><b>${couponCount}</b>张 <em>抵用券</em></p>
     </div>
 
     <div class="con">
-        <a href="#"> <img src="${springMacroRequestContext.contextPath}/img/icon2.png" alt="">全部订单1</a>
-        <a href="${springMacroRequestContext.contextPath}/delivery/edit"> <img src="${springMacroRequestContext.contextPath}/img/icon3.png" alt="">配送地址</a>
-        <a href="#"> <img src="${springMacroRequestContext.contextPath}/img/icon4.png" alt="">团体预定</a>
+        <a href="${springMacroRequestContext.contextPath}/order/list"> <img src="${springMacroRequestContext.contextPath}/img/icon2.png" alt="">全部订单</a>
+        <a href="${springMacroRequestContext.contextPath}/delivery/list"> <img src="${springMacroRequestContext.contextPath}/img/icon3.png" alt="">配送地址</a>
+        <a href="${springMacroRequestContext.contextPath}/book/group"> <img src="${springMacroRequestContext.contextPath}/img/icon4.png" alt="">团体预定</a>
         <a href="#"> <img src="${springMacroRequestContext.contextPath}/img/icon5.png" alt="">剩余套餐</a>
     </div>
 </div>

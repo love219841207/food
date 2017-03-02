@@ -6,6 +6,8 @@ package com.dean.service;
 public interface CouponService {
     CouponVO findByUserId(Long userId);
 
+    Integer findCountByUserId(Long userId);
+
     CouponVO getById(Long id);
 
     boolean couponUse(Long couponId);

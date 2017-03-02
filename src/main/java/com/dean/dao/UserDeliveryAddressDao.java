@@ -1,6 +1,8 @@
 package com.dean.dao;
 
 import com.dean.domain.UserDeliveryAddress;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -10,4 +12,12 @@ import java.util.List;
  */
 public interface UserDeliveryAddressDao extends CrudRepository<UserDeliveryAddress,Long>{
     List<UserDeliveryAddress> findByUserId(Long id);
+
+    @Modifying
+    @Query("update UserDeliveryAddress r set r.dft=null where r.userId= ?1")
+    void batchUpdate(Long userId);
+
+    @Modifying
+    @Query("update UserDeliveryAddress r set r.dft=null where r.userId= ?1 and r.id !=?2")
+    void batchUpdateExId(Long userId, Long id);
 }
