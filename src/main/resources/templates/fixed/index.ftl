@@ -14,7 +14,13 @@
     <script src="${springMacroRequestContext.contextPath}/js/zepto.min.js"></script>
 </head>
 <body class="g-padtom">
-
+<div class="g-qhd">
+    <a href="${springMacroRequestContext.contextPath}/delivery/list?choose=1"><img src="${springMacroRequestContext.contextPath}/img/icon3.png" alt="">
+        <#if deliveryAddressVO??>
+            姓名:${deliveryAddressVO.name} 手机号码:${deliveryAddressVO.phone}
+        </#if>
+      </a>
+</div>
 <div class="g-rhd">
     <span>未排餐：午餐0餐</span>
     <span>已排餐：午餐30餐</span>

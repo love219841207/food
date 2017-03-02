@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,7 +43,7 @@ public class DeliveryAddressController {
             deliveryAddressVO = new DeliveryAddressVO();
             deliveryAddressVO.setUserId(userVO.getUserInfo().getId());
         }
-        model.put("deliveryAddressVO",deliveryAddressVO);
+        model.put("deliveryAddressVO", deliveryAddressVO);
         return "delivery/edit";
     }
 
@@ -68,10 +69,12 @@ public class DeliveryAddressController {
     }
 
     @RequestMapping("/list")
-    public String list(ModelMap model ,HttpServletRequest request){
+    public String list(ModelMap model ,HttpServletRequest request,@RequestParam(value = "choose",required = false) String choose){
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
         List<DeliveryAddressVO> list =  deliveryAddressService.findByUserId(userVO.getUserInfo().getId());
-        model.put("list",list);
+        model.put("list", list);
+        model.put("isChoose", !StringUtils.isEmpty(choose));
         return "delivery/list";
     }
+
 }

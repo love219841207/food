@@ -84,4 +84,24 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     public void delete(Long id) {
         userDeliveryAddressDao.delete(id);
     }
+
+    @Override
+    public DeliveryAddressVO getPlanDeliveryAddressVO(Long id,Long userId) {
+        UserDeliveryAddress deliveryAddress = null;
+        DeliveryAddressVO deliveryAddressVO = null;
+        List<UserDeliveryAddress> list = null;
+        if(id!=null){
+            list = userDeliveryAddressDao.findByUserIdAndId(userId,id);
+        }else{
+            list= userDeliveryAddressDao.findDefault(userId);
+        }
+        if(list.size()>0){
+            deliveryAddress = list.get(0);
+            deliveryAddressVO = new DeliveryAddressVO();
+            BeanUtils.copyProperties(deliveryAddress, deliveryAddressVO);
+            deliveryAddressVO.setAddressName(deliveryAddress.getAddress().getAddress());
+            deliveryAddressVO.setAddressId(deliveryAddress.getAddress().getId());
+        }
+        return deliveryAddressVO;
+    }
 }

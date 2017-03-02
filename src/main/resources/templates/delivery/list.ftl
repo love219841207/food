@@ -21,10 +21,16 @@
                 <div class="select"></div>
             </#if>
 
+        <#if isChoose==true>
+            <a href="${springMacroRequestContext.contextPath}/fixed/index?deliveryId=${deliver.id}">
+        </#if>
             <div class="body j-sel">
                 ${deliver.name}<span>${deliver.phone}</span>
                 <p>${deliver.addressName} -> ${deliver.addressExtend}</p>
             </div>
+        <#if isChoose==true>
+            </a>
+            </#if>
             <div class="control j-edit" v="${deliver.id}"></div>
         </div>
         </#list>

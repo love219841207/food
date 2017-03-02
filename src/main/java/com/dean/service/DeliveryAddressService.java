@@ -13,4 +13,6 @@ public interface DeliveryAddressService {
     void save(DeliveryAddressVO deliveryAddressVO);
 
     void delete(Long id);
+
+    DeliveryAddressVO getPlanDeliveryAddressVO(Long id, Long userId);
 }
