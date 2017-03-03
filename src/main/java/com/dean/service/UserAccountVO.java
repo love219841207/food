@@ -1,21 +1,12 @@
-package com.dean.domain;
+package com.dean.service;
 
 /**
- * Created by dongxu on 2017/2/28.
+ * Created by dongxu on 2017/3/3.
  */
-public class UserAccout {
-    private Long id;
+public class UserAccountVO {
     private Long userId;
     private int noonSurplus;
     private int nightSurplus;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getUserId() {
         return userId;

@@ -19,4 +19,6 @@ public interface OrderService {
 
     List<OrderInfoVO> getList(Long userId);
 
+    OrderInfoVO findById(String orderId);
+
 }

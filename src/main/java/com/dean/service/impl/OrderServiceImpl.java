@@ -7,6 +7,7 @@ import com.dean.domain.PkgMenu;
 import com.dean.service.CouponService;
 import com.dean.service.OrderInfoVO;
 import com.dean.service.OrderService;
+import com.dean.service.UserAccountDetailService;
 import com.dean.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,8 @@ public class OrderServiceImpl implements OrderService {
     private CouponService couponService;
     @Autowired
     private PkgMenuDao pkgMenuDao;
+    @Autowired
+    private UserAccountDetailService userAccountDetailService;
 
     //配送费默认不需要
     private BigDecimal logisticsPrice = null;
@@ -102,6 +105,9 @@ public class OrderServiceImpl implements OrderService {
         }else{
             orderInfoDao.save(orderInfo);
             BeanUtils.copyProperties(orderInfo, orderInfoVO);
+            if(orderInfo.getStatus()==Constants.ORDER_STATUS_NOT_PAY){
+                userAccountDetailService.orderAdd(orderInfoVO);
+            }
         }
         return orderInfoVO;
     }
@@ -130,6 +136,9 @@ public class OrderServiceImpl implements OrderService {
             orderInfo.setStatus(Constants.ORDER_STATUS_PAYED_ARRIVAL);
             orderInfo.setArrivalTime(new Date());
             orderInfoDao.save(orderInfo);
+            OrderInfoVO orderInfoVO = new OrderInfoVO();
+            BeanUtils.copyProperties(orderInfo,orderInfoVO);
+            userAccountDetailService.orderAdd(orderInfoVO);
             if(orderInfo.getCouponId()!=null){
                 couponService.couponUse(orderInfo.getCouponId());
             }
@@ -158,6 +167,17 @@ public class OrderServiceImpl implements OrderService {
             orderInfoVOs.add(orderInfoVO);
         }
         return orderInfoVOs;
+    }
+
+    @Override
+    public OrderInfoVO findById(String orderId) {
+        OrderInfo orderInfo =  orderInfoDao.findOne(orderId);
+        OrderInfoVO orderInfoVO =null;
+        if(orderInfo!=null){
+            orderInfoVO = new OrderInfoVO();
+            BeanUtils.copyProperties(orderInfo,orderInfoVO);
+        }
+        return orderInfoVO;
     }
 
     private PkgMenu findPkgMenu(String typeMenu,String timeMenu,int pkgDays){

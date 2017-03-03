@@ -55,4 +55,8 @@ public class Constants {
     //微信的支付成功后回调失败
     public static final int ORDER_WECHAT_PAY_FAIL = 3;
 
+
+    //购买增加套餐份数
+    public static final int USER_ACCOUNT_ORDER_ADD=1;
+
 }
