@@ -1,9 +1,6 @@
 package com.dean.web;
 
-import com.dean.service.DeliveryAddressService;
-import com.dean.service.DeliveryAddressVO;
-import com.dean.service.UserAccountDetailService;
-import com.dean.service.UserVO;
+import com.dean.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by dongxu on 2017/2/9.
@@ -29,9 +27,12 @@ public class FixedController {
     public String fixed(ModelMap model ,HttpServletRequest request,@RequestParam(value = "deliveryId",required = false) Long deliveryId){
         logger.info("/fixed/index");
         UserVO userVO = (UserVO)request.getSession().getAttribute("userVO");
-        DeliveryAddressVO deliveryAddressVO = deliveryAddressService.getPlanDeliveryAddressVO(deliveryId,userVO.getUserInfo().getId());
-        model.put("deliveryAddressVO",deliveryAddressVO);
-        userAccountDetailService.findByUserId(userVO.getUserInfo().getId());
+        DeliveryAddressVO deliveryAddressVO = deliveryAddressService.getPlanDeliveryAddressVO(deliveryId, userVO.getUserInfo().getId());
+        model.put("deliveryAddressVO", deliveryAddressVO);
+        List<AccountSurplusVO> surplusList =  userAccountDetailService.findSurplus(userVO.getUserInfo().getId());
+        List<AccountFixedVO> fixedList = userAccountDetailService.findFixed(userVO.getUserInfo().getId());
+        model.put("surplusList",surplusList);
+        model.put("fixedList",fixedList);
         return "fixed/index";
     }
 }

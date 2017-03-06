@@ -1,20 +1,24 @@
 package com.dean.service;
 
+import com.dean.util.Constants;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by dongxu on 2017/2/14.
  */
 public interface MenuService {
-    public List<TypeMenuVO> findTypeMenu();
+    List<TypeMenuVO> findTypeMenu();
 
-    public List<TimeMenuVO> findTimeMenu();
+    List<TimeMenuVO> findTimeMenu();
 
-    public void initMenuFromExcel() throws IOException, InvalidFormatException;
+    void initMenuFromExcel() throws IOException, InvalidFormatException;
 
-    public List<MenuInfoVO> findMenuDetail(String day,String typeMenu);
+    List<MenuInfoVO> findMenuDetail(String day, String typeMenu);
+
+    List<Date> findFixDate(int nextOffset);
 
 }

@@ -56,80 +56,83 @@
 </form>
 <script>
 
-    $('.j-selt').tap(function(){
-        $(this).toggleClass('on');
-        if($(this).hasClass('on')){
-            $('.j-con .frt').text('-'+$(this).attr('v')+'￥');
-            var _lastPrice = $('.u-col .frt').attr('v');
-            var _couPrice = $(this).attr('v');
-            (_lastPrice>_couPrice)?_lastPrice=_lastPrice-_couPrice : _lastPrice='0.00';
-            $('.u-col .frt').text(Number(_lastPrice).toFixed(2) +'￥');
-            $('#couponId').val($(this).attr('couponId'));
-            $('#couponPrice').val($(this).attr('v'));
-        }else{
-            $('.j-con .frt').text('0.00￥');
-            $('.u-col .frt').text($('.u-col .frt').attr('v')+'￥');
-            $('#couponId').val('');
-            $('#couponPrice').val('');
-        }
-    });
-
-    $('.j-wid').tap(function(){
-       $.ajax({
-            type: 'GET',
-            url: '${springMacroRequestContext.contextPath}/order/charge',
-            timeout: 3000,
-            data:$('#confirm_form').serialize(),
-            success: function(response){
-                var config = response.config;
-                var pconfig = response.pconfig;
-                var not_pay = response.not_pay;
-                var error_msg = response.error_msg;
-                if(error_msg!=undefined &&error_msg!=''){
-                    alert(error_msg);
-                    location.reload();
-                }
-                if(not_pay!=undefined&&not_pay){
-                    location.href = "${springMacroRequestContext.contextPath}/order/list";
-                }
-                var orderInfoVO = response.orderInfoVO;
-                $('#id').val(orderInfoVO.id);
-                wx.config({
-                    debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                    appId : config.appId, // 必填，公众号的唯一标识
-                    timestamp : config.timestamp, // 必填，生成签名的时间戳
-                    nonceStr : config.nonce, // 必填，生成签名的随机串
-                    signature :config.signature,// 必填，签名，见附录1
-                    jsApiList : [ 'chooseWXPay' ]// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-                });
-
-                wx.ready(function() {
-
-                    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-                    wx.chooseWXPay({
-                        timestamp : config.timestamp, //时间戳
-                        nonceStr : config.nonce, //随机串
-                        'package' : pconfig.prepayId, //扩展包
-                        signType : 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                        paySign : pconfig.paySign, // 支付签名
-                        success : function(res) {
-                            if(res.errMsg=='chooseWXPay:ok'){
-                                location.href = "${springMacroRequestContext.contextPath}/order/payment?id="+orderInfoVO.id;
-                            }else if(res.errMsg=='chooseWXPay:cancel'){
-
-                            }else if(res.errMsg=='chooseWXPay:fail'){
-
-                            }
-                        }
-                    });
-                });
-            },
-            error: function(xhr, type){
-                alert('系统繁忙，请稍后再试!')
+    $(function(){
+        $('.j-selt').tap(function(){
+            $(this).toggleClass('on');
+            if($(this).hasClass('on')){
+                $('.j-con .frt').text('-'+$(this).attr('v')+'￥');
+                var _lastPrice = $('.u-col .frt').attr('v');
+                var _couPrice = $(this).attr('v');
+                (_lastPrice>_couPrice)?_lastPrice=_lastPrice-_couPrice : _lastPrice='0.00';
+                $('.u-col .frt').text(Number(_lastPrice).toFixed(2) +'￥');
+                $('#couponId').val($(this).attr('couponId'));
+                $('#couponPrice').val($(this).attr('v'));
+            }else{
+                $('.j-con .frt').text('0.00￥');
+                $('.u-col .frt').text($('.u-col .frt').attr('v')+'￥');
+                $('#couponId').val('');
+                $('#couponPrice').val('');
             }
         });
-        /* $('#confirm_form').submit();*/
+
+        $('.j-wid').tap(function(){
+            $.ajax({
+                type: 'GET',
+                url: '${springMacroRequestContext.contextPath}/order/charge',
+                timeout: 3000,
+                data:$('#confirm_form').serialize(),
+                success: function(response){
+                    var config = response.config;
+                    var pconfig = response.pconfig;
+                    var not_pay = response.not_pay;
+                    var error_msg = response.error_msg;
+                    if(error_msg!=undefined &&error_msg!=''){
+                        alert(error_msg);
+                        location.reload();
+                    }
+                    if(not_pay!=undefined&&not_pay){
+                        location.href = "${springMacroRequestContext.contextPath}/order/list";
+                    }
+                    var orderInfoVO = response.orderInfoVO;
+                    $('#id').val(orderInfoVO.id);
+                    wx.config({
+                        debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId : config.appId, // 必填，公众号的唯一标识
+                        timestamp : config.timestamp, // 必填，生成签名的时间戳
+                        nonceStr : config.nonce, // 必填，生成签名的随机串
+                        signature :config.signature,// 必填，签名，见附录1
+                        jsApiList : [ 'chooseWXPay' ]// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    });
+
+                    wx.ready(function() {
+
+                        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                        wx.chooseWXPay({
+                            timestamp : config.timestamp, //时间戳
+                            nonceStr : config.nonce, //随机串
+                            'package' : pconfig.prepayId, //扩展包
+                            signType : 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                            paySign : pconfig.paySign, // 支付签名
+                            success : function(res) {
+                                if(res.errMsg=='chooseWXPay:ok'){
+                                    location.href = "${springMacroRequestContext.contextPath}/order/payment?id="+orderInfoVO.id;
+                                }else if(res.errMsg=='chooseWXPay:cancel'){
+
+                                }else if(res.errMsg=='chooseWXPay:fail'){
+
+                                }
+                            }
+                        });
+                    });
+                },
+                error: function(xhr, type){
+                    alert('系统繁忙，请稍后再试!')
+                }
+            });
+            /* $('#confirm_form').submit();*/
+        })
     })
+
 
 
 </script>

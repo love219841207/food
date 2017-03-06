@@ -22,23 +22,8 @@ public class UserAccountDetail {
     private String fixId;
     private String timeMenu;
     private String typeMenu;
+    private Date fixDate;
     private int num;
-
-    public String getTimeMenu() {
-        return timeMenu;
-    }
-
-    public void setTimeMenu(String timeMenu) {
-        this.timeMenu = timeMenu;
-    }
-
-    public String getTypeMenu() {
-        return typeMenu;
-    }
-
-    public void setTypeMenu(String typeMenu) {
-        this.typeMenu = typeMenu;
-    }
 
     public Long getId() {
         return id;
@@ -86,6 +71,30 @@ public class UserAccountDetail {
 
     public void setFixId(String fixId) {
         this.fixId = fixId;
+    }
+
+    public String getTimeMenu() {
+        return timeMenu;
+    }
+
+    public void setTimeMenu(String timeMenu) {
+        this.timeMenu = timeMenu;
+    }
+
+    public String getTypeMenu() {
+        return typeMenu;
+    }
+
+    public void setTypeMenu(String typeMenu) {
+        this.typeMenu = typeMenu;
+    }
+
+    public Date getFixDate() {
+        return fixDate;
+    }
+
+    public void setFixDate(Date fixDate) {
+        this.fixDate = fixDate;
     }
 
     public int getNum() {

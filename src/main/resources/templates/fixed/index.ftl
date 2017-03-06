@@ -22,8 +22,14 @@
       </a>
 </div>
 <div class="g-rhd">
-    <span>未排餐：午餐0餐</span>
-    <span>已排餐：午餐30餐</span>
+<#assign sumSurplus=0>
+<#list surplusList as AccountSurplusVO>
+    <#if AccountSurplusVO.surplus??>
+        <#assign sumSurplus=sumSurplus +AccountSurplusVO.surplus>
+    </#if>
+</#list>
+    <span>未排餐：${sumSurplus}餐</span>
+    <span>已排餐：${fixedList?size}餐</span>
 </div>
 
 <div class="g-plan">
@@ -36,41 +42,13 @@
             <th class="u-tab3">晚餐</th>
         </tr>
 
-        <tr>
-            <td class="u-tab1">1月18日 <em>周三</em></td>
-            <td class="u-tab2">已约满</td>
-            <td class="u-tab3"></td>
-        </tr>
-
-        <tr>
-            <td class="u-tab1">1月19日 <em>周四</em></td>
-            <td class="u-tab2 u-red j-red">极致纤体</td>
-            <td class="u-tab3"></td>
-        </tr>
-
-        <tr>
-            <td class="u-tab1">1月20日 <em>周五</em></td>
-            <td class="u-tab2 u-red j-red">极致纤体</td>
-            <td class="u-tab3"></td>
-        </tr>
-
-        <tr>
-            <td class="u-tab1">1月21日 <em class="u-red">周六</em></td>
-            <td class="u-tab2 u-red j-red">极致纤体</td>
-            <td class="u-tab3"></td>
-        </tr>
-
-        <tr>
-            <td class="u-tab1">1月22日 <em class="u-red">周日</em></td>
-            <td class="u-tab2 u-red j-red">极致纤体</td>
-            <td class="u-tab3"></td>
-        </tr>
-
-        <tr>
-            <td class="u-tab1">1月23日 <em>周一</em></td>
-            <td class="u-tab2 u-noedit"></td>
-            <td class="u-tab3"></td>
-        </tr>
+        <#list fixedList as accountFixedVO>
+            <tr>
+                <td class="u-tab1">${accountFixedVO.fixDate?date} <em>${accountFixedVO.weekDay}</em></td>
+                <td class="u-tab2 u-red j-red">${accountFixedVO.nn!}</td>
+                <td class="u-tab3">${accountFixedVO.nt!}</td>
+            </tr>
+        </#list>
     </table>
 </div>
 

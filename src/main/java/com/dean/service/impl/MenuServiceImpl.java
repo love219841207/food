@@ -9,6 +9,7 @@ import com.dean.domain.PkgMenu;
 import com.dean.domain.ScheduleMenuInfo;
 import com.dean.service.*;
 import com.dean.util.Constants;
+import com.dean.util.DateUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
@@ -89,7 +90,8 @@ public class MenuServiceImpl implements MenuService {
                     typeMenu = al.get(1);
                 }
                 scheduleMenuInfo =  new ScheduleMenuInfo();
-                scheduleMenuInfo.setScheduleDay(scheduleDayTmp);
+
+                scheduleMenuInfo.setScheduleDay(DateUtils.getDate(scheduleDayTmp));
                 String typeMenuVal = this.getTypeMenuVal(typeMenu, typeMenus);
                 String timeMenuVal = this.getTimeMenuVal(al.get(2), timeMenus);
                 if(StringUtils.isEmpty(typeMenuVal)||StringUtils.isEmpty(timeMenuVal)){
@@ -151,7 +153,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuInfoVO> findMenuDetail(String day, String typeMenu) {
-        List<ScheduleMenuInfo> list = scheduleMenuInfoDao.findByScheduleDayAndTypeMenuOrderByTimeMenu(day, typeMenu);
+        List<ScheduleMenuInfo> list = scheduleMenuInfoDao.findByScheduleDayAndTypeMenuOrderByTimeMenu(DateUtils.getDate(day), typeMenu);
         List<TimeMenuVO> timeMenus = this.findTimeMenu();
         List<MenuInfoVO> menus = new ArrayList<MenuInfoVO>();
         MenuInfoVO menuInfoVO = null;
@@ -167,13 +169,19 @@ public class MenuServiceImpl implements MenuService {
             menuInfoVO.setMainInfo(smi.getMainInfo());
             menuInfoVO.setMinor(smi.getMinor());
             menuInfoVO.setOther(smi.getOther());
-            menuInfoVO.setScheduleDay(smi.getScheduleDay());
+            menuInfoVO.setScheduleDay(DateUtils.getStringDate(smi.getScheduleDay()));
             menuInfoVO.setStapleFood(smi.getStapleFood());
             menuInfoVO.setImgs(smi.getImgPaths());
             menuInfoVO.setPkgMenuVOs(this.findPkgMenuVO(typeMenu, smi.getTimeMenu()));
             menus.add(menuInfoVO);
         }
         return menus;
+    }
+
+    @Override
+    public List<Date> findFixDate(int nextOffset) {
+        List<Date> ls = scheduleMenuInfoDao.findNextFixDate(nextOffset);
+        return ls;
     }
 
     private List<PkgMenuVO> findPkgMenuVO(String typeMenu,String timeMenu) {

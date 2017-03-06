@@ -12,6 +12,9 @@ import java.util.List;
 public interface UserAccountDetailDao extends CrudRepository<UserAccountDetail,Long>{
     List<UserAccountDetail> findByOrderId(String orderId);
 
-    @Query("select sum(num),timeMenu,typeMenu from UserAccountDetail where userId=?1 group by timeMenu,typeMenu")
+    @Query("select a from UserAccountDetail a where a.userId=?1 and type=?2 and fixDate>CURDATE()")
+    List<UserAccountDetail> findByUserIdAndTypeOrderByFixDateDesc(Long userId, int type);
+
+    @Query(value="select sum(num),time_menu,type_menu from user_account_detail where user_id=?1 group by time_menu,type_menu",nativeQuery=true)
     List<Object[]> findSurplus(Long userId);
 }

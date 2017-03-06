@@ -4,17 +4,19 @@ import com.dean.dao.UserAccountDetailDao;
 import com.dean.domain.UserAccountDetail;
 import com.dean.service.*;
 import com.dean.util.Constants;
-import org.hibernate.jpa.internal.EntityManagerFactoryImpl;
+import com.dean.util.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import javax.persistence.EntityManager;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by dongxu on 2017/3/2.
@@ -26,6 +28,9 @@ public class UserAccountDetailServiceImpl implements UserAccountDetailService {
     private OrderService orderService;
     @Autowired
     private UserAccountDetailDao userAccountDetailDao;
+    @Autowired
+    private MenuService menuService;
+
     @Override
     public void orderAdd(OrderInfoVO orderInfoVO) {
         if(orderInfoVO!=null){
@@ -49,8 +54,59 @@ public class UserAccountDetailServiceImpl implements UserAccountDetailService {
     }
 
     @Override
-    public UserAccountVO findByUserId(Long userId) {
+    public List<AccountSurplusVO> findSurplus(Long userId) {
+        List<AccountSurplusVO> uavList = new ArrayList<AccountSurplusVO>();
+        AccountSurplusVO userAccountVO = null;
         List<Object[]> list = userAccountDetailDao.findSurplus(userId);
-        return null;
+        for(Object[] o : list){
+            userAccountVO = new AccountSurplusVO();
+            userAccountVO.setUserId(userId);
+            userAccountVO.setSurplus(((BigDecimal) o[0]).intValue());
+            userAccountVO.setTimeMenu((String) o[1]);
+            userAccountVO.setTypeMenu((String) o[2]);
+            uavList.add(userAccountVO);
+        }
+        return uavList;
+    }
+
+    @Override
+    public List<AccountFixedVO> findFixed(Long userId) {
+        List<UserAccountDetail> list = userAccountDetailDao.findByUserIdAndTypeOrderByFixDateDesc(userId, Constants.USER_ACCOUNT_FIX_MUL);
+        List<AccountFixedVO> afs = new ArrayList<AccountFixedVO>();
+        List<Date> ls = menuService.findFixDate(Constants.FIX_NEXT_DATE);
+       // List<TimeMenuVO> tms =  menuService.findTimeMenu();
+       /* Map<Date,UserAccountDetail> map = list.stream().collect(
+                Collectors.toMap(UserAccountDetail::getFixDate,(p) -> p)
+        );*/
+        AccountFixedVO af = null;
+        for(Date d : ls){
+            af = new AccountFixedVO();
+            af.setUserId(userId);
+            af.setFixDate(d);
+            af.setWeekDay(DateUtils.getWeekOfDate(d));
+            String[] typeMenus = this.getTypeMenu(list,d);
+            if(!StringUtils.isEmpty(typeMenus[0])){
+                af.setNn(typeMenus[0]);
+            }
+            if(!StringUtils.isEmpty(typeMenus[1])){
+                af.setNt(typeMenus[1]);
+            }
+            afs.add(af);
+        }
+        return afs;
+    }
+
+    private String[] getTypeMenu(List<UserAccountDetail> list,Date d){
+        String[] strs = new String[2];
+        for(UserAccountDetail userAccountDetail : list){
+            if(DateUtils.getStringDate(userAccountDetail.getFixDate()).equals(DateUtils.getStringDate(d))){
+                if(userAccountDetail.getTimeMenu().equals(Constants.TIME_MENU_NOON)){
+                    strs[0] = userAccountDetail.getTypeMenu();
+                }else{
+                    strs[1] = userAccountDetail.getTypeMenu();
+                }
+            }
+        }
+        return strs;
     }
 }

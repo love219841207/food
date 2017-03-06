@@ -58,5 +58,16 @@ public class Constants {
 
     //购买增加套餐份数
     public static final int USER_ACCOUNT_ORDER_ADD=1;
+    //排餐使用
+    public static final int USER_ACCOUNT_FIX_MUL=2;
+
+    //排餐显示的页面的可排日期默认显示30天
+    public static final int FIX_NEXT_DATE = 30;
+
+
+
+    public static final String TIME_MENU_NOON="1";
+
+    public static final String TIME_MENU_NIGHTN="2";
 
 }

@@ -16,7 +16,7 @@ public class ScheduleMenuInfo {
     @Id
     @GeneratedValue
     private Long id;
-    private String scheduleDay;
+    private Date scheduleDay;
     private String typeMenu;
     private String timeMenu;
     private String mainInfo;
@@ -45,11 +45,11 @@ public class ScheduleMenuInfo {
         this.id = id;
     }
 
-    public String getScheduleDay() {
+    public Date getScheduleDay() {
         return scheduleDay;
     }
 
-    public void setScheduleDay(String scheduleDay) {
+    public void setScheduleDay(Date scheduleDay) {
         this.scheduleDay = scheduleDay;
     }
 
