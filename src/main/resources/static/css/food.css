@@ -92,6 +92,7 @@ body.g-ptom{padding-bottom: 70px;}
 .g-wid span{display: block;margin:1rem 0;}
 .g-wid .u-det a{border:1px solid #ccc;display: inline-block;padding: .5rem;margin:0 .3rem .7rem 0;color: #333;}
 .g-wid .u-det a.on{border-color: #f8d80b;}
+.g-wid .u-det a.hide{display: none;}
 .u-det.u-hide{display: none;}
 .g-wid .u-btn{text-align: right;border-top:1px solid #ccc;}
 .g-wid .u-btn span em{margin-right: 0.8rem;}
@@ -163,6 +164,8 @@ body.g-ptom{padding-bottom: 70px;}
 .g-case .case .dn p i{display: block;color: #999;font-size: .6rem;margin-top: .3rem;}
 .g-gap {margin-top:15px;background-color:#f8d80b;}
 .g-cus {color:#f8d80b;}
+.red{color: red!important;}
+.g-wid p.hide{display: none;}
 
 
 

@@ -68,6 +68,6 @@ public class Constants {
 
     public static final String TIME_MENU_NOON="1";
 
-    public static final String TIME_MENU_NIGHTN="2";
+    public static final String TIME_MENU_NIGHT ="2";
 
 }

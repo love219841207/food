@@ -12,11 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Created by dongxu on 2017/3/2.
@@ -72,41 +68,40 @@ public class UserAccountDetailServiceImpl implements UserAccountDetailService {
     @Override
     public List<AccountFixedVO> findFixed(Long userId) {
         List<UserAccountDetail> list = userAccountDetailDao.findByUserIdAndTypeOrderByFixDateDesc(userId, Constants.USER_ACCOUNT_FIX_MUL);
-        List<AccountFixedVO> afs = new ArrayList<AccountFixedVO>();
+        Map<Date,String[]> map = new HashMap<Date,String[]>();
+        String[] str = null;
+        for(UserAccountDetail uad : list){
+           if(map.get(uad.getFixDate())==null){
+               str = new String[2];
+               map.put(uad.getFixDate(),str);
+           }else{
+               str = map.get(uad.getFixDate());
+           }
+            if(uad.getTimeMenu().equals(Constants.TIME_MENU_NOON)){
+                str[0] = uad.getTypeMenu();
+            }else if(uad.getTimeMenu().equals(Constants.TIME_MENU_NIGHT)){
+                str[1] = uad.getTypeMenu();
+            }
+        }
         List<Date> ls = menuService.findFixDate(Constants.FIX_NEXT_DATE);
-       // List<TimeMenuVO> tms =  menuService.findTimeMenu();
-       /* Map<Date,UserAccountDetail> map = list.stream().collect(
-                Collectors.toMap(UserAccountDetail::getFixDate,(p) -> p)
-        );*/
+        List<AccountFixedVO> afs = new ArrayList<AccountFixedVO>();
         AccountFixedVO af = null;
         for(Date d : ls){
             af = new AccountFixedVO();
             af.setUserId(userId);
             af.setFixDate(d);
             af.setWeekDay(DateUtils.getWeekOfDate(d));
-            String[] typeMenus = this.getTypeMenu(list,d);
-            if(!StringUtils.isEmpty(typeMenus[0])){
-                af.setNn(typeMenus[0]);
-            }
-            if(!StringUtils.isEmpty(typeMenus[1])){
-                af.setNt(typeMenus[1]);
+            if(map.get(d)!=null){
+                str  = map.get(d);
+                if(!StringUtils.isEmpty(str[0])){
+                    af.setNn(str[0]);
+                }
+                if(!StringUtils.isEmpty(str[1])){
+                    af.setNt(str[1]);
+                }
             }
             afs.add(af);
         }
         return afs;
-    }
-
-    private String[] getTypeMenu(List<UserAccountDetail> list,Date d){
-        String[] strs = new String[2];
-        for(UserAccountDetail userAccountDetail : list){
-            if(DateUtils.getStringDate(userAccountDetail.getFixDate()).equals(DateUtils.getStringDate(d))){
-                if(userAccountDetail.getTimeMenu().equals(Constants.TIME_MENU_NOON)){
-                    strs[0] = userAccountDetail.getTypeMenu();
-                }else{
-                    strs[1] = userAccountDetail.getTypeMenu();
-                }
-            }
-        }
-        return strs;
     }
 }

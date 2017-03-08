@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -34,5 +38,40 @@ public class FixedController {
         model.put("surplusList",surplusList);
         model.put("fixedList",fixedList);
         return "fixed/index";
+    }
+
+    @RequestMapping(value="/save")
+    public String save(HttpServletRequest request) throws IOException {
+        String str = this.convertStreamToString(request.getInputStream());
+        logger.info("排餐数据为:[{}]",str);
+        return "OK";
+    }
+
+    private String convertStreamToString(InputStream is){
+ /*
+          * To convert the InputStream to String we use the BufferedReader.readLine()
+          * method. We iterate until the BufferedReader return null which means
+          * there's no more data to read. Each line will appended to a StringBuilder
+          * and returned as String.
+          */
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return sb.toString();
     }
 }

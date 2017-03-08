@@ -11,7 +11,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/reset.css" />
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/food.css" />
-    <script src="${springMacroRequestContext.contextPath}/js/zepto.min.js"></script>
+    <script src="${springMacroRequestContext.contextPath}/js/jquery.1.8.3.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 </head>
 <body class="g-padtom">
 <div class="g-qhd">
@@ -28,8 +29,17 @@
         <#assign sumSurplus=sumSurplus +AccountSurplusVO.surplus>
     </#if>
 </#list>
-    <span>未排餐：${sumSurplus}餐</span>
-    <span>已排餐：${fixedList?size}餐</span>
+    <span class="j-sur" data-sur='${sumSurplus}'>未排餐:${sumSurplus}</span>
+<#assign sumUse=0>
+<#list fixedList as accountFixedVO>
+    <#if accountFixedVO.nn?? >
+        <#assign sumUse=sumUse +1>
+    </#if>
+    <#if accountFixedVO.nt?? >
+        <#assign sumUse=sumUse +1>
+    </#if>
+</#list>
+    <span class="j-use" data-use='${sumUse}'>已排餐:${sumUse}</span>
 </div>
 
 <div class="g-plan">
@@ -43,10 +53,14 @@
         </tr>
 
         <#list fixedList as accountFixedVO>
-            <tr>
+            <tr data-date="${accountFixedVO.fixDate?date}">
                 <td class="u-tab1">${accountFixedVO.fixDate?date} <em>${accountFixedVO.weekDay}</em></td>
-                <td class="u-tab2 u-red j-red">${accountFixedVO.nn!}</td>
-                <td class="u-tab3">${accountFixedVO.nt!}</td>
+                <td class="u-tab2 j-swid" data-time='1' data-type="${accountFixedVO.nn!}" >
+                     ${accountFixedVO.nn!}
+                </td>
+                <td class="u-tab3 j-swid" data-time='2' data-type="${accountFixedVO.nt!}" >
+                    ${accountFixedVO.nt!}
+                </td>
             </tr>
         </#list>
     </table>
@@ -55,17 +69,172 @@
 <div class="g-bottom">
     <a href="#" class="j-wid">确认排餐</a>
 </div>
+
+
+
+<div class="mask"></div>
+<div class="g-wid">
+    <img src="${springMacroRequestContext.contextPath}/img/z-del.png" class="j-del">
+    <h2></h2>
+    <span>选择套餐</span>
+    <div class="u-det j-sel">
+    <#assign time1Type1=0>
+    <#assign time1Type2=0>
+    <#assign time2Type1=0>
+    <#assign time2Type2=0>
+    <#list surplusList as accountSurplusVO>
+        <#if accountSurplusVO.timeMenu=='1'>
+            <#if accountSurplusVO.typeMenu=='1'>
+                <#assign time1Type1=time1Type1 +accountSurplusVO.surplus>
+            <#else>
+                <#assign time1Type2=time1Type2 +accountSurplusVO.surplus>
+            </#if>
+        <#else>
+            <#if accountSurplusVO.typeMenu=='1'>
+                <#assign time2Type1=time2Type1 +accountSurplusVO.surplus>
+            <#else>
+                <#assign time2Type2=time2Type2 +accountSurplusVO.surplus>
+            </#if>
+        </#if>
+
+    </#list>
+
+        <a href="javascript:void(0);"  data-surplus="1,1,${time1Type1}" class="hide">极致瘦身</a>
+        <a href="javascript:void(0);"  data-surplus="1,2,${time1Type2}" class="hide">均衡纤体</a>
+        <a href="javascript:void(0);" data-surplus="2,1,${time2Type1}" class="hide">极致瘦身</a>
+        <a href="javascript:void(0);"  data-surplus="2,2,${time2Type2}" class="hide">均衡纤体</a>
+        <a href="javascript:void(0);" class="j-cancle">取消套餐</a>
+    </div>
+    <p class="red j-non hide">没有可用的套餐</p>
+
+</div>
 <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+    $(function(){
+        $('.j-wid').click(function(){
+            var _arr = $('.g-plan table tr:gt(0)');
+            var _data = [];
+            _arr.each(function(index, el) {
+                var _fixDate = $(this).attr('data-date');
+                var _nn_type = $(this).children(':eq(1)').attr('data-type');
+                var _nt_type = $(this).children(':eq(2)').attr('data-type');
+                console.log(_fixDate+" " + _nn_type +" "+_nt_type);
+                var _o = {};
+                _o._fixDate = _fixDate;
+                if(_nn_type!=undefined&&_nn_type!=null){
+                    _o._nn = _nn_type;
+                }
+                if(_nt_type!=undefined&&_nt_type!=null){
+                    _o._nt = _nt_type;
+                }
+                _data.push(_o);
+            });
 
-    $('.j-red').tap(function(){
-        if($(this).text() == ''){
-            $(this).text('极致纤体');
-        }else{
-            $(this).text('');
-        }
+            console.log(JSON.stringify(_data));
+            $.ajax({
+                type: "POST",
+                url: "${springMacroRequestContext.contextPath}/fixed/save",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(_data),
+                dataType: "json",
+                success: function (message) {
+                    alert("OK");
+                },
+                error: function (message) {
 
+                }
+            });
+        });
+
+//点击排餐
+        var _globe_st;
+        var _mask = $('.mask'),_wid = $('.g-wid');
+        $('.j-swid').click(function(event) {
+            _globe_st = $(this);
+            var _date = $(this).addClass("j-on").parent().attr('data-date');
+            var _type = $(this).attr('data-type');
+            var _time = $(this).attr('data-time');
+            var _h2 = '排餐：';
+            _h2+=_date;
+            _h2+=' ';
+            _h2+=(_type=='1'?"午餐":"晚餐");
+            $('.g-wid h2').text(_h2);
+            var _arr = $('.j-sel a:lt(4)');
+            _arr.each(function(index, el) {
+                var _datas = $(this).attr('data-surplus');
+                if(_datas.split(',')[0]==_time
+                        &&_datas.split(',')[2]>0){
+                    $(this).removeClass('hide');
+                }else{
+                    $(this).addClass('hide');
+                }
+            });
+            _wid.show();
+            _mask.show();
+        });
+
+//点击关闭弹窗
+        $('.j-del').click(function(){
+            _mask.hide();
+            _wid.hide();
+
+        });
+
+// 弹窗里的单选
+        $('.j-sel a').click(function(){
+            //处理库存返回
+            if(_globe_st.attr('data-type')!=''){
+                var _sel_opt = _globe_st.attr('data-time');
+                _sel_opt +=',';
+                _sel_opt +=_globe_st.attr('data-type');
+                var _surplus = $("[data-surplus^='"+_sel_opt+"']").attr('data-surplus').split(',');
+                console.log('返回库存前：'+_surplus);
+                _surplus[2] = parseInt(_surplus[2])+1 ;
+                $("[data-surplus^='"+_sel_opt+"']").attr('data-surplus',_surplus.join(','));
+                console.log('返回库存后：'+_surplus);
+            }
+            //处理页头
+            var _sur = $('.j-sur').attr('data-sur');
+            var _use = $('.j-use').attr('data-use');
+            if(_globe_st.attr('data-type')!=''){
+                if($(this).hasClass('j-cancle')){
+                    console.log('dd');
+                    $('.j-sur').attr('data-sur',parseInt(_sur)+1);
+                    $('.j-use').attr('data-use',parseInt(_use)-1);
+                    $('.j-sur').text('未排餐:'+$('.j-sur').attr('data-sur'));
+                    $('.j-use').text('已排餐:'+$('.j-use').attr('data-use'));
+                }
+            }else{
+                if(!$(this).hasClass('j-cancle')){
+                    $('.j-sur').attr('data-sur',parseInt(_sur)-1);
+                    $('.j-use').attr('data-use',parseInt(_use)+1);
+                    $('.j-sur').text('未排餐:'+$('.j-sur').attr('data-sur'));
+                    $('.j-use').text('已排餐:'+$('.j-use').attr('data-use'));
+                }
+            }
+
+            if($(this).hasClass('j-cancle')){
+                _globe_st.text('');
+                _globe_st.attr('data-type','');
+            }else{
+                //处理扣减
+                var _datas = $(this).attr('data-surplus').split(',');
+                console.log('处理扣减前：'+$(this).attr('data-surplus'));
+                _datas[2] = parseInt(_datas[2]) - 1;
+                $(this).attr('data-surplus',_datas);
+                console.log('处理扣减前：'+$(this).attr('data-surplus'));
+                //处理返回
+                var _txt = $(this).text();
+                _globe_st.text(_txt);
+                _globe_st.attr('data-type',_datas[1]);
+            }
+
+            _mask.hide();
+            _wid.hide();
+        });
     })
-
 </script>
 
 </body>
