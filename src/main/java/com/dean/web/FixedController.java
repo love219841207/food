@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -41,8 +42,11 @@ public class FixedController {
     }
 
     @RequestMapping(value="/save")
+    @ResponseBody
     public String save(HttpServletRequest request) throws IOException {
+        UserVO userVO = (UserVO)request.getSession().getAttribute("userVO");
         String str = this.convertStreamToString(request.getInputStream());
+        userAccountDetailService.saveDetailfs(str,userVO.getUserInfo().getId());
         logger.info("排餐数据为:[{}]",str);
         return "OK";
     }

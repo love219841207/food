@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/reset.css" />
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/food.css" />
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/calendar.css" />
-    <script src="${springMacroRequestContext.contextPath}/js/zepto.min.js"></script>
-
+    <script src="${springMacroRequestContext.contextPath}/js/jquery.1.8.3.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
     <script src="${springMacroRequestContext.contextPath}/js/calendar.js"></script>
 </head>
 <body class="g-padtom">
@@ -95,6 +95,9 @@
 </div>
 
 <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
     var _startDay = new Date('${.now?string("yyyy-MM-dd")}');
     _startDay.setDate(_startDay.getDate()+1);
     //日历
@@ -121,19 +124,19 @@
 
     //点击预定套餐出现弹窗
     var _mask = $('.mask'),_wid = $('.g-wid');
-    $('.j-wid').tap(function(){
+    $('.j-wid').click(function(){
         _mask.show();
         _wid.show();
         initPkgMenu();
     });
 
-    $('.j-del').tap(function(){
+    $('.j-del').click(function(){
         _mask.hide();
         _wid.hide();
     });
 
     // 弹窗里的单选
-    $('.j-sel a').tap(function(){
+    $('.j-sel a').click(function(){
         $(this).addClass('on').siblings().removeClass('on');
         $('.j-org').text($(this).attr('orip'));
         $('.j-now').text($(this).attr('salep'));
@@ -143,13 +146,13 @@
     var initPkgMenu = function(){
         var _o = $('.j-sel a:visible').filter('.on');
         if(_o.length==0){
-            $('.j-sel a:visible').first().trigger('tap');
+            $('.j-sel a:visible').first().trigger('click');
         }else{
-            _o.first().trigger('tap');
+            _o.first().trigger('click');
         }
     };
 
-    $('#j-book').tap(function(){
+    $('#j-book').click(function(){
         var _typeMenu = '${type}';
         var d = $('.j-tab a').filter(".on");
         var _timeMenu = d.attr('v');

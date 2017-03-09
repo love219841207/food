@@ -12,4 +12,6 @@ public interface UserAccountDetailService {
 
     List<AccountFixedVO> findFixed(Long userId);
 
+    void saveDetailfs(String str, Long userId);
+
 }

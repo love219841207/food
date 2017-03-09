@@ -1,6 +1,7 @@
 package com.dean.dao;
 
 import com.dean.domain.UserAccountDetail;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -17,4 +18,7 @@ public interface UserAccountDetailDao extends CrudRepository<UserAccountDetail,L
 
     @Query(value="select sum(num),time_menu,type_menu from user_account_detail where user_id=?1 group by time_menu,type_menu",nativeQuery=true)
     List<Object[]> findSurplus(Long userId);
+    @Modifying
+    @Query(value="delete t from user_account_detail t where t.user_id=?1 and t.type=?2 and t.fix_date>CURDATE()",nativeQuery=true)
+    void deleteDetails(Long userId,int type);
 }

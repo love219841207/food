@@ -61,6 +61,9 @@ public class Constants {
     //排餐使用
     public static final int USER_ACCOUNT_FIX_MUL=2;
 
+    //排餐为单份
+    public static final int USER_ACCOUNT_FIX_NUM = 1;
+
     //排餐显示的页面的可排日期默认显示30天
     public static final int FIX_NEXT_DATE = 30;
 

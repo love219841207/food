@@ -11,7 +11,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/reset.css" />
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/food.css" />
-    <script src="${springMacroRequestContext.contextPath}/js/zepto.min.js"></script>
+    <script src="${springMacroRequestContext.contextPath}/js/jquery.1.8.3.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 
 </head>
@@ -55,9 +56,11 @@
     </div>
 </form>
 <script>
-
+    $(function() {
+        FastClick.attach(document.body);
+    });
     $(function(){
-        $('.j-selt').tap(function(){
+        $('.j-selt').click(function(){
             $(this).toggleClass('on');
             if($(this).hasClass('on')){
                 $('.j-con .frt').text('-'+$(this).attr('v')+'￥');
@@ -75,7 +78,7 @@
             }
         });
 
-        $('.j-wid').tap(function(){
+        $('.j-wid').click(function(){
             $.ajax({
                 type: 'GET',
                 url: '${springMacroRequestContext.contextPath}/order/charge',

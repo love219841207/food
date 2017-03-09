@@ -56,10 +56,22 @@
             <tr data-date="${accountFixedVO.fixDate?date}">
                 <td class="u-tab1">${accountFixedVO.fixDate?date} <em>${accountFixedVO.weekDay}</em></td>
                 <td class="u-tab2 j-swid" data-time='1' data-type="${accountFixedVO.nn!}" >
-                     ${accountFixedVO.nn!}
+                    <#if accountFixedVO.nn??>
+                        <#if accountFixedVO.nn=='1'>
+                            极致瘦身
+                        <#else>
+                            均衡纤体
+                        </#if>
+                    </#if>
                 </td>
                 <td class="u-tab3 j-swid" data-time='2' data-type="${accountFixedVO.nt!}" >
-                    ${accountFixedVO.nt!}
+                        <#if accountFixedVO.nt??>
+                            <#if accountFixedVO.nn=='1'>
+                                极致瘦身
+                            <#else>
+                                均衡纤体
+                            </#if>
+                        </#if>
                 </td>
             </tr>
         </#list>
@@ -121,26 +133,27 @@
                 var _nn_type = $(this).children(':eq(1)').attr('data-type');
                 var _nt_type = $(this).children(':eq(2)').attr('data-type');
                 console.log(_fixDate+" " + _nn_type +" "+_nt_type);
-                var _o = {};
-                _o._fixDate = _fixDate;
-                if(_nn_type!=undefined&&_nn_type!=null){
+                if(_nn_type!=undefined&&_nn_type!=null&&_nn_type!=''){
+                    var _o = {};
+                    _o._fixDate = _fixDate;
                     _o._nn = _nn_type;
+                    _data.push(_o);
                 }
-                if(_nt_type!=undefined&&_nt_type!=null){
+                if(_nt_type!=undefined&&_nt_type!=null&&_nt_type!=''){
+                    var _o = {};
+                    _o._fixDate = _fixDate;
                     _o._nt = _nt_type;
+                    _data.push(_o);
                 }
-                _data.push(_o);
             });
-
-            console.log(JSON.stringify(_data));
             $.ajax({
                 type: "POST",
                 url: "${springMacroRequestContext.contextPath}/fixed/save",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(_data),
-                dataType: "json",
+                //dataType: "json",
                 success: function (message) {
-                    alert("OK");
+                    location.reload();
                 },
                 error: function (message) {
 

@@ -5,12 +5,17 @@ import com.dean.domain.UserAccountDetail;
 import com.dean.service.*;
 import com.dean.util.Constants;
 import com.dean.util.DateUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -103,5 +108,45 @@ public class UserAccountDetailServiceImpl implements UserAccountDetailService {
             afs.add(af);
         }
         return afs;
+    }
+
+    @Override
+    @Transactional
+    public void saveDetailfs(String str,Long userId) {
+        JsonNode info = null;
+        try {
+            info =  new ObjectMapper().readTree(str);
+        } catch (IOException e) {
+            logger.error("解析排餐数据格式错误[{}]",info);
+        }
+        List<UserAccountDetail> list = new ArrayList<UserAccountDetail>();
+        UserAccountDetail userAccountDetail = null;
+        if(info.isArray()){
+            for (JsonNode objNode : info){
+                userAccountDetail = new UserAccountDetail();
+                logger.info(objNode.toString());
+                userAccountDetail.setUserId(userId);
+                userAccountDetail.setHappenTime(new Date());
+                userAccountDetail.setType(Constants.USER_ACCOUNT_FIX_MUL);
+                //排餐为单份排餐
+                userAccountDetail.setNum(-Constants.USER_ACCOUNT_FIX_NUM);
+                String fixDate = objNode.path("_fixDate").asText();
+                userAccountDetail.setFixDate(DateUtils.getDate(fixDate));
+                String _str = null;
+                if(objNode.has("_nn")){
+                    _str = objNode.path("_nn").asText();
+                    userAccountDetail.setTimeMenu(Constants.TIME_MENU_NOON);
+                    userAccountDetail.setTypeMenu(_str);
+                }
+                if(objNode.has("_nt")){
+                    _str = objNode.path("_nt").asText();
+                    userAccountDetail.setTimeMenu(Constants.TIME_MENU_NIGHT);
+                    userAccountDetail.setTypeMenu(_str);
+                }
+                list.add(userAccountDetail);
+            }
+        }
+        userAccountDetailDao.deleteDetails(userId, Constants.USER_ACCOUNT_FIX_MUL);
+        userAccountDetailDao.save(list);
     }
 }

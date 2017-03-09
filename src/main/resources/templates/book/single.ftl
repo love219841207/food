@@ -11,7 +11,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/reset.css" />
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/food.css" />
-    <script src="${springMacroRequestContext.contextPath}/js/zepto.min.js"></script>
+    <script src="${springMacroRequestContext.contextPath}/js/jquery.1.8.3.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
     <script src="${springMacroRequestContext.contextPath}/js/touch.slide.js"></script>
 
 
@@ -70,6 +71,9 @@
 
 
 <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
 
     // 轮播图计算图片高度
     //$('#j-slideBox img').css('height', ($(window).width() * 0.307));
@@ -93,7 +97,7 @@
         } else {
             $(this).find('.right').css('transform', "rotate(180deg)");
             $(this).find('.left').css('transform', "rotate(" + (num - 180) + "deg)");
-        };
+        }
     });
 
 
