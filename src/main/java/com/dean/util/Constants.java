@@ -12,7 +12,6 @@ public class Constants {
     //session的key
     public static final String SESSION_USER_KEY = "userVO";
 
-
     public static final String DATA_DIC_TYPE_MENU = "type_menu";
 
     public static final String DATA_DIC_TIME_MENU = "time_menu";
@@ -70,7 +69,13 @@ public class Constants {
 
 
     public static final String TIME_MENU_NOON="1";
-
+    public static final String TIME_MENU_NOON_NAME="午餐";
     public static final String TIME_MENU_NIGHT ="2";
+    public static final String TIME_MENU_NIGHT_NAME ="晚餐";
+    public static final String TYPE_MENU_THIN="1";
+    public static final String TYPE_MENU_THIN_NAME="极致瘦身";
+
+    public static final String TYPE_MENU_SLIM ="2";
+    public static final String TYPE_MENU_SLIM_NAME="均衡纤体";
 
 }

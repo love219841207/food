@@ -11,11 +11,7 @@ import java.util.List;
  * Created by dongxu on 2017/2/14.
  */
 public interface MenuService {
-    List<TypeMenuVO> findTypeMenu();
-
-    List<TimeMenuVO> findTimeMenu();
-
-    void initMenuFromExcel() throws IOException, InvalidFormatException;
+     void initMenuFromExcel() throws IOException, InvalidFormatException;
 
     List<MenuInfoVO> findMenuDetail(String day, String typeMenu);
 

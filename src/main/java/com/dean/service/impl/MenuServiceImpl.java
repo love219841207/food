@@ -3,11 +3,11 @@ package com.dean.service.impl;
 import com.dean.dao.AddressInfoDao;
 import com.dean.dao.PkgMenuDao;
 import com.dean.dao.ScheduleMenuInfoDao;
-import com.dean.domain.AddressInfo;
-import com.dean.domain.DataDictionary;
 import com.dean.domain.PkgMenu;
 import com.dean.domain.ScheduleMenuInfo;
-import com.dean.service.*;
+import com.dean.service.MenuInfoVO;
+import com.dean.service.MenuService;
+import com.dean.service.PkgMenuVO;
 import com.dean.util.Constants;
 import com.dean.util.DateUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -33,41 +33,12 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
-    private DataDictionaryService dataDictionaryService;
-    @Autowired
     private ScheduleMenuInfoDao scheduleMenuInfoDao;
     @Autowired
     private PkgMenuDao pkgMenuDao;
     @Autowired
     private AddressInfoDao addressInfoDao;
 
-    public List<TypeMenuVO> findTypeMenu() {
-        List<DataDictionary> list = dataDictionaryService.findTypeMenu();
-        List<TypeMenuVO> ls = new ArrayList<TypeMenuVO>();
-        TypeMenuVO typeMenuVO = null;
-        for (DataDictionary d : list) {
-            typeMenuVO = new TypeMenuVO();
-            typeMenuVO.setName(d.getName());
-            typeMenuVO.setId(d.getVal());
-            typeMenuVO.setImgPath("typemenu" + d.getVal() + ".jpg");
-            ls.add(typeMenuVO);
-        }
-        return ls;
-    }
-
-    @Override
-    public List<TimeMenuVO> findTimeMenu() {
-        List<DataDictionary> list = dataDictionaryService.findTimeMenu();
-        List<TimeMenuVO> ls = new ArrayList<TimeMenuVO>();
-        TimeMenuVO timeMenuVO = null;
-        for (DataDictionary d : list) {
-            timeMenuVO = new TimeMenuVO();
-            timeMenuVO.setName(d.getName());
-            timeMenuVO.setId(d.getVal());
-            ls.add(timeMenuVO);
-        }
-        return ls;
-    }
 
     @Override
     public void initMenuFromExcel() throws IOException, InvalidFormatException {
@@ -75,8 +46,6 @@ public class MenuServiceImpl implements MenuService {
         if(excelInfo.size()!=2){
             logger.info("解析menuexcel异常,sheet数量不对");
         }else{
-            List<TypeMenuVO> typeMenus = this.findTypeMenu();
-            List<TimeMenuVO> timeMenus = this.findTimeMenu();
             ArrayList<ArrayList<String>> menuInfos = excelInfo.get(0);
             List<ScheduleMenuInfo> scheduleMenuInfos = new ArrayList<ScheduleMenuInfo>();
             ScheduleMenuInfo scheduleMenuInfo = null;
@@ -92,8 +61,8 @@ public class MenuServiceImpl implements MenuService {
                 scheduleMenuInfo =  new ScheduleMenuInfo();
 
                 scheduleMenuInfo.setScheduleDay(DateUtils.getDate(scheduleDayTmp));
-                String typeMenuVal = this.getTypeMenuVal(typeMenu, typeMenus);
-                String timeMenuVal = this.getTimeMenuVal(al.get(2), timeMenus);
+                String typeMenuVal = this.getTypeMenuVal(typeMenu);
+                String timeMenuVal = this.getTimeMenuVal(al.get(2));
                 if(StringUtils.isEmpty(typeMenuVal)||StringUtils.isEmpty(timeMenuVal)){
                     logger.info("解析menuexcel异常排餐,typeMenuVal==null||timeMenuVal==null");
                 }
@@ -120,8 +89,8 @@ public class MenuServiceImpl implements MenuService {
                 if(!StringUtils.isEmpty(al.get(0))){
                     typeMenu = al.get(0);
                 }
-                String typeMenuVal = this.getTypeMenuVal(typeMenu, typeMenus);
-                String timeMenuVal = this.getTimeMenuVal(al.get(1), timeMenus);
+                String typeMenuVal = this.getTypeMenuVal(typeMenu);
+                String timeMenuVal = this.getTimeMenuVal(al.get(1));
                 if(StringUtils.isEmpty(typeMenuVal)||StringUtils.isEmpty(timeMenuVal)){
                     logger.info("解析menuexcel异常方案设置,typeMenuVal==null||timeMenuVal==null");
                 }
@@ -154,12 +123,12 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<MenuInfoVO> findMenuDetail(String day, String typeMenu) {
         List<ScheduleMenuInfo> list = scheduleMenuInfoDao.findByScheduleDayAndTypeMenuOrderByTimeMenu(DateUtils.getDate(day), typeMenu);
-        List<TimeMenuVO> timeMenus = this.findTimeMenu();
+       // List<TimeMenuVO> timeMenus = this.findTimeMenu();
         List<MenuInfoVO> menus = new ArrayList<MenuInfoVO>();
         MenuInfoVO menuInfoVO = null;
         for (ScheduleMenuInfo smi : list){
             menuInfoVO = new MenuInfoVO();
-            menuInfoVO.setTimeMenu(this.getTimeMenuName(smi.getTimeMenu(), timeMenus));
+            menuInfoVO.setTimeMenu(this.getTimeMenuName(smi.getTimeMenu()));
             menuInfoVO.setTimeMenuVal(smi.getTimeMenu());
             menuInfoVO.setTypeMenu(smi.getTypeMenu());
             menuInfoVO.setCoarseGrain(smi.getCoarseGrain());
@@ -225,31 +194,42 @@ public class MenuServiceImpl implements MenuService {
         scheduleMenuInfoDao.save(scheduleMenuInfos);
     }
 
-    private String getTypeMenuVal(String name,List<TypeMenuVO> typeMenus){
-        for(TypeMenuVO tm : typeMenus){
-            if(tm.getName().equals(name)){
-                return tm.getId();
-            }
-        }
-        return null;
+    private String getTypeMenuVal(String name){
+       if(StringUtils.isEmpty(name)){
+           return null;
+       }else{
+           if(name.equals(Constants.TYPE_MENU_THIN_NAME)){
+               return Constants.TYPE_MENU_THIN;
+           }else{
+               return Constants.TYPE_MENU_SLIM;
+           }
+       }
+
     }
 
-    private String getTimeMenuVal(String name,List<TimeMenuVO> timeMenus){
-        for(TimeMenuVO tm : timeMenus){
-            if(tm.getName().equals(name)){
-                return tm.getId();
+    private String getTimeMenuVal(String name){
+        if(StringUtils.isEmpty(name)){
+            return null;
+        }else{
+            if(name.equals(Constants.TIME_MENU_NOON_NAME)){
+                return Constants.TIME_MENU_NOON;
+            }else{
+                return Constants.TIME_MENU_NIGHT;
             }
         }
-        return null;
     }
 
-    private String getTimeMenuName(String id,List<TimeMenuVO> timeMenus){
-        for(TimeMenuVO tm : timeMenus){
-            if(tm.getId().equals(id)){
-                return tm.getName();
-            }
-        }
-        return null;
+    private String getTimeMenuName(String id){
+       if(StringUtils.isEmpty(id)){
+           return null;
+       }else{
+           if(id.equals(Constants.TIME_MENU_NOON)){
+               return Constants.TIME_MENU_NOON_NAME;
+           }else{
+               return Constants.TIME_MENU_NIGHT_NAME;
+           }
+       }
+
     }
 
     private List<ArrayList<ArrayList<String>>> ReadMenuFormExcel() {

@@ -59,11 +59,12 @@
 
 
 <div class="g-detail">
-    <#list typeMenus as typeMenu>
-        <a href="${springMacroRequestContext.contextPath}/book/typemenu/${typeMenu.id}">
-             <img src="${springMacroRequestContext.contextPath}/drift/${typeMenu.imgPath}" alt="">
+        <a href="${springMacroRequestContext.contextPath}/book/typemenu/1">
+             <img src="${springMacroRequestContext.contextPath}/drift/typemenu1.jpg" alt="">
         </a>
-    </#list>
+        <a href="${springMacroRequestContext.contextPath}/book/typemenu/2">
+            <img src="${springMacroRequestContext.contextPath}/drift/typemenu2.jpg" alt="">
+        </a>
 </div>
 
 
