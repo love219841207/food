@@ -1,12 +1,14 @@
 package com.dean.web.wechat;
 
+import com.dean.com.qq.weixin.AesException;
 import com.dean.service.WechatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
+import com.dean.com.qq.weixin.SHA1;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -18,22 +20,42 @@ import java.io.*;
 @RequestMapping("/wechat")
 public class WechatController {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    //微信配置服务使用Token
+    private final String token = "pzbiaoge";
     @Autowired
     private WechatService wechatService;
     @RequestMapping("/core")
     public void core(HttpServletRequest request,HttpServletResponse response){
         String echostr = request.getParameter("echostr");
-        logger.info("echostr is {}",echostr);
-        PrintWriter out = null;
-        try {
-            out = response.getWriter();
-        } catch (IOException e) {
-            e.printStackTrace();
+        String nonce = request.getParameter("nonce");
+        String timestamp = request.getParameter("timestamp");
+        String signature = request.getParameter("signature");
+        logger.info("echostr|nonce|timestamp|signature is {}|{}|{}|{}", echostr, nonce, timestamp, signature);
+        if(!StringUtils.isEmpty(echostr)
+                &&!StringUtils.isEmpty(nonce)
+                &&!StringUtils.isEmpty(timestamp)
+                &&!StringUtils.isEmpty(signature)){
+            String signatureSha1 = "";
+            try {
+                signatureSha1 = SHA1.getSHA1(token, timestamp, nonce);
+                logger.info("signatureSha1|signature is {}|{}", signatureSha1, signature);
+            } catch (AesException e) {
+                logger.error("解析错误{}",e);
+            }
+            if(signatureSha1.equals(signature)){
+                logger.info("配置生效");
+                PrintWriter out = null;
+                try {
+                    out = response.getWriter();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                out.print(echostr);
+            }
+        }else{
+            logger.info("非配置认证请求");
         }
-
-        out.print(echostr);
     }
-
    /* @RequestMapping("/notify")
     @ResponseBody
     public String notify(){
