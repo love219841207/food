@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * Created by dongxu on 2017/2/1.
  */
@@ -20,7 +22,7 @@ public class ShortController {
     private WechatRouteProperties appUrlProperties;
     private String URL_REDIRECT_PREFIX = "redirect:";
     @RequestMapping(value="/short/{id}")
-    public String redirect(@PathVariable("id") String id){
+    public String redirect(@PathVariable("id") String id,HttpSession session){
         String url = String.format(appUrlProperties.getAuthUrl(), id);
         url = URL_REDIRECT_PREFIX+wechatService.getRedirUrl(url);
         return url;
