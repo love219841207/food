@@ -9,5 +9,5 @@ import java.util.List;
  * Created by dongxu on 2017/1/27.
  */
 public interface WechatInfoDao extends CrudRepository<WechatInfo,Long> {
-    public List<WechatInfo> findByOpenId(String openId);
+    WechatInfo findByOpenId(String openId);
 }

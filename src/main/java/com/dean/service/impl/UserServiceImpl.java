@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -28,10 +29,14 @@ public class UserServiceImpl implements UserService {
     private WechatService wechatService;
     @Autowired
     private SmsService smsService;
+    @Autowired
+    private CouponService couponService;
 
 
     @Override
-    public UserInfo BoundUser(String phone, String openId) {
+    @Transactional
+    public UserVO BoundUser(String phone, String openId) {
+        UserVO userVO = new UserVO();
         List<UserInfo> infos = userDao.findByPhone(phone);
         UserInfo userInfo = null;
         if(infos.size()>0){
@@ -43,15 +48,17 @@ public class UserServiceImpl implements UserService {
             userInfo.setCreateTime(new Date());
             userInfo.setLastLoginTime(userInfo.getCreateTime());
             userDao.save(userInfo);
+            logger.info("生成新用户id为[{}],送优惠券", userInfo.getId());
+            couponService.bindCoupon(userInfo.getId());
         }
-        List<WechatInfo> wechatInfos = wechatInfoDao.findByOpenId(openId);
-        WechatInfo wechatInfo = null;
-        if(wechatInfos.size()>0){
-            wechatInfo=wechatInfos.get(0);
+        userVO.setUserInfo(userInfo);
+        WechatInfo wechatInfo = wechatInfoDao.findByOpenId(openId);
+        if(wechatInfo!=null){
             wechatInfo.setUserId(userInfo.getId());
             wechatInfoDao.save(wechatInfo);
         }
-        return userInfo;
+        userVO.setWechatInfo(wechatInfo);
+        return userVO;
     }
 
     @Override
@@ -60,10 +67,8 @@ public class UserServiceImpl implements UserService {
         UserVO userVO = null;
         if(!StringUtils.isEmpty(openId)){
             userVO = new UserVO();
-            List<WechatInfo> wechats = wechatInfoDao.findByOpenId(openId);
-            WechatInfo wechatInfo = null;
-            if(wechats.size()>0){
-                wechatInfo = wechats.get(0);
+            WechatInfo wechatInfo = wechatInfoDao.findByOpenId(openId);
+            if(wechatInfo!=null){
                 logger.info("根据openid获取UserVO，openId为[{}],openid已经存在",openId);
             }else{
                 wechatInfo = new WechatInfo();

@@ -61,8 +61,7 @@ public class RouteController {
                           @PathVariable String routeid) {
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
         String openId = userVO.getWechatInfo().getOpenId();
-        UserInfo userInfo = userService.BoundUser(phone, openId);
-        userVO.setUserInfo(userInfo);
+        userVO = userService.BoundUser(phone, openId);
         request.getSession().setAttribute(Constants.SESSION_USER_KEY, userVO);
         return distribute(routeid);
     }

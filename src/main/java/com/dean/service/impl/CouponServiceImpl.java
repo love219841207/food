@@ -61,4 +61,15 @@ public class CouponServiceImpl implements CouponService {
         }
         return boo;
     }
+
+    @Override
+    public Long bindCoupon(Long userId) {
+        Coupon coupon = new Coupon();
+        coupon.setUserId(userId);
+        coupon.setCreateTime(new Date());
+        coupon.setStatus(Constants.COUPON_STATUS_VALID);
+        coupon.setPrice(Constants.COUPON_DEFAULT_PRICE);
+        couponDao.save(coupon);
+        return coupon.getId();
+    }
 }

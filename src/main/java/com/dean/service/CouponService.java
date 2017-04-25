@@ -11,4 +11,6 @@ public interface CouponService {
     CouponVO getById(Long id);
 
     boolean couponUse(Long couponId);
+
+    Long bindCoupon(Long userId);
 }

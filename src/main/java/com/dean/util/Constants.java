@@ -1,5 +1,6 @@
 package com.dean.util;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 /**
@@ -39,6 +40,9 @@ public class Constants {
 
     //订单作废
     public static final int ORDER_STATUS_WASTE = 9;
+
+    //优惠券可用
+    public static final BigDecimal COUPON_DEFAULT_PRICE = new BigDecimal("50.00");
 
     //优惠券可用
     public static final int COUPON_STATUS_VALID = 1;
