@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/user")
 public class UserController {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private UserService userService;
+   /* @Autowired
+    private UserService userService;*/
     @Autowired
     private CouponService couponService;
 
