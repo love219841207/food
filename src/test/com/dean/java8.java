@@ -24,7 +24,7 @@ public class java8 {
         list1.add(d1);
         list1.add(d2);
 
-        MyClass myClass11 = new MyClass();
+        com.dean.MyClass myClass11 = new MyClass();
         MyClass myClass22 = new MyClass();
         Date d11 = format.parse(str1);
         Date d22 = format.parse(str3);
