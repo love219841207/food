@@ -2,6 +2,7 @@ package com.dean.web;
 
 import com.dean.service.CommonService;
 import com.dean.service.UserVO;
+import com.dean.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ public class CommonController {
     @ResponseBody
     public boolean regeditCode(HttpServletRequest request,
                               @PathVariable String phone){
-        UserVO userVO = (UserVO)request.getSession().getAttribute("userVO");
+        UserVO userVO = (UserVO)request.getSession().getAttribute(Constants.SESSION_USER_KEY);
         boolean boo = commonService.regeditCodeRequest(phone,userVO.getWechatInfo().getOpenId());
         return boo;
     }
@@ -32,7 +33,7 @@ public class CommonController {
     public boolean verify(HttpServletRequest request,
                           @PathVariable String phone,
                           @PathVariable String code){
-        UserVO userVO = (UserVO)request.getSession().getAttribute("userVO");
+        UserVO userVO = (UserVO)request.getSession().getAttribute(Constants.SESSION_USER_KEY);
         boolean boo = commonService.regeditCodeVerify(phone,code,userVO.getWechatInfo().getOpenId());
         return boo;
     }

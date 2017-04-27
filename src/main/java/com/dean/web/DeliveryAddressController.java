@@ -36,6 +36,9 @@ public class DeliveryAddressController {
             ,ModelMap model){
         logger.info("个人地址编辑id为[{}]", id);
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        logger.info("userVO[{}]", userVO==null);
+        logger.info("userVO[{}]", userVO.getUserInfo()==null);
+        logger.info("userVO[{}]" ,userVO.getUserInfo().getId());
         DeliveryAddressVO deliveryAddressVO = null;
         if(id!=null){
             deliveryAddressVO = deliveryAddressService.findById(id);
@@ -49,7 +52,9 @@ public class DeliveryAddressController {
 
     @RequestMapping("/del")
     public String del(@RequestParam(value = "id",required = false) Long id){
-        deliveryAddressService.delete(id);
+        if(id!=null){
+            deliveryAddressService.delete(id);
+        }
         return "forward:/delivery/list";
     }
 
@@ -71,6 +76,10 @@ public class DeliveryAddressController {
     @RequestMapping("/list")
     public String list(ModelMap model ,HttpServletRequest request,@RequestParam(value = "choose",required = false) String choose){
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        logger.info("userVO[{}]", userVO==null);
+        logger.info("userVO[{}]", userVO.getUserInfo()==null);
+        logger.info("userVO[{}]" ,userVO.getUserInfo().getId());
+
         List<DeliveryAddressVO> list =  deliveryAddressService.findByUserId(userVO.getUserInfo().getId());
         model.put("list", list);
         model.put("isChoose", !StringUtils.isEmpty(choose));

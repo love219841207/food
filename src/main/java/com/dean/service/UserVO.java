@@ -3,10 +3,13 @@ package com.dean.service;
 import com.dean.domain.UserInfo;
 import com.dean.domain.WechatInfo;
 
+import java.io.Serializable;
+
 /**
  * Created by dongxu on 2017/1/27.
  */
-public class UserVO {
+public class UserVO implements Serializable{
+    private static final long serialVersionUID = -1913905599872931505L;
     private UserInfo userInfo;
     private WechatInfo wechatInfo;
 

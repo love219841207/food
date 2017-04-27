@@ -3,6 +3,7 @@ package com.dean.web;
 import com.dean.service.CouponService;
 import com.dean.service.UserService;
 import com.dean.service.UserVO;
+import com.dean.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class UserController {
 
     @RequestMapping("/index")
     public String index(HttpServletRequest request,ModelMap model){
-        UserVO userVO = (UserVO)request.getSession().getAttribute("userVO");
+        UserVO userVO = (UserVO)request.getSession().getAttribute(Constants.SESSION_USER_KEY);
         Integer couponCount = couponService.findCountByUserId(userVO.getUserInfo().getId());
         model.put("couponCount",couponCount);
         return "user/index";

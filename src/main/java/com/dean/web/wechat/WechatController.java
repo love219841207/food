@@ -1,6 +1,7 @@
 package com.dean.web.wechat;
 
 import com.dean.com.qq.weixin.AesException;
+import com.dean.config.WechatProperties;
 import com.dean.service.WechatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,9 @@ import java.io.*;
 @RequestMapping("/wechat")
 public class WechatController {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-    //微信配置服务使用Token
-    private final String token = "pzbiaoge";
+    @Autowired
+    private WechatProperties wechatProperties;
+
     @Autowired
     private WechatService wechatService;
     @RequestMapping("/core")
@@ -37,7 +39,7 @@ public class WechatController {
                 &&!StringUtils.isEmpty(signature)){
             String signatureSha1 = "";
             try {
-                signatureSha1 = SHA1.getSHA1(token, timestamp, nonce);
+                signatureSha1 = SHA1.getSHA1(wechatProperties.getToken(), timestamp, nonce);
                 logger.info("signatureSha1|signature is {}|{}", signatureSha1, signature);
             } catch (AesException e) {
                 logger.error("解析错误{}",e);

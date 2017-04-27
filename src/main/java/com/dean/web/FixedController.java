@@ -1,6 +1,7 @@
 package com.dean.web;
 
 import com.dean.service.*;
+import com.dean.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,11 @@ public class FixedController {
     private UserAccountDetailService userAccountDetailService;
     @RequestMapping(value="/index")
     public String fixed(ModelMap model ,HttpServletRequest request,@RequestParam(value = "deliveryId",required = false) Long deliveryId){
-        logger.info("/fixed/index");
-        UserVO userVO = (UserVO)request.getSession().getAttribute("userVO");
+        logger.info("/fixed/index,deliveryId[{}]",deliveryId);
+        UserVO userVO = (UserVO)request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        logger.info("userVO[{}]", userVO==null);
+        logger.info("userVO[{}]", userVO.getUserInfo()==null);
+        logger.info("userVO[{}]" ,userVO.getUserInfo().getId());
         DeliveryAddressVO deliveryAddressVO = deliveryAddressService.getPlanDeliveryAddressVO(deliveryId, userVO.getUserInfo().getId());
         model.put("deliveryAddressVO", deliveryAddressVO);
         List<AccountSurplusVO> surplusList =  userAccountDetailService.findSurplus(userVO.getUserInfo().getId());
@@ -44,7 +48,7 @@ public class FixedController {
     @RequestMapping(value="/save")
     @ResponseBody
     public String save(HttpServletRequest request) throws IOException {
-        UserVO userVO = (UserVO)request.getSession().getAttribute("userVO");
+        UserVO userVO = (UserVO)request.getSession().getAttribute(Constants.SESSION_USER_KEY);
         String str = this.convertStreamToString(request.getInputStream());
         userAccountDetailService.saveDetailfs(str,userVO.getUserInfo().getId());
         logger.info("排餐数据为:[{}]",str);
