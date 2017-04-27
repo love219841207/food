@@ -30,6 +30,7 @@ public class ShortController {
     @RequestMapping(value="/short/{id}")
     public String redirect(@PathVariable("id") String id,HttpSession session){
         logger.info("进入主菜单模式[{}]",id);
+     //   Object o = session.getAttribute(Constants.SESSION_USER_KEY);
         UserVO userVO = (UserVO)session.getAttribute(Constants.SESSION_USER_KEY);
         logger.info("userVO是否为null[{}]",userVO==null);
         String url = null;

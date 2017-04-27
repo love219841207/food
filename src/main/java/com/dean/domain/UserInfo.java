@@ -12,9 +12,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name="user_info")
-public class UserInfo implements Serializable {
+public class UserInfo {
 
-    private static final long serialVersionUID = 7277822338378036904L;
     @Id
     @GeneratedValue
     private Long id;

@@ -13,9 +13,8 @@ import java.util.Date;
 @Entity
 @Table(name="wechat_info")
 
-public class WechatInfo implements Serializable {
+public class WechatInfo {
 
-    private static final long serialVersionUID = 1368096375344199921L;
     @Id
     @GeneratedValue
     private Long id;

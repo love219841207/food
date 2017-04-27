@@ -8,8 +8,8 @@ import java.io.Serializable;
 /**
  * Created by dongxu on 2017/1/27.
  */
-public class UserVO implements Serializable{
-    private static final long serialVersionUID = -1913905599872931505L;
+public class UserVO {
+
     private UserInfo userInfo;
     private WechatInfo wechatInfo;
 
