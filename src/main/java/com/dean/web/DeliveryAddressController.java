@@ -30,6 +30,7 @@ public class DeliveryAddressController {
     private DeliveryAddressService deliveryAddressService;
     @Autowired
     private AddressInfoService addressInfoService;
+
     @RequestMapping("/edit")
     public String edit(@RequestParam(value = "id",required = false) Long id
                        ,HttpServletRequest request
@@ -76,9 +77,9 @@ public class DeliveryAddressController {
     @RequestMapping("/list")
     public String list(ModelMap model ,HttpServletRequest request,@RequestParam(value = "choose",required = false) String choose){
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
-        logger.info("userVO[{}]", userVO==null);
+        logger.info("userVO[{},{}]", userVO==null,request.getSession().getId());
         logger.info("userVO[{}]", userVO.getUserInfo()==null);
-        logger.info("userVO[{}]" ,userVO.getUserInfo().getId());
+        logger.info("userVO[{}]", userVO.getUserInfo().getId());
 
         List<DeliveryAddressVO> list =  deliveryAddressService.findByUserId(userVO.getUserInfo().getId());
         model.put("list", list);

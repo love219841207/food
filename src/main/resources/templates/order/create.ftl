@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/reset.css" />
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/food.css" />
     <script src="${springMacroRequestContext.contextPath}/js/jquery.1.8.3.min.js"></script>
-    <script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
+    <#--<script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>-->
 </head>
 <body class="g-ptom">
 
@@ -47,9 +47,9 @@
 </div>
 
 <script>
-    $(function(){
+   /* $(function(){
         FastClick.attach(document.body);
-    });
+    });*/
     $('.j-selt').click(function(){
         $(this).toggleClass('on');
         if($(this).hasClass('on')){
@@ -64,8 +64,6 @@
             $('.u-col .frt').text($('.u-col .frt').attr('v')+'￥');
         }
     })
-
-
 </script>
 
 </body>

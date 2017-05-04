@@ -1,6 +1,5 @@
 package com.dean.config;
 
-import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -13,7 +12,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 
 @Configuration
 @EnableRedisHttpSession
-public class RedisSessionConfig extends CachingConfigurerSupport {
+public class RedisSessionConfig{
    /* @Bean
     public KeyGenerator keyGenerator() {
         return new KeyGenerator() {

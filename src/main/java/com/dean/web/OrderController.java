@@ -49,15 +49,21 @@ public class OrderController {
     }
 
     @RequestMapping(value="/payment")
-    public String payment(HttpServletRequest request,OrderInfoVO orderInfoVO){
+    public String payment(HttpServletRequest request,OrderInfoVO orderInfoVO,ModelMap model){
         orderService.payOrderInfo(orderInfoVO);
-        return "forward:/order/list";
-
+       /* UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        logger.info("userVO1[{},{}]", userVO == null, request.getSession().getId());
+        List<OrderInfoVO> orders = orderService.getList(userVO.getUserInfo().getId());
+        model.put("orders", orders);
+        return "order/list";*/
+       // logger.info("userVO1[{},{}]", userVO == null, request.getSession().getId());
+        return "forward:list";
     }
 
     @RequestMapping(value="/list")
     public String list(HttpServletRequest request,ModelMap model){
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        logger.info("userVO2[{},{}]", userVO==null,request.getSession().getId());
         List<OrderInfoVO> orders = orderService.getList(userVO.getUserInfo().getId());
         model.put("orders",orders);
         return "order/list";

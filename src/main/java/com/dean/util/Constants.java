@@ -6,7 +6,8 @@ import java.text.SimpleDateFormat;
 /**
  * Created by dongxu on 2017/2/4.
  */
-public class Constants {
+public class
+        Constants {
     //手机验证码注册绑定
     public static final int SMS_CODE_SCENE=1;
 

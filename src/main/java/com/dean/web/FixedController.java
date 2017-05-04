@@ -29,12 +29,12 @@ public class FixedController {
     private DeliveryAddressService deliveryAddressService;
     @Autowired
     private UserAccountDetailService userAccountDetailService;
+
     @RequestMapping(value="/index")
     public String fixed(ModelMap model ,HttpServletRequest request,@RequestParam(value = "deliveryId",required = false) Long deliveryId){
         logger.info("/fixed/index,deliveryId[{}]",deliveryId);
         UserVO userVO = (UserVO)request.getSession().getAttribute(Constants.SESSION_USER_KEY);
-        logger.info("userVO[{}]", userVO==null);
-        logger.info("userVO[{}]", userVO.getUserInfo()==null);
+        logger.info("userVO[{},{}]", userVO==null,request.getSession().getId());
         logger.info("userVO[{}]" ,userVO.getUserInfo().getId());
         DeliveryAddressVO deliveryAddressVO = deliveryAddressService.getPlanDeliveryAddressVO(deliveryId, userVO.getUserInfo().getId());
         model.put("deliveryAddressVO", deliveryAddressVO);

@@ -29,6 +29,7 @@ public class UserController {
     @RequestMapping("/index")
     public String index(HttpServletRequest request,ModelMap model){
         UserVO userVO = (UserVO)request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        logger.info("userVO[{},{}]", userVO==null,request.getSession().getId());
         Integer couponCount = couponService.findCountByUserId(userVO.getUserInfo().getId());
         model.put("couponCount",couponCount);
         return "user/index";
