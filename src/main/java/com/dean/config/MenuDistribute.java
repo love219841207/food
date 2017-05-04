@@ -9,15 +9,15 @@ public class MenuDistribute {
     public static String distribute(String routeid){
         if (!StringUtils.isEmpty(routeid)) {
             if (routeid.equals("1")) {
-                return "redirect:/user/index";
+                return "forward:/user/index";
             } else if (routeid.equals("2")) {
-                return "redirect:/fixed/index";
+                return "forward:/fixed/index";
             }else if (routeid.equals("3")) {
-                return "redirect:/book/single";
+                return "forward:/book/single";
             }else if (routeid.equals("4")) {
-                return "redirect:/book/group";
+                return "forward:/book/group";
             }
         }
-        return "redirect:/user/home";
+        return "forward:/user/home";
     }
 }

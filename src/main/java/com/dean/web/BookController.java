@@ -43,9 +43,10 @@ public class BookController {
     }
 
     @RequestMapping("/single")
-    public String single(ModelMap model) {
+    public String single(ModelMap model,HttpServletRequest request) {
    /*     List<TypeMenuVO> list = menuService.findTypeMenu();
         model.put("typeMenus", list);*/
+        logger.info("book/single seesion[{}]", request.getSession().getId());
         return "book/single";
     }
     @RequestMapping(value="/typemenu/{type}")

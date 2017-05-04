@@ -41,6 +41,7 @@ public class OrderController {
                           @RequestParam(value = "pkgDays") int pkgDays){
         logger.info("/create/{}/{}/{}", type, timeMenu, pkgDays);
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        logger.info("session id [{}]",request.getSession().getId());
         OrderInfoVO orderInfoVO = orderService.initOrderInfo(type, timeMenu, userVO.getUserInfo().getId(), pkgDays);
         model.put("orderInfoVO", orderInfoVO);
         CouponVO couponVO = couponService.findByUserId(userVO.getUserInfo().getId());

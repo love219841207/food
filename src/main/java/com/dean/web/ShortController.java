@@ -32,12 +32,13 @@ public class ShortController {
         logger.info("进入主菜单模式[{}]",id);
      //   Object o = session.getAttribute(Constants.SESSION_USER_KEY);
         UserVO userVO = (UserVO)session.getAttribute(Constants.SESSION_USER_KEY);
-        logger.info("userVO是否为null[{}]",userVO==null);
+        logger.info("userVO是否为[{}]",userVO==null);
         String url = null;
         if(userVO==null || userVO.getWechatInfo()==null){
             url = String.format(appUrlProperties.getAuthUrl(), id);
             url = URL_REDIRECT_PREFIX+wechatService.getRedirUrl(url);
         }else{
+            logger.info("有session short session[{}]",session.getId());
             url =distribute(id);
         }
 
