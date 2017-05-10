@@ -168,5 +168,20 @@ body.g-ptom{padding-bottom: 70px;}
 .g-wid p.hide{display: none;}
 
 
+.g-inquire{color: #333;font-size: .9rem;padding-bottom: 5rem;}
+.g-inquire h2{text-align: center;padding: .7rem 0;}
+.g-inquire dl dt{border-top:1px solid #ccc;padding: .5rem 5%;color: #000;font-size: 1rem;}
+.g-inquire dl dd{padding: 0 5% .5rem;position: relative;}
+.g-inquire dd.u-year{height: 30px;}
+.g-inquire dd.u-year input{position: absolute;left:5%;top:0;background-color: #f2f2f2;border:1px solid #ccc;width: 130px;padding: 5px 10px;-webkit-appearance: none;border-radius: 0;}
+.g-inquire dd.u-year input.weui_input{opacity: 0;z-index: 10;}
+.g-inquire dd.u-heg input{background-color: #f2f2f2;border:1px solid #ccc;width: 130px;padding: 5px 10px;-webkit-appearance: none;border-radius: 0;}
+.g-inquire dd.u-sel span{display: block;margin-bottom: .2rem;}
+.g-inquire dd.u-sel span input{vertical-align: middle;margin-right: .5rem;margin-left: .3rem;}
 
+.g-inquire dd.u-sex span{display: block;margin-bottom: .20rem;}
+.g-inquire dd.u-sex span input{vertical-align: middle;margin-right: .50rem;margin-left: .3rem;}
+
+.g-inquire dd.u-sig span{margin-right: 1rem;}
+.g-inquire dd.u-sig span input{vertical-align: middle;margin-right: .5rem;margin-left: .3rem;}
 

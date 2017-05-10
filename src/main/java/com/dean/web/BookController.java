@@ -26,7 +26,8 @@ public class BookController {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final String DEFAULT_TIME_TYPE = "1";
-
+    @Autowired
+    private HealthyInfoService healthyInfoService;
     @Autowired
     private GroupInfoService groupInfoService;
     @Autowired
@@ -46,6 +47,9 @@ public class BookController {
     public String single(ModelMap model,HttpServletRequest request) {
    /*     List<TypeMenuVO> list = menuService.findTypeMenu();
         model.put("typeMenus", list);*/
+        UserVO userVO = (UserVO)request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        BodyIndexVO bodyIndexVO = healthyInfoService.getBodyIndexVO(userVO.getUserInfo().getId());
+        model.put("bodyIndexVO",bodyIndexVO);
         logger.info("book/single seesion[{}]", request.getSession().getId());
         return "book/single";
     }

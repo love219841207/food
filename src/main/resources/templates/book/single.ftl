@@ -19,21 +19,21 @@
 </head>
 <body>
 <div class="g-rept">
-    <h2 class="fcb">健康报告 <a href="#">生成报告</a></h2>
+    <h2 class="fcb">健康报告 <a href="${springMacroRequestContext.contextPath}/healthy/info">生成报告</a></h2>
     <div class="fcb u-con">
         <div class="lt flt">
             <span class="up">热量需求</span>
             <div class="g-circle j-circle">
                 <div class="pie_left"><div class="left"></div></div>
                 <div class="pie_right"><div class="right"></div></div>
-                <div class="cir_mask"><span>25</span>%</div>
+                <div class="cir_mask"><span>${bodyIndexVO.caloricReq!''}</span></div>
             </div>
         </div>
 
         <div class="rt frt">
-            <span> <em>BMI:</em> 40（非常肥胖）</span>
-            <span> <em>基础代谢:</em> 1740 kcal</span>
-            <span> <em>每日消耗</em> <i>648kcal</i></span>
+            <span> <em>BMI:</em>${bodyIndexVO.bmi!'0'} （${bodyIndexVO.bmiLevel!'-'}）</span>
+            <span> <em>基础代谢:</em> ${bodyIndexVO.metabolize!'0'} kcal</span>
+            <span> <em>每日消耗</em> <i>${bodyIndexVO.consume!''}kcal</i></span>
         </div>
     </div>
 </div>
@@ -94,7 +94,6 @@
         var num = $(this).find('span').text() * 3.6;
         if (num<=180) {
             $(this).find('.right').css('transform', "rotate(" + num + "deg)");
-            console.log(2)
         } else {
             $(this).find('.right').css('transform', "rotate(180deg)");
             $(this).find('.left').css('transform', "rotate(" + (num - 180) + "deg)");
