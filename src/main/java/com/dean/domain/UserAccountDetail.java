@@ -24,6 +24,33 @@ public class UserAccountDetail {
     private String typeMenu;
     private Date fixDate;
     private int num;
+    private String deliveryName;
+    private String deliveryPhone;
+    private String deliveryAdd;
+
+    public String getDeliveryName() {
+        return deliveryName;
+    }
+
+    public void setDeliveryName(String deliveryName) {
+        this.deliveryName = deliveryName;
+    }
+
+    public String getDeliveryPhone() {
+        return deliveryPhone;
+    }
+
+    public void setDeliveryPhone(String deliveryPhone) {
+        this.deliveryPhone = deliveryPhone;
+    }
+
+    public String getDeliveryAdd() {
+        return deliveryAdd;
+    }
+
+    public void setDeliveryAdd(String deliveryAdd) {
+        this.deliveryAdd = deliveryAdd;
+    }
 
     public Long getId() {
         return id;

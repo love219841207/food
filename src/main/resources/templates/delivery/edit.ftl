@@ -22,6 +22,8 @@
         <input type="hidden" name="dft" id="dft" value="${deliveryAddressVO.dft!''}">
     <input type="hidden" name="userId" value="${deliveryAddressVO.userId!''}">
     <input type="hidden" name="addressId" id="addressId" value="${deliveryAddressVO.addressId!''}">
+        <input type="hidden" name="choose" id="choose" value="${isChoose!''}">
+
     <div class="form-list">
         <input type="text" id='picker' name="picker" placeholder="选择地址" value="${deliveryAddressVO.addressName!''}" data-values="${deliveryAddressVO.addressId!''}"/>
     </div>

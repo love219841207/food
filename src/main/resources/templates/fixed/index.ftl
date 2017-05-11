@@ -19,7 +19,11 @@
     <a href="${springMacroRequestContext.contextPath}/delivery/list?choose=1"><img src="${springMacroRequestContext.contextPath}/img/icon3.png" alt="">
         <#if deliveryAddressVO??>
             姓名:${deliveryAddressVO.name} 手机号码:${deliveryAddressVO.phone}
+            <input type="hidden" id="deliveryId" value = "${deliveryAddressVO.id}"/>
+        <#else>
+            <input type="hidden" id="deliveryId" value = ""/>
         </#if>
+
       </a>
 </div>
 <div class="g-rhd">
@@ -126,23 +130,29 @@
     });
     $(function(){
         $('.j-wid').click(function(){
+            var _devid =  $('#deliveryId');
+            if(_devid.val()==''){
+                alert("请配置送货地址!");
+                return false;
+            }
             var _arr = $('.g-plan table tr:gt(0)');
             var _data = [];
             _arr.each(function(index, el) {
                 var _fixDate = $(this).attr('data-date');
                 var _nn_type = $(this).children(':eq(1)').attr('data-type');
                 var _nt_type = $(this).children(':eq(2)').attr('data-type');
-                console.log(_fixDate+" " + _nn_type +" "+_nt_type);
                 if(_nn_type!=undefined&&_nn_type!=null&&_nn_type!=''){
                     var _o = {};
                     _o._fixDate = _fixDate;
                     _o._nn = _nn_type;
+                    _o._devId = _devid.val();
                     _data.push(_o);
                 }
                 if(_nt_type!=undefined&&_nt_type!=null&&_nt_type!=''){
                     var _o = {};
                     _o._fixDate = _fixDate;
                     _o._nt = _nt_type;
+                    _o._devId = _devid.val();
                     _data.push(_o);
                 }
             });

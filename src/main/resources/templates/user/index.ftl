@@ -16,8 +16,8 @@
 
 <div class="g-center">
     <div class="hd fcb">
-        <img src="${userVO.wechatInfo.headImg}" alt="" class="flt">
-        <p class="flt">${userVO.wechatInfo.nickName} <br>${userVO.userInfo.phone}</p>
+        <img src="${userVO.wechatInfo.headImg!'${springMacroRequestContext.contextPath}/img/head.jpg'}" alt="" class="flt">
+        <p class="flt">${userVO.wechatInfo.nickName!'客官'} <br>${userVO.userInfo.phone}</p>
     </div>
 
     <div class="center">

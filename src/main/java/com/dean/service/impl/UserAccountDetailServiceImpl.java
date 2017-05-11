@@ -31,6 +31,8 @@ public class UserAccountDetailServiceImpl implements UserAccountDetailService {
     private UserAccountDetailDao userAccountDetailDao;
     @Autowired
     private MenuService menuService;
+    @Autowired
+    private DeliveryAddressService deliveryAddressService;
 
     @Override
     public void orderAdd(OrderInfoVO orderInfoVO) {
@@ -133,6 +135,8 @@ public class UserAccountDetailServiceImpl implements UserAccountDetailService {
                 String fixDate = objNode.path("_fixDate").asText();
                 userAccountDetail.setFixDate(DateUtils.getDate(fixDate));
                 String _str = null;
+                Long deliveryId = null;
+                DeliveryAddressVO deliveryAddressVO = null;
                 if(objNode.has("_nn")){
                     _str = objNode.path("_nn").asText();
                     userAccountDetail.setTimeMenu(Constants.TIME_MENU_NOON);
@@ -142,6 +146,14 @@ public class UserAccountDetailServiceImpl implements UserAccountDetailService {
                     _str = objNode.path("_nt").asText();
                     userAccountDetail.setTimeMenu(Constants.TIME_MENU_NIGHT);
                     userAccountDetail.setTypeMenu(_str);
+                }
+                if(objNode.has("_devId")){
+                    if(deliveryAddressVO==null){
+                        deliveryAddressVO = deliveryAddressService.findById(objNode.path("_devId").asLong());
+                    }
+                    userAccountDetail.setDeliveryPhone(deliveryAddressVO.getPhone());
+                    userAccountDetail.setDeliveryName(deliveryAddressVO.getName());
+                    userAccountDetail.setDeliveryAdd(deliveryAddressVO.getAddressName()+"-"+deliveryAddressVO.getAddressExtend());
                 }
                 list.add(userAccountDetail);
             }

@@ -33,6 +33,7 @@ public class DeliveryAddressController {
 
     @RequestMapping("/edit")
     public String edit(@RequestParam(value = "id",required = false) Long id
+                         ,@RequestParam(value = "choose",required = false) String choose
                        ,HttpServletRequest request
             ,ModelMap model){
         logger.info("个人地址编辑id为[{}]", id);
@@ -48,6 +49,7 @@ public class DeliveryAddressController {
             deliveryAddressVO.setUserId(userVO.getUserInfo().getId());
         }
         model.put("deliveryAddressVO", deliveryAddressVO);
+        model.put("isChoose", choose);
         return "delivery/edit";
     }
 
@@ -69,9 +71,14 @@ public class DeliveryAddressController {
 
 
     @RequestMapping("/save")
-    public String save(DeliveryAddressVO deliveryAddressVO){
+    public String save(DeliveryAddressVO deliveryAddressVO,@RequestParam(value = "choose",required = false) String choose){
         deliveryAddressService.save(deliveryAddressVO);
-        return "forward:/delivery/list";
+        if(StringUtils.isEmpty(choose)){
+            return "forward:/delivery/list";
+        }else{
+            return "forward:/delivery/list?choose=1";
+        }
+
     }
 
     @RequestMapping("/list")

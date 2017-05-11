@@ -44,10 +44,10 @@
     });
     $(function(){
         $('.j-btn').tap(function(){
-            location.href="${springMacroRequestContext.contextPath}/delivery/edit";
+            location.href="${springMacroRequestContext.contextPath}/delivery/edit?choose=<#if isChoose==true>1</#if>";
         });
         $('.j-edit').tap(function(){
-            location.href="${springMacroRequestContext.contextPath}/delivery/edit?id="+$(this).attr('v');
+            location.href="${springMacroRequestContext.contextPath}/delivery/edit?id="+$(this).attr('v')+"&choose=<#if isChoose==true>1</#if>";
         })
     })
 </script>
