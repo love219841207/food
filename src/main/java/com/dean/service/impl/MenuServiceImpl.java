@@ -234,7 +234,7 @@ public class MenuServiceImpl implements MenuService {
 
     private List<ArrayList<ArrayList<String>>> ReadMenuFormExcel() {
         List<ArrayList<ArrayList<String>>> excelInfo = new ArrayList<ArrayList<ArrayList<String>>>();
-        File file = new File("E:\\menu.xlsx");
+        File file = new File("/home/up/menu.xlsx");
         Workbook workbook = null;
         try {
             workbook = WorkbookFactory.create(file);
