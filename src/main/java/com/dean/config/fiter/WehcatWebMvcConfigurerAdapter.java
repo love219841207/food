@@ -12,7 +12,7 @@ public class WehcatWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new WechatInterceptor())
-                .addPathPatterns("/**").excludePathPatterns("/short/**","/wechat/**","/book/group**");
+                .addPathPatterns("/**").excludePathPatterns("/short/**","/wechat/**","/book/group**","/dean/**");
         super.addInterceptors(registry);
     }
 }
