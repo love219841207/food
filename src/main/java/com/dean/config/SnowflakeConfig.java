@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Created by dongxu on 2017/5/11.
  */
-/*@Configuration*/
+@Configuration
 public class SnowflakeConfig {
     @Bean
     IdWorker initIdWorker(){

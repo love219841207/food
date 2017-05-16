@@ -9,6 +9,7 @@ import com.dean.service.OrderInfoVO;
 import com.dean.service.OrderService;
 import com.dean.service.UserAccountDetailService;
 import com.dean.util.Constants;
+import com.dean.util.IdWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +29,8 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private IdWorker idWorker;
     @Autowired
     private OrderInfoDao orderInfoDao;
     @Autowired
@@ -64,6 +67,7 @@ public class OrderServiceImpl implements OrderService {
         OrderInfo orderInfo = null;
         if(StringUtils.isEmpty(orderInfoVO.getId())){
             orderInfo = new OrderInfo();
+            orderInfo.setId(String.valueOf(idWorker.nextId()));
             orderInfo.setTimeMenu(orderInfoVO.getTimeMenu());
             orderInfo.setPkgDays(orderInfoVO.getPkgDays());
             orderInfo.setUserId(orderInfoVO.getUserId());

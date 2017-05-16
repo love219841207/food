@@ -16,8 +16,6 @@ import java.util.Date;
 @Table(name="order_info")
 public class OrderInfo {
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid",strategy = "uuid")
     private String id;
     private Long userId;
     private Date createTime;

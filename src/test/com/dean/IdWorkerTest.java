@@ -70,7 +70,7 @@ public class IdWorkerTest {
     public static void main(String[] args){
         IdWorkerTest worker2 = new IdWorkerTest(2);
         System.out.println(worker2.nextId());
-
+        System.out.println(worker2.nextId());
 
     }
 

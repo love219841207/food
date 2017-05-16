@@ -119,9 +119,9 @@
         <a href="javascript:void(0);"  data-surplus="1,2,${time1Type2}" class="hide">均衡纤体</a>
         <a href="javascript:void(0);" data-surplus="2,1,${time2Type1}" class="hide">极致瘦身</a>
         <a href="javascript:void(0);"  data-surplus="2,2,${time2Type2}" class="hide">均衡纤体</a>
-        <a href="javascript:void(0);" class="j-cancle">取消套餐</a>
+        <a href="javascript:void(0);" class="j-cancle hide">取消套餐</a>
     </div>
-    <p class="red j-non hide">没有可用的套餐</p>
+    <p class="red j-non hide">您没有可用的套餐!</p>
 
 </div>
 <script>
@@ -179,23 +179,55 @@
             var _date = $(this).addClass("j-on").parent().attr('data-date');
             var _type = $(this).attr('data-type');
             var _time = $(this).attr('data-time');
-            var _h2 = '排餐：';
-            _h2+=_date;
-            _h2+=' ';
-            _h2+=(_type=='1'?"午餐":"晚餐");
-            $('.g-wid h2').text(_h2);
-            var _arr = $('.j-sel a:lt(4)');
-            _arr.each(function(index, el) {
-                var _datas = $(this).attr('data-surplus');
-                if(_datas.split(',')[0]==_time
-                        &&_datas.split(',')[2]>0){
-                    $(this).removeClass('hide');
+            if( _globe_st.attr('data-type')==''){
+                var _h2 = '排餐：';
+                _h2+=_date;
+                _h2+=' ';
+                _h2+=(_type=='1'?"午餐":"晚餐");
+                $('.g-wid h2').text(_h2);
+                var _arr = $('.j-sel a:lt(4)');
+                var _noneSel = false;
+                _arr.each(function(index, el) {
+                    var _datas = $(this).attr('data-surplus');
+                    if(_datas.split(',')[0]==_time
+                            &&_datas.split(',')[2]>0){
+                        $(this).removeClass('hide');
+                        _noneSel = true;
+                    }else{
+                        $(this).addClass('hide');
+                    }
+                });
+                if(!_noneSel){
+                    $('.j-non').show();
                 }else{
-                    $(this).addClass('hide');
+                    $('.j-non').hide();
                 }
-            });
-            _wid.show();
-            _mask.show();
+                $('.j-cancle').addClass('hide');
+                _wid.show();
+                _mask.show();
+            }else{
+
+                var _sel_opt = _globe_st.attr('data-time');
+                _sel_opt +=',';
+                _sel_opt +=_globe_st.attr('data-type');
+                var _surplus = $("[data-surplus^='"+_sel_opt+"']").attr('data-surplus').split(',');
+                console.log('返回库存前：'+_surplus);
+                _surplus[2] = parseInt(_surplus[2])+1 ;
+                $("[data-surplus^='"+_sel_opt+"']").attr('data-surplus',_surplus.join(','));
+                console.log('返回库存后：'+_surplus);
+
+
+                //处理页头
+                var _sur = $('.j-sur').attr('data-sur');
+                var _use = $('.j-use').attr('data-use');
+                $('.j-sur').attr('data-sur',parseInt(_sur)+1);
+                $('.j-use').attr('data-use',parseInt(_use)-1);
+                $('.j-sur').text('未排餐:'+$('.j-sur').attr('data-sur'));
+                $('.j-use').text('已排餐:'+$('.j-use').attr('data-use'));
+                _globe_st.text('');
+                _globe_st.attr('data-type','');
+            }
+
         });
 
 //点击关闭弹窗
@@ -207,52 +239,30 @@
 
 // 弹窗里的单选
         $('.j-sel a').click(function(){
-            //处理库存返回
-            if(_globe_st.attr('data-type')!=''){
-                var _sel_opt = _globe_st.attr('data-time');
-                _sel_opt +=',';
-                _sel_opt +=_globe_st.attr('data-type');
-                var _surplus = $("[data-surplus^='"+_sel_opt+"']").attr('data-surplus').split(',');
-                console.log('返回库存前：'+_surplus);
-                _surplus[2] = parseInt(_surplus[2])+1 ;
-                $("[data-surplus^='"+_sel_opt+"']").attr('data-surplus',_surplus.join(','));
-                console.log('返回库存后：'+_surplus);
-            }
+
             //处理页头
             var _sur = $('.j-sur').attr('data-sur');
             var _use = $('.j-use').attr('data-use');
-            if(_globe_st.attr('data-type')!=''){
-                if($(this).hasClass('j-cancle')){
-                    console.log('dd');
-                    $('.j-sur').attr('data-sur',parseInt(_sur)+1);
-                    $('.j-use').attr('data-use',parseInt(_use)-1);
-                    $('.j-sur').text('未排餐:'+$('.j-sur').attr('data-sur'));
-                    $('.j-use').text('已排餐:'+$('.j-use').attr('data-use'));
-                }
-            }else{
-                if(!$(this).hasClass('j-cancle')){
-                    $('.j-sur').attr('data-sur',parseInt(_sur)-1);
-                    $('.j-use').attr('data-use',parseInt(_use)+1);
-                    $('.j-sur').text('未排餐:'+$('.j-sur').attr('data-sur'));
-                    $('.j-use').text('已排餐:'+$('.j-use').attr('data-use'));
-                }
-            }
 
-            if($(this).hasClass('j-cancle')){
-                _globe_st.text('');
-                _globe_st.attr('data-type','');
-            }else{
-                //处理扣减
-                var _datas = $(this).attr('data-surplus').split(',');
-                console.log('处理扣减前：'+$(this).attr('data-surplus'));
-                _datas[2] = parseInt(_datas[2]) - 1;
-                $(this).attr('data-surplus',_datas);
-                console.log('处理扣减前：'+$(this).attr('data-surplus'));
-                //处理返回
-                var _txt = $(this).text();
-                _globe_st.text(_txt);
-                _globe_st.attr('data-type',_datas[1]);
-            }
+
+            $('.j-sur').attr('data-sur',parseInt(_sur)-1);
+            $('.j-use').attr('data-use',parseInt(_use)+1);
+            $('.j-sur').text('未排餐:'+$('.j-sur').attr('data-sur'));
+            $('.j-use').text('已排餐:'+$('.j-use').attr('data-use'));
+
+
+
+            //处理扣减
+            var _datas = $(this).attr('data-surplus').split(',');
+            console.log('处理扣减前：'+$(this).attr('data-surplus'));
+            _datas[2] = parseInt(_datas[2]) - 1;
+            $(this).attr('data-surplus',_datas);
+            console.log('处理扣减前：'+$(this).attr('data-surplus'));
+            //处理返回
+            var _txt = $(this).text();
+            _globe_st.text(_txt);
+            _globe_st.attr('data-type',_datas[1]);
+
 
             _mask.hide();
             _wid.hide();
