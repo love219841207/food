@@ -45,10 +45,16 @@
     <button class="btm-w80 gray j-del">删除</button> -->
     
     <div class="g-bottom">
+        <#if (deliveryAddressVO.id)??>
 
-        <a href="#" class="j-del u-del"></a>
+            <a href="#" class="j-del u-del"></a>
+            <a href="#" class="u-mor j-save">保存修改</a>
 
- 		<a href="#" class="u-mor j-save">保存修改</a>
+        <#else>
+            <a href="#" class="u-mor1 j-save">保存修改</a>
+        </#if>
+
+
 	</div>
 
 </div>
