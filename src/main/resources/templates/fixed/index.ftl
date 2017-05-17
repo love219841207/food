@@ -163,6 +163,7 @@
                 data: JSON.stringify(_data),
                 //dataType: "json",
                 success: function (message) {
+                    alert('提交成功!');
                     location.reload();
                 },
                 error: function (message) {

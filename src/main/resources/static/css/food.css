@@ -1,7 +1,7 @@
 
 
 body{background-color: #f2f2f2;color: #333;}
-body.g-padtom{background-color: #fff;padding-bottom: 70px;}
+body.g-padtom{background-color: #fff;padding-bottom: 70px;font-size: .9rem;}
 body.g-ptom{padding-bottom: 70px;}
 
 /*公用轮播样式*/ 
@@ -85,12 +85,20 @@ body.g-ptom{padding-bottom: 70px;}
 .g-bottom{position: fixed;bottom: 0;left: 0;background-color: #fff;border-top:1px solid #ccc;width: 100%;}
 .g-bottom a{width: 90%;margin: .8rem auto;height: 2.5rem;line-height: 2.5rem;text-align: center;background-color: #f8d80b;display:block;color: #333;border-radius: .3rem;}
 
+.g-bottom .u-del{background:url(../img/del-btn.png) 50% 50% no-repeat;width:30%;float: left;background-size: 22px;}
+.g-bottom .u-mor{width:60%;float: left;}
+
+
+.adr-box .u-adr{color:#4c4c4c;font-size:.6rem;text-align:left;display:block;background:url(../img/ico_n.png) 20px 50% no-repeat;background-size:18px;
+	padding-left:45px;margin-top:.5rem;}
+.adr-box .u-adr.on{background-image:url(../img/ico_y.png);}	
+
 .g-wid{position: fixed;bottom: 0;left: 0;width: 90%;z-index: 1000;background-color: #fff;padding:1rem 5%;
 	display: none;}
 .g-wid img{position: absolute;right: 5%;top:5%;width: 30px;}
 .g-wid h2{font-size: 1.1rem;}
 .g-wid span{display: block;margin:1rem 0;}
-.g-wid .u-det a{border:1px solid #ccc;display: inline-block;padding: .5rem;margin:0 .3rem .7rem 0;color: #333;}
+.g-wid .u-det a{border:1px solid #ccc;display: inline-block;padding: .5rem;margin:0 .3rem .7rem 0;color: #333;font-size: .7rem;}
 .g-wid .u-det a.on{border-color: #f8d80b;}
 .g-wid .u-det a.hide{display: none;}
 .u-det.u-hide{display: none;}
@@ -106,14 +114,37 @@ body.g-ptom{padding-bottom: 70px;}
 .g-plan h2 img{vertical-align: middle;height: 14px;margin:0 .3rem;}
 
 .g-plan table{width: 94%;margin: .5rem auto;font-size: .9rem;}
-.g-plan table td{border:1px solid #ccc;text-align: center;vertical-align: middle;padding: .3rem;}
-.g-plan table th{border:1px solid #ccc;height: 2rem;line-height: 2rem;}
+.g-plan table td{text-align: center;vertical-align: middle;padding: .3rem;}
+.g-plan table th{height: 2rem;line-height: 2rem;}
 .g-plan .u-tab1{background-color: #F2F2F2;text-align: right;}
 .g-plan .u-tab2{background-color: #E7F3DD;}
 .g-plan .u-tab3{background-color: #F3E5DC;}
 .g-plan .u-tab1 em{display:block; }
 .g-plan .u-red{color: red;}
 .g-plan .u-noedit{background: url(../img/line.png) 0 0 no-repeat;background-size: 100% 100%;}
+
+ .g-plan table tr:nth-child(odd) th:nth-child(1){background-color: #f2f2f2;}
+ .g-plan table tr:nth-child(odd) th:nth-child(2){background-color: #e7f3db;}
+ .g-plan table tr:nth-child(odd) th:nth-child(3){background-color: #dbdbf3;}
+
+ .g-plan table tr:nth-child(odd) td:nth-child(1){background-color: #f2f2f2;}
+ .g-plan table tr:nth-child(odd) td:nth-child(2){background-color: #e7f3db;}
+ .g-plan table tr:nth-child(odd) td:nth-child(3){background-color: #dbdbf3;}
+
+ .g-plan table tr:nth-child(even) td:nth-child(1){background-color: #fcfcfc;}
+ .g-plan table tr:nth-child(even) td:nth-child(2){background-color: #f3ffe7;}
+ .g-plan table tr:nth-child(even) td:nth-child(3){background-color: #e7e7ff;}
+
+
+
+
+
+
+
+
+
+
+
 
 .g-center{font-size: .9rem;}
 .g-center .hd{background-color: #fff;padding: 5%;border-bottom: 1px solid #ccc;}

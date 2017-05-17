@@ -89,7 +89,7 @@
     </#list>
 
     <div class="u-btn">
-        <span>¥<em class="u-now j-now"></em>¥<em class="u-org j-org"></em> </span>
+        <span>¥ <em class="u-now j-now"></em>¥ <em class="u-org j-org"></em> </span>
         <a href="#" id="j-book">下单</a>
     </div>
 </div>

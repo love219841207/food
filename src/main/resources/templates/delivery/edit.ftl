@@ -10,6 +10,7 @@
     <link href="${springMacroRequestContext.contextPath}/css/user.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.0/style/weui.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/jquery-weui/1.0.0/css/jquery-weui.min.css">
+    <link href="${springMacroRequestContext.contextPath}/css/food.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery-weui/1.0.0/js/jquery-weui.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
@@ -37,9 +38,20 @@
         <input type="tel" name="phone" id="phone" placeholder="联系电话" value="${deliveryAddressVO.phone!''}"/>
     </div>
     </form>
-    <button class="btm-w80 j-save">保存修改</button>
-    <button class="btm-w80 j-dft">设置默认地址</button>
-    <button class="btm-w80 gray j-del">删除</button>
+    
+    <a href="#" class="j-dft u-adr on">设置默认地址</a>
+    <!--<button class="btm-w80 j-save">保存修改</button>
+   <button class="btm-w80 j-dft">设置默认地址</button>
+    <button class="btm-w80 gray j-del">删除</button> -->
+    
+    <div class="g-bottom">
+
+        <a href="#" class="j-del u-del"></a>
+
+ 		<a href="#" class="u-mor j-save">保存修改</a>
+	</div>
+
+</div>
 
 </div>
 <script language="JavaScript">
@@ -73,11 +85,15 @@
     });
 
     $('.j-dft').click(function(){
-        $('#dft').val('1');
-        dosave();
+        $(this).toggleClass('on')
     });
 
     function dosave(){
+        if($('.j-dft').hasClass('on')){
+            $('#dft').val('1');
+        }else{
+            $('#dft').val('');
+        }
         $('#addressId').val($('#picker').attr('data-values'));
         if($('#picker').attr('data-values')==''){
             $.alert("请选择地址!");

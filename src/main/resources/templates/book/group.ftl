@@ -64,14 +64,9 @@
     </form>
 
 
-    <div class="page button js_show">
-        <div class="page__hd">
-            <div class="page__bd page__bd_spacing">
-                <a href="javascript:;" class="weui-btn g-gap j-sub">提交</a>
-            </div>
-        </div>
-    </div>
-
+	<div class="g-bottom">
+ 		<a href="#" class="j-sub">提交</a>
+	</div>
 </div>
 <script>
     $(function() {

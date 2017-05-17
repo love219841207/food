@@ -18,12 +18,14 @@
 
 
 <div class="g-case">
-    <!-- 没有订单的情况 -->
-    <!-- <div class="con">
-        <div class="no-case">
-            <img src="img/no_case.png" alt=""> <br>您目前还没有相关订单哦 ~
+    <#if (orders?size <1)>
+        <div class="con">
+            <div class="no-case">
+                <img src="${springMacroRequestContext.contextPath}/img/no_case.png" alt=""> <br>您目前还没有相关订单哦 ~
+            </div>
         </div>
-    </div> -->
+
+    </#if>
 
     <div class="con">
 

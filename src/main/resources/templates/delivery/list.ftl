@@ -9,6 +9,7 @@
     <title>配送地址</title>
     <meta name="description" id="description" content="YOTA 美食" />
     <link href="${springMacroRequestContext.contextPath}/css/user.css" rel="stylesheet" type="text/css">
+      <link href="${springMacroRequestContext.contextPath}/css/food.css" rel="stylesheet" type="text/css">
     <script src="${springMacroRequestContext.contextPath}/js/zepto.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
 </head>
@@ -34,10 +35,27 @@
             <div class="control j-edit" v="${deliver.id}"></div>
         </div>
         </#list>
+        <#if (list?size <1)>
+        <div class="g-case">
+            <div class="con">
+                <div class="no-case">
+                    <img src="${springMacroRequestContext.contextPath}/img/no-adr.png" alt=""> <br>您还没有配送地址
+                </div>
+            </div>
+
+        </#if>
 
 
-    <a href="javascript:void(0)" ><button class="btm-w80 j-btn">添加配送地址</button> </a>
+
+                <!--a href="javascript:void(0)" ><button class="btm-w80 j-btn">添加配送地址</button> </a>-->
+    
+    <div class="g-bottom">
+ 		<a href="#" class="j-btn">添加配送地址</a>
+	</div>
+    
 </div>
+
+
 <script language="JavaScript">
     $(function() {
         FastClick.attach(document.body);
