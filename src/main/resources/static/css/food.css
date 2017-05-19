@@ -52,7 +52,7 @@ body.g-ptom{padding-bottom: 70px;}
 
 .g-cald{text-align: center;margin-top: 2rem;font-size:1rem;}
 .g-cald img{display: inline-block;width: 8px;padding: 9px 9px 14px 9px;vertical-align: middle;}
-.g-cald input{display: inline-block;padding: .4rem;width: 75px;}
+.g-cald input{display: inline-block;padding: .1rem;width: 75px;}
 .g-cald input.on{background-color: #f4e483;border-radius: .3rem;text-align: center;}
 
 .g-cald1{margin-top: 2rem;padding: 0 5%;}
