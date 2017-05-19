@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>套餐详情页</title>
+    <title><#if type=='1'>极致瘦身<#else>均衡纤体</#if></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
     <meta name="format-detection" content="telephone=no,address=no,email=no" />
     <meta name="mobileOptimized" content="width" />
@@ -18,10 +18,16 @@
 </head>
 <body class="g-padtom">
 
-
-<div class="g-cald1 fcb">
-    请选择日期  <input type="text" class="j-calendar frt" value="${chooseDay}" readonly>
+<div class="g-cald">
+    <img src="${springMacroRequestContext.contextPath}/img/ar_lt.png" alt="">
+    <input type="text" value="${chooseDayVO.ychooseDayAlias}" readonly class="j-sp" hv="${chooseDayVO.ychooseDay}">
+    <input type="text" value="${chooseDayVO.chooseDayAlias}" readonly class="on j-calendar" hv="${chooseDayVO.chooseDay}" >
+    <input type="text" value="${chooseDayVO.tchooseDayAlias}" readonly class="j-sp" hv="${chooseDayVO.tchooseDay}">
+    <img src="${springMacroRequestContext.contextPath}/img/ar_rt.png" alt="">
 </div>
+<#--<div class="g-cald1 fcb">
+    请选择日期  <input type="text" class="j-calendar frt" value="${chooseDay}" readonly>
+</div>-->
 
 <div class="g-tab">
     <div class="u-hd fcb j-tab">
@@ -97,12 +103,16 @@
 <script>
     $(function() {
         FastClick.attach(document.body);
+        timeType = '${timeType}';
+        if(timeType=='2'){
+            $('.frt').trigger('click');
+        }
     });
     var _startDay = new Date('${.now?string("yyyy-MM-dd")}');
     _startDay.setDate(_startDay.getDate()+1);
     //日历
     $('.j-calendar').mdater({
-        minDate: _startDay,
+        //minDate: _startDay,
         callback:function(v){
             var timeType = $('.j-tab a').filter('.on').attr('v');
             //如果没有排餐、那么就获取本次请求的timeType
@@ -111,6 +121,15 @@
             }
             location.href="${springMacroRequestContext.contextPath}/book/typemenu/${type}?timeType="+timeType+"&chooseDay="+v;
         }
+    });
+
+    $('.j-sp').click(function(){
+        var v = $(this).attr('hv');
+        var timeType = $('.j-tab a').filter('.on').attr('v');
+        if(timeType==undefined){
+            timeType = '${timeType}';
+        }
+        location.href="${springMacroRequestContext.contextPath}/book/typemenu/${type}?timeType="+timeType+"&chooseDay="+v;
     });
 
     //页面tab切换

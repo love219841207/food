@@ -71,7 +71,7 @@ public class BookController {
         model.put("menus",menus);
         model.put("type", type);
         model.put("timeType",timeType);
-        model.put("chooseDay",chooseDay);
+        model.put("chooseDayVO",new ChooseDayVO(chooseDay));
         return "book/details";
 
     }

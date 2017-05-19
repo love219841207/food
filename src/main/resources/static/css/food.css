@@ -50,10 +50,10 @@ body.g-ptom{padding-bottom: 70px;}
 .g-auto .u-tab.on i{left:15px;}
 .btn-org{width: 70%;margin:0 auto; display: block;background-color: #f8d80b;color: #333;text-align: center;height: 2rem;line-height: 2rem;}
 
-.g-cald{text-align: center;margin-top: 2rem;}
-.g-cald img{display: inline-block;width: 8px;padding: 9px;vertical-align: middle;}
-.g-cald span{display: inline-block;padding: .3rem .5rem;}
-.g-cald span.on{background-color: #f4e483;border-radius: .3rem;}
+.g-cald{text-align: center;margin-top: 2rem;font-size:1rem;}
+.g-cald img{display: inline-block;width: 8px;padding: 9px 9px 14px 9px;vertical-align: middle;}
+.g-cald input{display: inline-block;padding: .4rem;width: 75px;}
+.g-cald input.on{background-color: #f4e483;border-radius: .3rem;text-align: center;}
 
 .g-cald1{margin-top: 2rem;padding: 0 5%;}
 .g-cald1 input{text-align: right;background:url(../img/link_s.png) 100% 50% no-repeat;background-size: 8px;padding-right: 15px;}
