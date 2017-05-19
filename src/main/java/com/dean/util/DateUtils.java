@@ -65,17 +65,5 @@ public class DateUtils {
         return weekDays[w];
     }
 
-    public static void main(String[] a){
-        String chooseDay = "2017-05-21";
-        Date d = DateUtils.getDate(chooseDay);
-        //设置选择日期的别名
-        System.out.println(DateUtils.getShortStringDate(d));
 
-        Date yd = DateUtils.getSpecifiedDayBefore(d, -1);
-        System.out.println(DateUtils.getShortStringDate(yd)+":"+DateUtils.getStringDate(yd));
-        System.out.println(yd.after(new Date()));
-        Date td = DateUtils.getSpecifiedDayBefore(d,1);
-        System.out.println(DateUtils.getShortStringDate(td)+":"+DateUtils.getStringDate(td));
-
-    }
 }
