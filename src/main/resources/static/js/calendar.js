@@ -25,7 +25,7 @@
       getLastDayInMonth: function(year, month) {
         return new Date(year, month, this.getDaysInMonth(year, month));
       }
-    }
+    };
 
     //为$扩展一个方法，以配置的方式代理事件
     $.fn.delegates = function(configs) {
@@ -36,13 +36,13 @@
           var obj = {};
           obj.click = value;
           value = obj;
-        };
+        }
         for (var type in value) {
           el.delegate(name, type, value[type]);
         }
       }
       return this;
-    }
+    };
 
     var mdater = {
       value: {
@@ -209,9 +209,11 @@
       //每次调出panel前，对界面进行重置
       refreshView: function() {
         if (this.input.hasClass('input-group')) {
-          var initVal = this.input.children('input').val();
+         // var initVal = this.input.children('input').val();
+          var initVal = this.input.children('input').attr('hv');
         } else {
-          var initVal = this.input.val();
+         // var initVal = this.input.val();
+          var initVal = this.input.attr('hv');
         }
         var date = null;
         if (initVal) {
@@ -260,10 +262,12 @@
           dateValue = '0' + dateValue;
         }
         if (_this.input.hasClass('input-group')) {
-          _this.input.children('input').val(_this.value.year + '-' + monthValue + '-' + dateValue);
+          _this.input.children('input').val(monthValue + '月' + dateValue+ '日');
+          _this.input.children('input').attr('hv',_this.value.year + '-' + monthValue + '-' + dateValue);
           _this.input.children('input').trigger('input');
         } else {
-          _this.input.val(_this.value.year + '-' + monthValue + '-' + dateValue);
+          _this.input.val( monthValue + '月' + dateValue+ '日');
+          _this.input.attr('hv',_this.value.year + '-' + monthValue + '-' + dateValue);
           _this.input.trigger('input');
         }
         _this._hidePanel();
@@ -321,7 +325,7 @@
           }
         });
       }
-    }
+    };
     mdater.init();
   }
 })(window.Zepto || window.jQuery);

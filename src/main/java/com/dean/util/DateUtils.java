@@ -15,10 +15,18 @@ public class DateUtils {
     protected static final Logger logger = LoggerFactory.getLogger(DateUtils.class);
     private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static SimpleDateFormat d = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat shortD = new SimpleDateFormat("MM月dd日");
     private static String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
     public static Date getDateByDelay(int delay){
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MINUTE,delay);
+        return c.getTime();
+    }
+
+    public static Date getSpecifiedDayBefore(Date date,int delay) {//可以用new Date().toLocalString()传递参数
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DAY_OF_YEAR, delay);
         return c.getTime();
     }
 
@@ -27,6 +35,11 @@ public class DateUtils {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_YEAR, delay);
         return d.format(cal.getTime());
+    }
+
+    public static String getShortStringDate(Date date){
+        String str=shortD.format(date);
+        return str;
     }
 
     public static String getStringDate(Date date){
@@ -50,5 +63,19 @@ public class DateUtils {
         if (w < 0)
             w = 0;
         return weekDays[w];
+    }
+
+    public static void main(String[] a){
+        String chooseDay = "2017-05-21";
+        Date d = DateUtils.getDate(chooseDay);
+        //设置选择日期的别名
+        System.out.println(DateUtils.getShortStringDate(d));
+
+        Date yd = DateUtils.getSpecifiedDayBefore(d, -1);
+        System.out.println(DateUtils.getShortStringDate(yd)+":"+DateUtils.getStringDate(yd));
+        System.out.println(yd.after(new Date()));
+        Date td = DateUtils.getSpecifiedDayBefore(d,1);
+        System.out.println(DateUtils.getShortStringDate(td)+":"+DateUtils.getStringDate(td));
+
     }
 }
