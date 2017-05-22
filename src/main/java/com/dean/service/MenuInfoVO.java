@@ -23,7 +23,21 @@ public class MenuInfoVO {
     private String other;
     private String kcal;
     private List<String> imgs;
+    private List<String> mainImgs;
     private List<PkgMenuVO> pkgMenuVOs;
+
+    public List<String> getMainImgs() {
+        return mainImgs;
+    }
+
+    public void setMainImgs(String mainImgPath) {
+        if(!StringUtils.isEmpty(mainImgPath)){
+            String[] arr = mainImgPath.split(",");
+            this.mainImgs = Arrays.asList(arr);
+        }else{
+            this.mainImgs = new ArrayList<String>();
+        }
+    }
 
     public List<PkgMenuVO> getPkgMenuVOs() {
         return pkgMenuVOs;
