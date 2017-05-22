@@ -75,7 +75,8 @@ public class MenuServiceImpl implements MenuService {
                 scheduleMenuInfo.setDrink(al.get(7));
                 scheduleMenuInfo.setOther(al.get(8));
                 scheduleMenuInfo.setKcal(al.get(9));
-                scheduleMenuInfo.setImgPaths(al.get(10));
+                scheduleMenuInfo.setMainImgPaths(al.get(10));
+                scheduleMenuInfo.setImgPaths(al.get(11));
                 scheduleMenuInfo.setUpdateTime(new Date());
                 scheduleMenuInfos.add(scheduleMenuInfo);
             }
@@ -140,6 +141,7 @@ public class MenuServiceImpl implements MenuService {
             menuInfoVO.setOther(smi.getOther());
             menuInfoVO.setScheduleDay(DateUtils.getStringDate(smi.getScheduleDay()));
             menuInfoVO.setStapleFood(smi.getStapleFood());
+            menuInfoVO.setMainImgs(smi.getMainImgPaths());
             menuInfoVO.setImgs(smi.getImgPaths());
             menuInfoVO.setPkgMenuVOs(this.findPkgMenuVO(typeMenu, smi.getTimeMenu()));
             menus.add(menuInfoVO);

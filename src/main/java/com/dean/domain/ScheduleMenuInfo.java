@@ -27,6 +27,16 @@ public class ScheduleMenuInfo {
     private String other;
     private String kcal;
     private String imgPaths;
+    private String mainImgPaths;
+
+    public String getMainImgPaths() {
+        return mainImgPaths;
+    }
+
+    public void setMainImgPaths(String mainImgPaths) {
+        this.mainImgPaths = mainImgPaths;
+    }
+
     private Date updateTime;
 
     public String getImgPaths() {

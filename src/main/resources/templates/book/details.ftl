@@ -15,6 +15,7 @@
     <script src="${springMacroRequestContext.contextPath}/js/jquery.1.8.3.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
     <script src="${springMacroRequestContext.contextPath}/js/calendar.js"></script>
+    <script src="${springMacroRequestContext.contextPath}/js/touch.slide.js"></script>
 </head>
 <body class="g-padtom">
 
@@ -49,6 +50,31 @@
              u-block
            </#if>
        ">
+
+    <#if menu_index ==0>
+        <div id="j-slideBox" class="slideBox">
+    <#else>
+         <div id="j-slideBox1" class="slideBox">
+    </#if>
+
+            <div class="m-bd j-bd">
+                <ul>
+                <#list menu.mainImgs as is>
+                    <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/drift/${is}"/></a></li>
+                </#list>
+
+                </ul>
+            </div>
+
+            <div class="m-hd j-hd">
+                <ul>
+                    <#list menu.mainImgs as is>
+                        <li></li>
+                    </#list>
+                </ul>
+            </div>
+        </div>
+
         <div class="g-tcon">
             <p> <span class="fhd">主菜</span> <em>${menu.mainInfo}</em></p>
             <p> <span>配菜</span> <em>${menu.minor}</em></p>
@@ -108,6 +134,16 @@
             $('.frt').trigger('click');
         }
     });
+
+    TouchSlide({
+        slideCell:"#j-slideBox",
+        titCell:".j-hd ul",
+        mainCell:".j-bd ul",
+        effect:"leftLoop",
+        autoPage:true,
+        autoPlay:true
+    });
+
     var _startDay = new Date('${.now?string("yyyy-MM-dd")}');
     _startDay.setDate(_startDay.getDate()+1);
     //日历
@@ -132,6 +168,7 @@
         location.href="${springMacroRequestContext.contextPath}/book/typemenu/${type}?timeType="+timeType+"&chooseDay="+v;
     });
 
+    var sig;
     //页面tab切换
     $('.j-tab a').click(function(){
         var _this = $(this),_num = _this.index();
@@ -139,6 +176,17 @@
         $('.g-con').eq(_num).show().siblings('.g-con').hide();
         $('.g-detal').eq(_num).show().siblings('.g-detal').hide();
         $('.u-det').eq(_num).show().siblings('.u-det').hide();
+
+        if(!sig){
+            sig = new TouchSlide({
+                slideCell:"#j-slideBox1",
+                titCell:".j-hd ul",
+                mainCell:".j-bd ul",
+                effect:"leftLoop",
+                autoPage:true,
+                autoPlay:true
+            });
+        }
     });
 
     //点击预定套餐出现弹窗
