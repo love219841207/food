@@ -75,7 +75,8 @@ public class MenuServiceImpl implements MenuService {
                 scheduleMenuInfo.setDrink(al.get(7));
                 scheduleMenuInfo.setOther(al.get(8));
                 scheduleMenuInfo.setKcal(al.get(9));
-                scheduleMenuInfo.setImgPaths(al.get(10));
+                scheduleMenuInfo.setMainImgPaths(al.get(10));
+                scheduleMenuInfo.setImgPaths(al.get(11));
                 scheduleMenuInfo.setUpdateTime(new Date());
                 scheduleMenuInfos.add(scheduleMenuInfo);
             }
