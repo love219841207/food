@@ -42,9 +42,9 @@
 <div id="j-slideBox" class="slideBox">
     <div class="m-bd j-bd">
         <ul>
-            <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/img/img1.jpg"/></a></li>
-            <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/img/img1.jpg"/></a></li>
-            <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/img/img1.jpg"/></a></li>
+            <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/drift/ba1.jpg"/></a></li>
+            <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/drift/ba2.jpg"/></a></li>
+            <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/drift/ba3.jpg"/></a></li>
         </ul>
     </div>
 
