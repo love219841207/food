@@ -107,7 +107,7 @@ INSERT INTO `healthy_info` VALUES ('8', '17', '0', '2007-05-17', '165', '48', '0
 -- ----------------------------
 DROP TABLE IF EXISTS `order_info`;
 CREATE TABLE `order_info` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(50) NOT NULL,
   `user_id` int(11) NOT NULL,
   `create_time` datetime NOT NULL,
   `type_menu` varchar(255) NOT NULL,

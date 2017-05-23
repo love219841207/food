@@ -51,7 +51,7 @@ public class RouteController {
                 return distribute(routeid);
             }
         }else{
-            return "error";
+            return "forward:/short/"+routeid;
         }
     }
 
