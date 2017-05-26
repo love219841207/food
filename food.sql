@@ -537,3 +537,6 @@ INSERT INTO `wechat_info` VALUES ('35', null, null, 'oPBel0ujdWqEf3oIy4bTlHGMqt5
 INSERT INTO `wechat_info` VALUES ('36', null, null, 'oPBel0oQ--hoRmVx7dYqJLHg2y78', '2017-05-04 11:32:48', '2017-05-04 11:32:48', '16');
 INSERT INTO `wechat_info` VALUES ('37', 'http://wx.qlogo.cn/mmopen/hibyd0QfYDuiayV5zY56dcJt2UpuurMSBW3rrhkI2Pic9UxeiaeNHNDVADHvLFNzYGNE1ySvAOrzLZxOVE4sTzwBVqb6ibNcfyUVH/0', '叶子?', 'oPBel0o4oOxDFVh1Z_WS1IjEBvPk', '2017-05-16 15:02:17', '2017-05-16 15:02:17', '17');
 INSERT INTO `wechat_info` VALUES ('38', 'http://wx.qlogo.cn/mmopen/ibv9w35juu1EPvmreDxVN3dhxh4krUgXjArdwroUj9uQVyIkJDWacq0Q5KqmvcCdNcNiaSaraplicR4nqmOHg1mxg/0', '成功叶', 'oPBel0rdgd-OEI-BGlSC7PPmu8oU', '2017-05-17 11:19:33', '2017-05-17 11:19:33', null);
+
+
+alter table pkg_menu add COLUMN  logistics_price decimal(10,2);

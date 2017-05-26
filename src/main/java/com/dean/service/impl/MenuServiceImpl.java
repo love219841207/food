@@ -101,6 +101,7 @@ public class MenuServiceImpl implements MenuService {
                 pkgMenu.setPkgDays(Double.valueOf(al.get(3)).intValue());
                 pkgMenu.setOriginalPrice(new BigDecimal(al.get(4)).setScale(2));
                 pkgMenu.setSalePrice(new BigDecimal(al.get(5)).setScale(2));
+                pkgMenu.setLogisticsPrice(new BigDecimal(StringUtils.isEmpty(al.get(6))?"0.00":al.get(6)).setScale(2));
                 pkgMenu.setUpdateTime(new Date());
                 pkgMenus.add(pkgMenu);
             }
@@ -237,6 +238,7 @@ public class MenuServiceImpl implements MenuService {
     private List<ArrayList<ArrayList<String>>> ReadMenuFormExcel() {
         List<ArrayList<ArrayList<String>>> excelInfo = new ArrayList<ArrayList<ArrayList<String>>>();
         File file = new File("/home/up/menu.xlsx");
+       // File file = new File("E:\\menu.xlsx");
         Workbook workbook = null;
         try {
             workbook = WorkbookFactory.create(file);

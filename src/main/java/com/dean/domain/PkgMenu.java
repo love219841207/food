@@ -22,7 +22,16 @@ public class PkgMenu {
     private int pkgDays;
     private BigDecimal originalPrice;
     private BigDecimal salePrice;
+    private BigDecimal logisticsPrice;
     private Date updateTime;
+
+    public BigDecimal getLogisticsPrice() {
+        return logisticsPrice;
+    }
+
+    public void setLogisticsPrice(BigDecimal logisticsPrice) {
+        this.logisticsPrice = logisticsPrice;
+    }
 
     public Long getId() {
         return id;
