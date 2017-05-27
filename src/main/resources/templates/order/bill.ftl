@@ -37,7 +37,7 @@
     <div class="g-qcon">
         <p class="fcb">送餐时间 <a href="#" class="frt"><#if orderInfoVO.timeMenu == '1'>11:30-12:30<#else>17:30-18:30</#if> </a></p>
     <#if couponVO??>
-        <p class="fcb">抵用券 <span class="frt j-selt" v='${couponVO.price}' couponId='${couponVO.id}'></span></p>
+        <p class="fcb">抵用券 <span class="frt j-selt" v='${couponVO.price?string("0.00")}' couponId='${couponVO.id}'></span></p>
         <input type="hidden" name="couponId" value="" id="couponId">
         <input type="hidden" name="couponPrice" value="" id="couponPrice">
     </#if>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="g-qcon">
-        <p class="fcb">配送费 <em class="frt">${orderInfoVO.logisticsPrice?string("0.##")}￥</em></p>
+        <p class="fcb">配送费 <em class="frt">${orderInfoVO.logisticsPrice?string("0.00")}￥</em></p>
     <#if couponVO??>
         <p class="fcb j-con">抵用券 <em class="frt" >0.00￥</em></p>
     </#if>

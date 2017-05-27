@@ -114,7 +114,7 @@
     <#list menus as menu>
         <div class="u-det j-sel <#if menu_index gt 0>u-hide</#if>">
             <#list menu.pkgMenuVOs as pkgMenuVO>
-                 <a href="#" v="${pkgMenuVO.pkgDays}" lp="${pkgMenuVO.logisticsPrice?string.number}" class="<#if pkgMenuVO_index == 0>on</#if>" orip="${pkgMenuVO.originalPrice}" salep="${pkgMenuVO.salePrice}">${pkgMenuVO.pkgMenu}</a>
+                 <a href="#" v="${pkgMenuVO.pkgDays}" lp="${pkgMenuVO.logisticsPrice?string('0.00')}" class="<#if pkgMenuVO_index == 0>on</#if>" orip="${pkgMenuVO.originalPrice}" salep="${pkgMenuVO.salePrice}">${pkgMenuVO.pkgMenu}</a>
             </#list>
 
         </div>

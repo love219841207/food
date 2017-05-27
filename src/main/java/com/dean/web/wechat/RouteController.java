@@ -39,7 +39,7 @@ public class RouteController {
         logger.info("个人中心进入，code为[{}]",code);
         String openid = wechatService.getOpenid(code);
         logger.info("个人中心进入，获取的openid为[{}]", openid);
-        UserVO userVO = userService.getUserVOByOpenId(openid);
+        UserVO userVO = userService.getUserVOByOpenId("oPBel0o4oOxDFVh1Z_WS1IjEBvPk");
         logger.info("个人中心进入，根据openid获取UserVO[{}]", userVO !=null);
         if(userVO!=null){
             request.getSession().setAttribute(Constants.SESSION_USER_KEY, userVO);
