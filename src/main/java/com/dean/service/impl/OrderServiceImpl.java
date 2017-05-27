@@ -40,11 +40,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private UserAccountDetailService userAccountDetailService;
 
-    //配送费默认不需要
-    private BigDecimal logisticsPrice = null;
-
     @Override
-    public OrderInfoVO initOrderInfo(String typeMenu,String timeMenu,Long userId,int pkgDays) {
+    public OrderInfoVO initOrderInfo(String typeMenu,String timeMenu,Long userId,int pkgDays,BigDecimal logisticsPrice) {
         OrderInfoVO orderInfoVO =  new OrderInfoVO();
         orderInfoVO.setTypeMenu(typeMenu);
         orderInfoVO.setTimeMenu(timeMenu);
@@ -72,10 +69,11 @@ public class OrderServiceImpl implements OrderService {
             orderInfo.setPkgDays(orderInfoVO.getPkgDays());
             orderInfo.setUserId(orderInfoVO.getUserId());
             orderInfo.setTypeMenu(orderInfoVO.getTypeMenu());
+            orderInfo.setLogisticsPrice(orderInfoVO.getLogisticsPrice());
             PkgMenu pkgMenu = this.findPkgMenu(orderInfoVO.getTypeMenu(), orderInfoVO.getTimeMenu(), orderInfoVO.getPkgDays());
             if(pkgMenu!=null&&pkgMenu.getSalePrice()!=null){
                 orderInfo.setPkgSalePrice(pkgMenu.getSalePrice());
-                orderInfo.setTotalPrice(this.getTotalPrice(pkgMenu.getSalePrice(), logisticsPrice));
+                orderInfo.setTotalPrice(this.getTotalPrice(pkgMenu.getSalePrice(), orderInfoVO.getLogisticsPrice()));
                 orderInfo.setPkgMenu(pkgMenu.getPkgMenu());
             }
             orderInfo.setCreateTime(new Date());

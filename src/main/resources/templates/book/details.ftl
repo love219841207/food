@@ -114,7 +114,7 @@
     <#list menus as menu>
         <div class="u-det j-sel <#if menu_index gt 0>u-hide</#if>">
             <#list menu.pkgMenuVOs as pkgMenuVO>
-                 <a href="#" v="${pkgMenuVO.pkgDays}"  class="<#if pkgMenuVO_index == 0>on</#if>" orip="${pkgMenuVO.originalPrice}" salep="${pkgMenuVO.salePrice}">${pkgMenuVO.pkgMenu}</a>
+                 <a href="#" v="${pkgMenuVO.pkgDays}" lp="${pkgMenuVO.logisticsPrice?string.number}" class="<#if pkgMenuVO_index == 0>on</#if>" orip="${pkgMenuVO.originalPrice}" salep="${pkgMenuVO.salePrice}">${pkgMenuVO.pkgMenu}</a>
             </#list>
 
         </div>
@@ -225,8 +225,9 @@
         var _timeMenu = d.attr('v');
         var _o = $('.j-sel a:visible').filter('.on');
         var pkg = _o.attr('v');
+        var lp = _o.attr('lp');
        // location.href="${springMacroRequestContext.contextPath}/order/create/"+_typeMenu+"/"+_timeMenu+"/"+pkg;
-        location.href="${springMacroRequestContext.contextPath}/order/create?type="+_typeMenu+"&timeMenu="+_timeMenu+"&pkgDays="+pkg;
+        location.href="${springMacroRequestContext.contextPath}/order/create?type="+_typeMenu+"&timeMenu="+_timeMenu+"&pkgDays="+pkg+"&lp="+lp;
     })
 
 

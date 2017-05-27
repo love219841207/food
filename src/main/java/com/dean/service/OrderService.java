@@ -1,5 +1,6 @@
 package com.dean.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  */
 public interface OrderService {
 
-    OrderInfoVO initOrderInfo(String typeMenu, String timeMenu, Long userId, int pkgDays);
+    OrderInfoVO initOrderInfo(String typeMenu, String timeMenu, Long userId, int pkgDays,BigDecimal logisticsPrice);
 
     OrderInfoVO createOrderInfo(OrderInfoVO orderInfoVO);
 

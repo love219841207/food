@@ -38,11 +38,12 @@ public class OrderController {
                           ModelMap model,
                           @RequestParam(value = "type") String type,
                           @RequestParam(value = "timeMenu") String timeMenu,
-                          @RequestParam(value = "pkgDays") int pkgDays){
+                          @RequestParam(value = "pkgDays") int pkgDays,
+                          @RequestParam(value = "lp") BigDecimal lp){
         logger.info("/create/{}/{}/{}", type, timeMenu, pkgDays);
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
         logger.info("session id [{}]",request.getSession().getId());
-        OrderInfoVO orderInfoVO = orderService.initOrderInfo(type, timeMenu, userVO.getUserInfo().getId(), pkgDays);
+        OrderInfoVO orderInfoVO = orderService.initOrderInfo(type, timeMenu, userVO.getUserInfo().getId(), pkgDays,lp);
         model.put("orderInfoVO", orderInfoVO);
         CouponVO couponVO = couponService.findByUserId(userVO.getUserInfo().getId());
         model.put("couponVO", couponVO);

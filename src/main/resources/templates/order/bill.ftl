@@ -22,6 +22,7 @@
     <input type="hidden" name="typeMenu"  value="${orderInfoVO.typeMenu}">
     <input type="hidden" name="timeMenu"  value="${orderInfoVO.timeMenu}">
     <input type="hidden" name="pkgDays"  value="${orderInfoVO.pkgDays}">
+    <input type="hidden" name="logisticsPrice"  value="${orderInfoVO.logisticsPrice}">
     <input type="hidden" name="userId"  value="${orderInfoVO.userId}">
     <input type="hidden" name="pkgMenu"  value="${orderInfoVO.pkgMenu}">
     <div class="g-qhd">
@@ -44,7 +45,7 @@
     </div>
 
     <div class="g-qcon">
-        <p class="fcb">配送费 <em class="frt">${orderInfoVO.logisticsPrice!'0.00'}￥</em></p>
+        <p class="fcb">配送费 <em class="frt">${orderInfoVO.logisticsPrice?string("0.##")}￥</em></p>
     <#if couponVO??>
         <p class="fcb j-con">抵用券 <em class="frt" >0.00￥</em></p>
     </#if>
