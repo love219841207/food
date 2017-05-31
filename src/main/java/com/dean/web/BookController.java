@@ -71,8 +71,13 @@ public class BookController {
         model.put("menus",menus);
         model.put("type", type);
         model.put("timeType",timeType);
-        model.put("chooseDayVO",new ChooseDayVO(chooseDay));
+        model.put("chooseDayVO", new ChooseDayVO(chooseDay));
         return "book/details";
 
+    }
+    @RequestMapping(value="/reserve/{cid}")
+    public String reserve(@PathVariable("cid") Integer cid){
+        logger.info("公司id[{}]",cid);
+        return "redirect:http://www.baidu.com";
     }
 }

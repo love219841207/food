@@ -28,15 +28,23 @@ public class ShortController {
     private WechatRouteProperties appUrlProperties;
     private String URL_REDIRECT_PREFIX = "redirect:";
     @RequestMapping(value="/short/{id}")
-    public String redirect(@PathVariable("id") String id,HttpSession session){
+    public String redirect(@PathVariable("id") Integer id){
         logger.info("进入主菜单模式[{}]",id);
-        String url = null;
-        url = String.format(appUrlProperties.getAuthUrl(), id);
-        url = URL_REDIRECT_PREFIX+wechatService.getRedirUrl(url);
+        String url = this.getRedirect(String.valueOf(id));
         return url;
     }
 
-    private String distribute(String routeid){
-        return MenuDistribute.distribute(routeid);
+    @RequestMapping(value="/short/{id}/{cid}")
+    public String redirect(@PathVariable("id") Integer id,
+                           @PathVariable("cid") Integer cid){
+        logger.info("进入公司员工订餐模式[{}]",id,cid);
+        String url = this.getRedirect(id + "?cid=" + cid);
+        return url;
+    }
+
+    private String getRedirect(String id){
+        String url = String.format(appUrlProperties.getAuthUrl(), id);
+        url = URL_REDIRECT_PREFIX+wechatService.getRedirUrl(url);
+        return url;
     }
 }
