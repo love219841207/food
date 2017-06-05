@@ -1,8 +1,12 @@
 package com.dean.service.impl;
 
+import com.dean.config.WechatRouteProperties;
+import com.dean.config.ZxingProperties;
 import com.dean.dao.AddressInfoDao;
+import com.dean.dao.GroupInfoDao;
 import com.dean.dao.PkgMenuDao;
 import com.dean.dao.ScheduleMenuInfoDao;
+import com.dean.domain.GroupInfo;
 import com.dean.domain.PkgMenu;
 import com.dean.domain.ScheduleMenuInfo;
 import com.dean.service.MenuInfoVO;
@@ -10,11 +14,13 @@ import com.dean.service.MenuService;
 import com.dean.service.PkgMenuVO;
 import com.dean.util.Constants;
 import com.dean.util.DateUtils;
+import com.dean.util.ZxingUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -22,28 +28,31 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by dongxu on 2017/2/14.
  */
 @Service
+@EnableConfigurationProperties(ZxingProperties.class)
 public class MenuServiceImpl implements MenuService {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private ZxingProperties zxingProperties;
     @Autowired
     private ScheduleMenuInfoDao scheduleMenuInfoDao;
     @Autowired
     private PkgMenuDao pkgMenuDao;
     @Autowired
     private AddressInfoDao addressInfoDao;
+    @Autowired
+    private GroupInfoDao groupInfoDao;
 
 
     @Override
     public void initMenuFromExcel() throws IOException, InvalidFormatException {
         List<ArrayList<ArrayList<String>>> excelInfo = this.ReadMenuFormExcel();
-        if(excelInfo.size()!=2){
+        if(excelInfo.size()!=3){
             logger.info("解析menuexcel异常,sheet数量不对");
         }else{
             ArrayList<ArrayList<String>> menuInfos = excelInfo.get(0);
@@ -118,8 +127,34 @@ public class MenuServiceImpl implements MenuService {
             }*/
 
             this.updateDateFromExcel(scheduleMenuInfos,pkgMenus);
+
+            ArrayList<ArrayList<String>> groupexcels = excelInfo.get(2);
+            Map<String,String> groupInfos = new HashMap<String,String>();
+            for (ArrayList<String> al : groupexcels){
+                groupInfos.put(al.get(0), al.get(5));
+            }
+            this.updateGroupStatus(groupInfos);
         }
 
+    }
+
+    @Transactional
+    private void updateGroupStatus(Map<String,String> map){
+        if(map.size()>0){
+            logger.info("审核公司有记录,条数为[{}]",map.size());
+            Iterator iter = map.entrySet().iterator();
+           while (iter.hasNext()) {
+                Map.Entry entry = (Map.Entry) iter.next();
+               if(new BigDecimal((String)entry.getValue()).longValue()<2){
+                   String linkPath = String.format(zxingProperties.getGroupUrl(),entry.getKey());
+                   ZxingUtils.createImg(linkPath,zxingProperties.getFilePath(),"zx"+entry.getKey()+".jpg");
+               }
+                groupInfoDao.batchUpdate(new BigDecimal((String) entry.getValue()).intValue(),
+                        new BigDecimal((String) entry.getKey()).longValue());
+            }
+        }else{
+            logger.info("审核公司无记录");
+        }
     }
 
     @Override
@@ -238,8 +273,8 @@ public class MenuServiceImpl implements MenuService {
 
     private List<ArrayList<ArrayList<String>>> ReadMenuFormExcel() {
         List<ArrayList<ArrayList<String>>> excelInfo = new ArrayList<ArrayList<ArrayList<String>>>();
-        File file = new File("/home/up/menu.xlsx");
-        //File file = new File("E:\\menu.xlsx");
+       // File file = new File("/home/up/menu.xlsx");
+        File file = new File("E:\\menu.xlsx");
         Workbook workbook = null;
         try {
             workbook = WorkbookFactory.create(file);

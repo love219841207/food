@@ -78,9 +78,14 @@ public class
     public static final String TIME_MENU_NIGHT ="2";
     public static final String TIME_MENU_NIGHT_NAME ="晚餐";
     public static final String TYPE_MENU_THIN="1";
-    public static final String TYPE_MENU_THIN_NAME="极致瘦身";
+    public static final String TYPE_MENU_THIN_NAME="元气健身";
 
     public static final String TYPE_MENU_SLIM ="2";
     public static final String TYPE_MENU_SLIM_NAME="均衡纤体";
+
+
+    public static final int BOOK_GROUP_PENDING = 0;//提交等待审核
+    public static final int BOOK_GROUP_OK = 1;     //审核通过
+    public static final int BOOK_GROUP_FAIL = 2;    //审核不同过
 
 }

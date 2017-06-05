@@ -31,43 +31,76 @@ public class RouteController {
     private WechatService wechatService;
     @RequestMapping(value="/route/{routeid}")
     public String redirect(HttpServletRequest request,
-                           @PathVariable("routeid") String routeid,
+                           @PathVariable("routeid") Integer routeid,
                            ModelMap model){
-        logger.info("入口路由id为[{}]",StringUtils.isEmpty(routeid)?"1":routeid);
+        logger.info("入口路由id为[{}]",routeid==null?"1":routeid);
+        String cid = request.getParameter("cid");
+        logger.info("入口路由cid为[{}]",cid);
         //获取openid
         String code = request.getParameter("code");
         logger.info("个人中心进入，code为[{}]",code);
         String openid = wechatService.getOpenid(code);
         logger.info("个人中心进入，获取的openid为[{}]", openid);
-       // UserVO userVO = userService.getUserVOByOpenId("oPBel0o4oOxDFVh1Z_WS1IjEBvPk");
-        UserVO userVO = userService.getUserVOByOpenId(openid);
-        logger.info("个人中心进入，根据openid获取UserVO[{}]", userVO !=null);
+        UserVO userVO = null;
+        if(routeid<11){
+            userVO = userService.getUserVOByOpenId("oPBel0o4oOxDFVh1Z_WS1IjEBvPk");
+            //userVO = userService.getUserVOByOpenId(openid);
+        }else{
+            userVO = userService.getUserVOByOpenId("oPBel0o4oOxDFVh1Z_WS1IjEBvPk","23");
+            //userVO = userService.getUserVOByOpenId(openid,cid);
+        }
+        logger.info("个人中心进入，根据openid获取UserVO[{}]", userVO != null);
         if(userVO!=null){
             request.getSession().setAttribute(Constants.SESSION_USER_KEY, userVO);
-            if(userVO.getUserInfo()==null){
-                model.put("routeid",routeid);
-                logger.info("进入手机号码绑定页面");
-                return "wechat/binding";
+
+            //B2C
+            if(routeid<11){
+                if(userVO.getUserInfo()==null){
+                    model.put("routeid",routeid);
+                    logger.info("进入手机号码绑定页面");
+                    return "wechat/binding";
+                }else{
+                    return distribute(routeid,null);
+                }
+                //B2B
             }else{
-                return distribute(routeid);
+                if(userVO.getGroupUserInfo()==null){
+                    model.put("routeid",routeid);
+                    model.put("cid",cid);
+                    logger.info("进入团体绑定页面");
+                    return "wechat/groupBinding";
+                }else{
+                    return distribute(routeid,cid);
+                }
             }
+
+
         }else{
-            return "forward:/short/"+routeid;
+            if(routeid<11){
+                return "forward:/short/"+routeid;
+            }else{
+                return "forward:/short/"+routeid+"/"+cid;
+            }
+
         }
     }
 
     @RequestMapping("/binding/{phone}/{routeid}")
     public String binding(HttpServletRequest request,
                           @PathVariable String phone,
-                          @PathVariable String routeid) {
+                          @PathVariable Integer routeid) {
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
         String openId = userVO.getWechatInfo().getOpenId();
         userVO = userService.BoundUser(phone, openId);
         request.getSession().setAttribute(Constants.SESSION_USER_KEY, userVO);
-        return distribute(routeid);
+        return distribute(routeid,null);
     }
 
-    private String distribute(String routeid){
-        return MenuDistribute.distribute(routeid);
+    private String distribute(Integer routeid,String cid){
+        Integer companyId = null;
+        if(!StringUtils.isEmpty(cid)){
+            companyId = Integer.valueOf(cid);
+        }
+        return MenuDistribute.distribute(routeid,companyId);
     }
 }

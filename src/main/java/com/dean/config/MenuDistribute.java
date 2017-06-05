@@ -15,7 +15,7 @@ public class MenuDistribute {
             }else if (routeid==3) {
                 return "forward:/book/single";
             }else if (routeid==4) {
-                return "forward:/book/group";
+                return "forward:/group/group";
             }else if(routeid==11){
                 return "forward:/book/reserve/"+cid;
             }

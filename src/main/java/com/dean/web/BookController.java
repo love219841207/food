@@ -29,19 +29,8 @@ public class BookController {
     @Autowired
     private HealthyInfoService healthyInfoService;
     @Autowired
-    private GroupInfoService groupInfoService;
-    @Autowired
     private MenuService menuService;
-    @RequestMapping("/group")
-    public String group(){
-       return "book/group";
-    }
 
-    @RequestMapping("/groupsub")
-    public String groupsub(GroupInfoVO groupInfoVO){
-        groupInfoService.saveGroupInfo(groupInfoVO);
-        return "book/groupsuccess";
-    }
 
     @RequestMapping("/single")
     public String single(ModelMap model,HttpServletRequest request) {
@@ -77,7 +66,7 @@ public class BookController {
     }
     @RequestMapping(value="/reserve/{cid}")
     public String reserve(@PathVariable("cid") Integer cid){
-        logger.info("公司id[{}]",cid);
+        logger.info("公司集体订餐cid[{}]",cid);
         return "redirect:http://www.baidu.com";
     }
 }

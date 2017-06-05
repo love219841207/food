@@ -62,7 +62,7 @@
                 <td class="u-tab2 j-swid" data-time='1' data-type="${accountFixedVO.nn!}" >
                     <#if accountFixedVO.nn??>
                         <#if accountFixedVO.nn=='1'>
-                            极致瘦身
+                            元气健身
                         <#else>
                             均衡纤体
                         </#if>
@@ -71,7 +71,7 @@
                 <td class="u-tab3 j-swid" data-time='2' data-type="${accountFixedVO.nt!}" >
                         <#if accountFixedVO.nt??>
                             <#if accountFixedVO.nn=='1'>
-                                极致瘦身
+                                元气健身
                             <#else>
                                 均衡纤体
                             </#if>
@@ -115,9 +115,9 @@
 
     </#list>
 
-        <a href="javascript:void(0);"  data-surplus="1,1,${time1Type1}" class="hide">极致瘦身</a>
+        <a href="javascript:void(0);"  data-surplus="1,1,${time1Type1}" class="hide">元气健身</a>
         <a href="javascript:void(0);"  data-surplus="1,2,${time1Type2}" class="hide">均衡纤体</a>
-        <a href="javascript:void(0);" data-surplus="2,1,${time2Type1}" class="hide">极致瘦身</a>
+        <a href="javascript:void(0);" data-surplus="2,1,${time2Type1}" class="hide">元气健身</a>
         <a href="javascript:void(0);"  data-surplus="2,2,${time2Type2}" class="hide">均衡纤体</a>
         <a href="javascript:void(0);" class="j-cancle hide">取消套餐</a>
     </div>

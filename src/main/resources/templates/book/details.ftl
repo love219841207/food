@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title><#if type=='1'>极致瘦身<#else>均衡纤体</#if></title>
+    <title><#if type=='1'>元气健身<#else>均衡纤体</#if></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
     <meta name="format-detection" content="telephone=no,address=no,email=no" />
     <meta name="mobileOptimized" content="width" />

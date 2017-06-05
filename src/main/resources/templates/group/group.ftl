@@ -20,13 +20,15 @@
 <body>
 <div  class="container" id="container">
     <div class="page input js_show">
-        <form action="${springMacroRequestContext.contextPath}/book/groupsub" method="post" id="confirm_form">
+        <form action="${springMacroRequestContext.contextPath}/group/save" method="post" id="confirm_form">
+            <input type="hidden" name="id" id="id" value="${groupInfoVO.id!''}">
+            <input type="hidden" name="wechatId" id="wechatId" value="${groupInfoVO.wechatId!''}">
         <div class="page__bd">
 
             <div class="weui-cells">
                 <div class="weui-cell">
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" maxlength="50" placeholder="公司名称" name="groupName" id="groupName">
+                        <input class="weui-input" type="text" maxlength="50" placeholder="公司名称" name="groupName" id="groupName" value="${groupInfoVO.groupName!''} ">
                     </div>
                 </div>
             </div>
@@ -34,7 +36,7 @@
             <div class="weui-cells">
                 <div class="weui-cell">
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text"  maxlength="50" placeholder="联系人姓名" name="name" id="name">
+                        <input class="weui-input" type="text"  maxlength="50" placeholder="联系人姓名" name="name" id="name" value="${groupInfoVO.name!''}">
                     </div>
                 </div>
             </div>
@@ -42,7 +44,7 @@
             <div class="weui-cells">
                 <div class="weui-cell">
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="number" pattern="[0-9]*"  placeholder="手机号码" name="phone" id="phone">
+                        <input class="weui-input" type="number" pattern="[0-9]*"  placeholder="手机号码" name="phone" id="phone" value="${groupInfoVO.phone!''}">
                     </div>
                 </div>
             </div>
@@ -50,7 +52,7 @@
             <div class="weui-cells">
                 <div class="weui-cell">
                     <div class="weui-cell__bd">
-                        <textarea class="weui-textarea" placeholder="用餐需求"  maxlength="200" rows="3" name="remark"></textarea>
+                        <textarea class="weui-textarea" placeholder="用餐需求"  maxlength="200" rows="3" name="remark" ${groupInfoVO.remark!''}></textarea>
                     </div>
                 </div>
             </div>
