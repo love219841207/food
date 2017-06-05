@@ -64,9 +64,5 @@ public class BookController {
         return "book/details";
 
     }
-    @RequestMapping(value="/reserve/{cid}")
-    public String reserve(@PathVariable("cid") Integer cid){
-        logger.info("公司集体订餐cid[{}]",cid);
-        return "redirect:http://www.baidu.com";
-    }
+
 }

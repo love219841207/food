@@ -18,8 +18,8 @@ import java.util.Hashtable;
  */
 public class ZxingUtils {
     public static void createImg(String linkPath,String rootPath,String fileName){
-        int width = 100;
-        int height = 100;
+        int width = 400;
+        int height = 400;
         String format = "png";
         Hashtable hints = new Hashtable();
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");

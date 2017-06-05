@@ -146,8 +146,8 @@ public class MenuServiceImpl implements MenuService {
            while (iter.hasNext()) {
                 Map.Entry entry = (Map.Entry) iter.next();
                if(new BigDecimal((String)entry.getValue()).longValue()<2){
-                   String linkPath = String.format(zxingProperties.getGroupUrl(),entry.getKey());
-                   ZxingUtils.createImg(linkPath,zxingProperties.getFilePath(),"zx"+entry.getKey()+".jpg");
+                   String linkPath = String.format(zxingProperties.getGroupUrl(),new BigDecimal((String)entry.getKey()).longValue());
+                   ZxingUtils.createImg(linkPath,zxingProperties.getFilePath(),"zx"+new BigDecimal((String)entry.getKey()).longValue()+".png");
                }
                 groupInfoDao.batchUpdate(new BigDecimal((String) entry.getValue()).intValue(),
                         new BigDecimal((String) entry.getKey()).longValue());
@@ -273,8 +273,7 @@ public class MenuServiceImpl implements MenuService {
 
     private List<ArrayList<ArrayList<String>>> ReadMenuFormExcel() {
         List<ArrayList<ArrayList<String>>> excelInfo = new ArrayList<ArrayList<ArrayList<String>>>();
-       // File file = new File("/home/up/menu.xlsx");
-        File file = new File("E:\\menu.xlsx");
+        File file = new File(zxingProperties.getExcelPath());
         Workbook workbook = null;
         try {
             workbook = WorkbookFactory.create(file);

@@ -64,14 +64,8 @@ public class RouteController {
                 }
                 //B2B
             }else{
-                if(userVO.getGroupUserInfo()==null){
-                    model.put("routeid",routeid);
-                    model.put("cid",cid);
-                    logger.info("进入团体绑定页面");
-                    return "wechat/groupBinding";
-                }else{
-                    return distribute(routeid,cid);
-                }
+                return distribute(routeid,cid);
+
             }
 
 

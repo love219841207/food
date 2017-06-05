@@ -216,3 +216,6 @@ body.g-ptom{padding-bottom: 70px;}
 .g-inquire dd.u-sig span{margin-right: 1rem;}
 .g-inquire dd.u-sig span input{vertical-align: middle;margin-right: .5rem;margin-left: .3rem;}
 
+.g-code{padding: 30% 10%;}
+.g-code img{display: block;margin:0 auto;width: 100%;}
+.g-code p{text-align: center;margin-top: 1rem;}

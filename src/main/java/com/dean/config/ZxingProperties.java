@@ -9,6 +9,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ZxingProperties {
     private String groupUrl;
     private String filePath;
+    private String excelPath;
+
+    public String getExcelPath() {
+        return excelPath;
+    }
+
+    public void setExcelPath(String excelPath) {
+        this.excelPath = excelPath;
+    }
 
     public String getGroupUrl() {
         return groupUrl;
