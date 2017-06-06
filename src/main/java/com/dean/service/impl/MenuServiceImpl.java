@@ -1,6 +1,5 @@
 package com.dean.service.impl;
 
-import com.dean.config.WechatRouteProperties;
 import com.dean.config.ZxingProperties;
 import com.dean.dao.AddressInfoDao;
 import com.dean.dao.GroupInfoDao;
@@ -24,6 +23,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -43,8 +43,8 @@ public class MenuServiceImpl implements MenuService {
     private ScheduleMenuInfoDao scheduleMenuInfoDao;
     @Autowired
     private PkgMenuDao pkgMenuDao;
-    @Autowired
-    private AddressInfoDao addressInfoDao;
+  /*  @Autowired
+    private AddressInfoDao addressInfoDao;*/
     @Autowired
     private GroupInfoDao groupInfoDao;
 
@@ -138,19 +138,22 @@ public class MenuServiceImpl implements MenuService {
 
     }
 
-    @Transactional
     private void updateGroupStatus(Map<String,String> map){
         if(map.size()>0){
             logger.info("审核公司有记录,条数为[{}]",map.size());
             Iterator iter = map.entrySet().iterator();
+            GroupInfo info = null;
+            Integer status = null;
            while (iter.hasNext()) {
                 Map.Entry entry = (Map.Entry) iter.next();
-               if(new BigDecimal((String)entry.getValue()).longValue()<2){
-                   String linkPath = String.format(zxingProperties.getGroupUrl(),new BigDecimal((String)entry.getKey()).longValue());
-                   ZxingUtils.createImg(linkPath,zxingProperties.getFilePath(),"zx"+new BigDecimal((String)entry.getKey()).longValue()+".png");
+               status = new BigDecimal((String) entry.getValue()).intValue();
+               info = groupInfoDao.findOne(new BigDecimal((String) entry.getKey()).longValue());
+               if(info!=null&&status==1){
+                   String linkPath = String.format(zxingProperties.getGroupUrl(),info.getId());
+                   ZxingUtils.createImg(linkPath,zxingProperties.getFilePath(),"zx"+info.getId()+".png");
                }
-                groupInfoDao.batchUpdate(new BigDecimal((String) entry.getValue()).intValue(),
-                        new BigDecimal((String) entry.getKey()).longValue());
+               info.setStatus(status);
+               groupInfoDao.save(info);
             }
         }else{
             logger.info("审核公司无记录");
@@ -336,7 +339,11 @@ public class MenuServiceImpl implements MenuService {
             }
             excelInfo.add(excelSheet);
         }
-
+        try {
+            workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         logger.info("***********************************************");
 
         for (int i = 0; i < excelInfo.size(); i++) {

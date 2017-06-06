@@ -23,13 +23,13 @@ public class DeanController {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
-    private MenuService menuServicel;
+    private MenuService menuService;
     @ResponseBody
     @RequestMapping("/menu")
     public String menu(){
         logger.info("手动刷新batchMenu开始时间为[{}]",dateFormat.format(new Date()));
         try {
-            menuServicel.initMenuFromExcel();
+            menuService.initMenuFromExcel();
         } catch (IOException e) {
             logger.error("手动刷新batchMenu错误[{}]",e.getMessage());
         } catch (InvalidFormatException e) {
