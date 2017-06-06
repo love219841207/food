@@ -544,7 +544,6 @@ alter table pkg_menu add COLUMN  logistics_price decimal(10,2);
 alter table boo_group_info add COLUMN  update_time datetime;
 alter table boo_group_info add COLUMN  status  int(11);
 alter table boo_group_info add COLUMN  wechat_id bigint(20);
-alter table boo_group_info add COLUMN  link_path varchar(200) DEFAULT NULL;
 -- ----------------------------
 -- Table structure for `group_user_info`
 -- ----------------------------
@@ -562,4 +561,22 @@ CREATE TABLE `group_user_info` (
 
 -- ----------------------------
 -- Records of group_user_info
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `group_order`
+-- ----------------------------
+DROP TABLE IF EXISTS `group_order`;
+CREATE TABLE `group_order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `group_user_id` bigint(20) DEFAULT NULL,
+  `av` int(11) DEFAULT NULL,
+  `bv` int(11) DEFAULT NULL,
+  `book_day` date DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- ----------------------------
+-- Records of group_order
 -- ----------------------------

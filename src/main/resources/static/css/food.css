@@ -219,3 +219,33 @@ body.g-ptom{padding-bottom: 70px;}
 .g-code{padding: 30% 10%;}
 .g-code img{display: block;margin:0 auto;width: 100%;}
 .g-code p{text-align: center;margin-top: 1rem;}
+
+
+
+
+.g-case .case .del a{display: block;float: right;color: #333;background-color: #f8d80b;padding:.3rem .7rem;border-radius: .25rem;}
+.g-case .case .del i{display: inline-block;line-height: 29px;color: #999;font-size: .6rem;}
+
+.g-list{width:90%;text-align: center;margin: 1rem auto;background-color: #f5f5f5;}
+.g-list tr{border-bottom: 1px solid #fff;}
+.g-list th{background-color: #f4e483;padding: .3rem 0;border-bottom: 1px solid #fff;}
+.g-list td{padding: .3rem;font-size: .8rem;word-break:break-all;vertical-align: middle;}
+.g-subm div{background-color: #fff;}
+.g-subm .u-con1{margin-top:1rem;}
+.g-subm .u-con1 img{display: block;width: 100%;}
+.g-subm .u-con1 h2{padding:.5rem .7rem;position: relative;height: 1.2rem;line-height: 1.2rem;}
+.g-subm .u-con1 h2 span{font-size: .9rem;background-color: #fff;position: absolute;z-index: 1;padding:0 .5rem;left:30%;margin-left:-30px;}
+.g-subm .u-con1 h2 b{display: inline-block;position: absolute;width: 90%;height: 1px;background-color: #ccc;left:5%;top:50%;}
+.g-subm .u-con2 input:nth-of-type(1){margin-top:0;margin:.7rem 0;}
+.g-subm .u-con2 input:nth-of-type(2){margin-top:0;}
+.g-subm .u-con2 input{padding-bottom: .7rem;text-indent: .7rem;margin:.7rem 0 0;-webkit-appearance: none;border-radius:0;width: 100%;border-bottom: 1px solid #f2f2f2;}
+.g-subm .u-con3 ul.g-sel input{width: 2rem;line-height: 1.2rem;float: left;text-align: center;}
+.g-subm .u-con3 ul.g-sel{margin-top:0;}
+.g-subm .u-con3 div{padding: .7rem;}
+.g-subm .u-con3 div:nth-of-type(1){border-bottom: 1px solid #f2f2f2;}
+.g-subm .u-con3 .fot{display: inline-block;}
+
+ul.g-sel{text-align: center;display: inline-block;margin-top:6px;}
+ul.g-sel li{float: left;width: 1.2rem;line-height: 1.2rem;}
+ul.g-sel li:nth-child(1),ul.g-sel li:nth-child(3){border: 1px solid #c7c7c7;font-size: 1.2rem;color: #c7c7c7;}
+ul.g-sel li:nth-child(2){width: 2rem;line-height: 1.2rem;}

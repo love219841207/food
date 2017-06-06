@@ -42,17 +42,11 @@ public class RouteController {
         String openid = wechatService.getOpenid(code);
         logger.info("个人中心进入，获取的openid为[{}]", openid);
         UserVO userVO = null;
-        if(routeid<11){
-            userVO = userService.getUserVOByOpenId("oPBel0o4oOxDFVh1Z_WS1IjEBvPk");
-            //userVO = userService.getUserVOByOpenId(openid);
-        }else{
-            userVO = userService.getUserVOByOpenId("oPBel0o4oOxDFVh1Z_WS1IjEBvPk","23");
-            //userVO = userService.getUserVOByOpenId(openid,cid);
-        }
+        userVO = userService.getUserVOByOpenId("oPBel0o4oOxDFVh1Z_WS1IjEBvPk");
+        //userVO = userService.getUserVOByOpenId(openid);
         logger.info("个人中心进入，根据openid获取UserVO[{}]", userVO != null);
         if(userVO!=null){
             request.getSession().setAttribute(Constants.SESSION_USER_KEY, userVO);
-
             //B2C
             if(routeid<11){
                 if(userVO.getUserInfo()==null){
@@ -65,10 +59,7 @@ public class RouteController {
                 //B2B
             }else{
                 return distribute(routeid,cid);
-
             }
-
-
         }else{
             if(routeid<11){
                 return "forward:/short/"+routeid;

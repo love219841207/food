@@ -15,13 +15,7 @@ public interface UserService {
      * @return
      */
     UserVO getUserVOByOpenId(String openId);
-    /**
-     * B2C根据@param openId、@param cid获取登录信息
-     *
-     * @param openId
-     * @param cid
-     * @return
-     */
-    UserVO getUserVOByOpenId(String openId,String cid);
+
+
 
 }

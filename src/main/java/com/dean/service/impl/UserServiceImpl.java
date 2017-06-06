@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
         }
         return wechatInfo;
     }
-
+/*
     @Override
     public UserVO getUserVOByOpenId(String openId, String cid) {
         logger.info("根据openid获取UserVO，openId为[{}]", openId);
@@ -130,5 +130,5 @@ public class UserServiceImpl implements UserService {
             logger.info("根据openid获取UserVO，openId为空");
         }
         return userVO;
-    }
+    }*/
 }
