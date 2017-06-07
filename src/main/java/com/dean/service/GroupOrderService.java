@@ -7,4 +7,6 @@ public interface GroupOrderService {
     public GroupOrderVO getUserId(Long groupUserId);
 
     public void saveGroupOrderVO(GroupOrderVO groupOrderVO);
+
+    public boolean canEdit();
 }

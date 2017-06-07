@@ -249,3 +249,11 @@ ul.g-sel{text-align: center;display: inline-block;margin-top:6px;}
 ul.g-sel li{float: left;width: 1.2rem;line-height: 1.2rem;}
 ul.g-sel li:nth-child(1),ul.g-sel li:nth-child(3){border: 1px solid #c7c7c7;font-size: 1.2rem;color: #c7c7c7;}
 ul.g-sel li:nth-child(2){width: 2rem;line-height: 1.2rem;}
+
+
+.g-det{padding:5%;}
+.g-det .m-fot{padding:3% 2rem;}
+.g-det .m-fot span{display: block;margin-bottom:.5rem;}
+.g-det .m-fot a{margin:1.5rem auto 2rem;display:block;background-color: #f8d80b;color:#333;text-align:center;height:2.5rem;line-height:2.5rem;border-radius:.35rem;}
+.g-det .m-code{text-align:center;}
+.g-det .m-code img{display:block;width:40%;margin:.7rem auto;}

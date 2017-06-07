@@ -10,21 +10,32 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/reset.css" />
-    <link rel="stylesheet" href="http://cdn.bootcss.com/weui/1.1.0/style/weui.min.css">
     <link rel="stylesheet" href="${springMacroRequestContext.contextPath}/css/food.css" />
+    <script src="${springMacroRequestContext.contextPath}/js/jquery.1.8.3.min.js"></script>
 </head>
 <body>
-<div class="weui-msg">
-    <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg g-cus"></i></div>
-    <div class="weui-msg__text-area">
-        <h2 class="weui-msg__title">订餐成功</h2>
 
+<div class="g-det">
+
+    <h2>亲爱的,${groupUserInfoVO.name}:</h2>
+    <p class="m-fot">
+        <span>您已成功预订</span>
+        <span>A套餐 * ${groupOrderVO.av!'0'}</span>
+        <span>B套餐 * ${groupOrderVO.bv!'0'}</span>
+        <span> </span>
+        <span>祝您用餐愉快!</span>
+
+        <#if canedit><a href="${springMacroRequestContext.contextPath}/group/reserve/${cid}?edit=1">重新预定</a></#if>
+
+    </p>
+
+
+    <div class="m-code">
+        关注挑食公众号
+        <img src="${springMacroRequestContext.contextPath}/img/code.jpg" alt="">
+        体验不一样的美食
     </div>
-    <!-- <div class="weui-msg__opr-area">
-      <p class="weui-btn-area">
-        <a href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
-      </p>
-    </div> -->
+
 
 </div>
 

@@ -5,6 +5,7 @@ import com.dean.domain.GroupOrder;
 import com.dean.service.GroupOrderService;
 import com.dean.service.GroupOrderVO;
 import com.dean.service.MenuService;
+import com.dean.util.Constants;
 import com.dean.util.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +59,25 @@ public class GroupOrderServiceImpl implements GroupOrderService {
             groupOrder = groupOrderDao.findOne(groupOrderVO.getId());
             groupOrder.setAv(groupOrderVO.getAv());
             groupOrder.setBv(groupOrderVO.getBv());
+            groupOrder.setUpdateTime(new Date());
         }
-        groupOrderDao.save(groupOrder);
+        try{
+            groupOrderDao.save(groupOrder);
+        }catch (Exception e){
+            logger.error("团体订单提交失败了[{}]",e.getMessage());
+        }
+
+    }
+
+    @Override
+    public boolean canEdit() {
+        boolean boo = false;
+        Date d = new Date();
+        int hours = d.getHours();
+        if(hours< Constants.GROUP_OEDER_EDIT_LAST_HOUR){
+            boo = true;
+        }
+        return boo;
     }
 
     private Date nextScheduleDay(){

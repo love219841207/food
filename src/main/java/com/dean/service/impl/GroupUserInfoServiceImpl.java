@@ -43,7 +43,6 @@ public class GroupUserInfoServiceImpl implements GroupUserInfoService {
     }
 
     @Override
-    @Transactional
     public GroupUserInfoVO saveGroupBook(GroupUserInfoVO groupUserInfoVO) {
         logger.info("团体订餐员工提交姓名、部门");
         GroupUserInfo groupUserInfo = null;

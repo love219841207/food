@@ -541,42 +541,42 @@ INSERT INTO `wechat_info` VALUES ('38', 'http://wx.qlogo.cn/mmopen/ibv9w35juu1EP
 
 alter table pkg_menu add COLUMN  logistics_price decimal(10,2);
 
-alter table boo_group_info add COLUMN  update_time datetime;
-alter table boo_group_info add COLUMN  status  int(11);
-alter table boo_group_info add COLUMN  wechat_id bigint(20);
+alter table book_group_info add COLUMN  update_time datetime;
+alter table book_group_info add COLUMN  status  int(11);
+alter table book_group_info add COLUMN  wechat_id bigint(20);
+-- ----------------------------
+-- Table structure for `group_user_info`
+-- ----------------------------
+-- ----------------------------
+DROP TABLE IF EXISTS `group_order`;
+CREATE TABLE `group_order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `group_user_id` bigint(20) NOT NULL,
+  `av` int(11) NOT NULL,
+  `book_day` date NOT NULL,
+  `bv` int(11) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_book_day_cid` (`group_user_id`,`book_day`)
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of group_order
+-- ----------------------------
+INSERT INTO `group_order` VALUES ('73', '85', '1', '2017-06-20', '0', '2017-06-07 16:09:04', '2017-06-07 16:09:04');
+
 -- ----------------------------
 -- Table structure for `group_user_info`
 -- ----------------------------
 DROP TABLE IF EXISTS `group_user_info`;
 CREATE TABLE `group_user_info` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `wechat_id` bigint(20) DEFAULT NULL,
-  `name` varchar(200) DEFAULT NULL,
-  `cid` bigint(20) DEFAULT NULL,
-  `dep` varchar(200) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
+  `wechat_id` bigint(20) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `cid` bigint(20) NOT NULL,
+  `dep` varchar(200) NOT NULL,
+  `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_group_id_cid` (`wechat_id`,`cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of group_user_info
--- ----------------------------
-
--- ----------------------------
--- Table structure for `group_order`
--- ----------------------------
-DROP TABLE IF EXISTS `group_order`;
-CREATE TABLE `group_order` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `group_user_id` bigint(20) DEFAULT NULL,
-  `av` int(11) DEFAULT NULL,
-  `bv` int(11) DEFAULT NULL,
-  `book_day` date DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- ----------------------------
--- Records of group_order
--- ----------------------------
+  UNIQUE KEY `index_group_id_cid` (`wechat_id`,`cid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4;
