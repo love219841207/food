@@ -15,9 +15,11 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dongxu on 2017/6/2.
@@ -95,6 +97,20 @@ public class GroupController {
         }
         groupOrderService.saveGroupOrderVO(groupOrderVO);
         return "forward:/group/reserve/"+groupUserInfoVO.getCid();
+    }
+
+    @RequestMapping("/report")
+    public String report(ModelMap model,@RequestParam(value = "chooseDay", required = false) String chooseDay
+            ,HttpServletRequest request){
+        if(StringUtils.isEmpty(chooseDay)){
+            chooseDay = DateUtils.getStringDate(new Date());
+        }
+        UserVO userVO = (UserVO)request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        GroupInfoVO groupInfoVO = groupInfoService.getGroupInfoVOByWechatId(userVO.getWechatInfo().getId());
+        List ls = groupOrderService.findReport(groupInfoVO.getId(),chooseDay);
+        model.put("ls", ls);
+        model.put("chooseDayVO", new ChooseDayVO(chooseDay));
+        return "group/report";
     }
 
 }

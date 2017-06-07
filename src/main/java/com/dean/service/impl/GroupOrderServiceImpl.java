@@ -80,6 +80,12 @@ public class GroupOrderServiceImpl implements GroupOrderService {
         return boo;
     }
 
+    @Override
+    public List findReport(Long groupInfoId,String bookDay){
+        List ls = groupOrderDao.findReport(groupInfoId,bookDay);
+        return ls;
+    }
+
     private Date nextScheduleDay(){
         //获取下一个排餐日期
         List<Date> ls =  menuService.findFixDate(1);

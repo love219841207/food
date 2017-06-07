@@ -23,5 +23,11 @@
     <p>扫描二维码点餐</p>
 </div>
 
+<div class="g-det">
+
+    <p class="m-fot">
+        <a href="${springMacroRequestContext.contextPath}/group/report">报表查看</a>
+    </p>
+</div>
 </body>
 </html>
