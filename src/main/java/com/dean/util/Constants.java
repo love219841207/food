@@ -43,7 +43,7 @@ public class
     public static final int ORDER_STATUS_WASTE = 9;
 
     //优惠券可用
-    public static final BigDecimal COUPON_DEFAULT_PRICE = new BigDecimal("50.00");
+    public static final BigDecimal COUPON_DEFAULT_PRICE = new BigDecimal("10.00");
 
     //优惠券可用
     public static final int COUPON_STATUS_VALID = 1;
