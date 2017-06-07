@@ -40,18 +40,23 @@
         <td colspan="4">今天没有订餐记录</td>
     <#else>
         <#list ls as item>
-            <tr>
-                <td>${item[0]}</td>
-                <td>${item[1]}</td>
-                <td>A</td>
-                <td>${item[2]}</td>
-            </tr>
-            <tr>
-                <td>${item[0]}</td>
-                <td>${item[1]}</td>
-                <td>B</td>
-                <td>${item[3]}</td>
-            </tr>
+            <#if item[2] gt 0>
+                <tr>
+                    <td>${item[0]}</td>
+                    <td>${item[1]}</td>
+                    <td>A</td>
+                    <td>${item[2]}</td>
+                </tr>
+            </#if>
+            <#if item[3] gt 0>
+                <tr>
+                    <td>${item[0]}</td>
+                    <td>${item[1]}</td>
+                    <td>B</td>
+                    <td>${item[3]}</td>
+                </tr>
+            </#if>
+
         </#list>
     </#if>
 
