@@ -70,7 +70,7 @@
                 </td>
                 <td class="u-tab3 j-swid" data-time='2' data-type="${accountFixedVO.nt!}" >
                         <#if accountFixedVO.nt??>
-                            <#if accountFixedVO.nn=='1'>
+                            <#if accountFixedVO.nt=='1'>
                                 元气健身
                             <#else>
                                 均衡纤体
