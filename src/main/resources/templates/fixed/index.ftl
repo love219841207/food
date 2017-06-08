@@ -191,7 +191,7 @@
                 //dataType: "json",
                 success: function (message) {
                     alert('提交成功!');
-                    location.reload();
+                    location.href='${springMacroRequestContext.contextPath}/fixed/index';
                 },
                 error: function (message) {
 
