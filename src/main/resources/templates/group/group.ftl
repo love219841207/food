@@ -28,7 +28,7 @@
             <div class="weui-cells">
                 <div class="weui-cell">
                     <div class="weui-cell__bd">
-                        <input class="weui-input" type="text" maxlength="50" placeholder="公司名称" name="groupName" id="groupName" value="${groupInfoVO.groupName!''} ">
+                        <input class="weui-input" type="text" maxlength="50" placeholder="公司名称" name="groupName" id="groupName" value="${groupInfoVO.groupName!''}">
                     </div>
                 </div>
             </div>
