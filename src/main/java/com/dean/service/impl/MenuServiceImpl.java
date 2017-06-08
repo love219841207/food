@@ -50,6 +50,7 @@ public class MenuServiceImpl implements MenuService {
 
 
     @Override
+    @Transactional
     public void initMenuFromExcel() throws IOException, InvalidFormatException {
         List<ArrayList<ArrayList<String>>> excelInfo = this.ReadMenuFormExcel();
         if(excelInfo.size()!=3){
@@ -61,6 +62,9 @@ public class MenuServiceImpl implements MenuService {
             String scheduleDayTmp = "";
             String typeMenu = "";
             for (ArrayList<String> al : menuInfos){
+                if(StringUtils.isEmpty(al.get(2))){
+                    continue;
+                }
                 if(!StringUtils.isEmpty(al.get(0))){
                     scheduleDayTmp = al.get(0);
                 }
@@ -125,15 +129,18 @@ public class MenuServiceImpl implements MenuService {
                 }
                 addressInfos.add(addressInfo);
             }*/
-
-            this.updateDateFromExcel(scheduleMenuInfos,pkgMenus);
-
             ArrayList<ArrayList<String>> groupexcels = excelInfo.get(2);
             Map<String,String> groupInfos = new HashMap<String,String>();
             for (ArrayList<String> al : groupexcels){
                 groupInfos.put(al.get(0), al.get(5));
             }
-            this.updateGroupStatus(groupInfos);
+            try{
+                this.updateDateFromExcel(scheduleMenuInfos,pkgMenus);
+                this.updateGroupStatus(groupInfos);
+            }catch (Exception e){
+                logger.error("导入菜单失败[{}]",e.getMessage());
+            }
+
         }
 
     }
@@ -211,7 +218,6 @@ public class MenuServiceImpl implements MenuService {
         }
         return pkgMenuVOs;
     }
-
 
     @Transactional
     private void updateDateFromExcel(List<ScheduleMenuInfo> scheduleMenuInfos,List<PkgMenu> pkgMenus){
