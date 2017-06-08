@@ -582,3 +582,14 @@ CREATE TABLE `group_user_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4;
 
 alter table schedule_menu_info add unique index index_sc_uni(schedule_day,type_menu,time_menu);
+alter table user_account_detail add COLUMN  delivery_time varchar(30);
+
+
+CREATE TABLE `user_delivery_time` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) DEFAULT NULL,
+  `nn_time` varchar(40) DEFAULT NULL,
+  `nt_time` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_userid` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

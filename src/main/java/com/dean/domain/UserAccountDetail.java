@@ -27,6 +27,15 @@ public class UserAccountDetail {
     private String deliveryName;
     private String deliveryPhone;
     private String deliveryAdd;
+    private String deliveryTime;
+
+    public String getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
 
     public String getDeliveryName() {
         return deliveryName;

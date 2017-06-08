@@ -35,7 +35,7 @@
     </div>
 
     <div class="g-qcon">
-        <p class="fcb">送餐时间 <a href="#" class="frt"><#if orderInfoVO.timeMenu == '1'>11:30-12:30<#else>17:30-18:30</#if> </a></p>
+        <#--<p class="fcb">送餐时间 <a href="#" class="frt"><#if orderInfoVO.timeMenu == '1'>11:30-12:30<#else>17:30-18:30</#if> </a></p>-->
     <#if couponVO??>
         <p class="fcb">抵用券 <span class="frt j-selt" v='${couponVO.price?string("0.00")}' couponId='${couponVO.id}'></span></p>
         <input type="hidden" name="couponId" value="" id="couponId">
@@ -67,7 +67,13 @@
                 $('.j-con .frt').text('-'+$(this).attr('v')+'￥');
                 var _lastPrice = $('.u-col .frt').attr('v');
                 var _couPrice = $(this).attr('v');
-                (_lastPrice>_couPrice)?_lastPrice=_lastPrice-_couPrice : _lastPrice='0.00';
+                if(parseFloat(_lastPrice)>parseFloat(_couPrice)){
+
+                    _lastPrice=_lastPrice-_couPrice;
+                }else{
+
+                    _lastPrice='0.00';
+                }
                 $('.u-col .frt').text(Number(_lastPrice).toFixed(2) +'￥');
                 $('#couponId').val($(this).attr('couponId'));
                 $('#couponPrice').val($(this).attr('v'));
