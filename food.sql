@@ -580,3 +580,5 @@ CREATE TABLE `group_user_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_group_id_cid` (`wechat_id`,`cid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4;
+
+alter table schedule_menu_info add unique index index_sc_uni(schedule_day,type_menu,time_menu);
