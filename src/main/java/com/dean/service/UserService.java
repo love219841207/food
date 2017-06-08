@@ -8,5 +8,14 @@ package com.dean.service;
 public interface UserService {
     UserVO BoundUser(String phone, String openId);
 
+    /**
+     * B2C根据@param openId获取登录信息
+     *
+     * @param openId
+     * @return
+     */
     UserVO getUserVOByOpenId(String openId);
+
+
+
 }

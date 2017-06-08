@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +30,31 @@ public class FixedController {
     private DeliveryAddressService deliveryAddressService;
     @Autowired
     private UserAccountDetailService userAccountDetailService;
+    @Autowired
+    private UserDeliveryTimeService userDeliveryTimeService;
+
+    @RequestMapping("/time/{timemenu}")
+    public String time(@PathVariable("timemenu") String timemenu,
+                       ModelMap model,HttpServletRequest request){
+        logger.info("/time/index,timemenu[{}]",timemenu);
+        UserVO userVO = (UserVO)request.getSession().getAttribute(Constants.SESSION_USER_KEY);
+        UserDeliveryTimeVO userDeliveryTimeVO = userDeliveryTimeService.findByUserId(userVO.getUserInfo().getId());
+        model.put("userDeliveryTimeVO",userDeliveryTimeVO);
+        model.put("timemenu",timemenu);
+        if(timemenu.equals(Constants.TIME_MENU_NOON)){
+            model.put("slev",userDeliveryTimeVO.getNnTime());
+        }else{
+            model.put("slev",userDeliveryTimeVO.getNtTime());
+        }
+        return "fixed/time";
+    }
+    @RequestMapping("/time/seltime")
+    public String seltime(@RequestParam(value = "timemenu",required = false) String timemenu,
+                          UserDeliveryTimeVO userDeliveryTimeVO,
+                          @RequestParam(value = "slev",required = false) String slev){
+        userDeliveryTimeService.saveUserDeliveryTimeVO(userDeliveryTimeVO,timemenu,slev);
+        return "forward:/fixed/index";
+    }
 
     @RequestMapping(value="/index")
     public String fixed(ModelMap model ,HttpServletRequest request,@RequestParam(value = "deliveryId",required = false) Long deliveryId){
@@ -40,8 +66,10 @@ public class FixedController {
         model.put("deliveryAddressVO", deliveryAddressVO);
         List<AccountSurplusVO> surplusList =  userAccountDetailService.findSurplus(userVO.getUserInfo().getId());
         List<AccountFixedVO> fixedList = userAccountDetailService.findFixed(userVO.getUserInfo().getId());
+        UserDeliveryTimeVO userDeliveryTimeVO = userDeliveryTimeService.findByUserId(userVO.getUserInfo().getId());
         model.put("surplusList",surplusList);
         model.put("fixedList",fixedList);
+        model.put("userDeliveryTimeVO",userDeliveryTimeVO);
         return "fixed/index";
     }
 

@@ -10,8 +10,17 @@ public class PkgMenuVO {
     private String pkgMenu;
     private String typeMenu;
     private int pkgDays;
+    private BigDecimal logisticsPrice;
     private BigDecimal originalPrice;
     private BigDecimal salePrice;
+
+    public BigDecimal getLogisticsPrice() {
+        return logisticsPrice;
+    }
+
+    public void setLogisticsPrice(BigDecimal logisticsPrice) {
+        this.logisticsPrice = logisticsPrice;
+    }
 
     public String getPkgMenu() {
         return pkgMenu;

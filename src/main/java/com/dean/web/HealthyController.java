@@ -42,6 +42,6 @@ public class HealthyController {
     @RequestMapping("/save")
     public String save(HttpServletRequest request,HealthyInfoVO healthyInfoVO){
         healthyInfoService.save(healthyInfoVO);
-        return MenuDistribute.distribute("3");
+        return MenuDistribute.distribute(3,null);
     }
 }

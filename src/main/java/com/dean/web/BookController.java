@@ -29,19 +29,8 @@ public class BookController {
     @Autowired
     private HealthyInfoService healthyInfoService;
     @Autowired
-    private GroupInfoService groupInfoService;
-    @Autowired
     private MenuService menuService;
-    @RequestMapping("/group")
-    public String group(){
-       return "book/group";
-    }
 
-    @RequestMapping("/groupsub")
-    public String groupsub(GroupInfoVO groupInfoVO){
-        groupInfoService.saveGroupInfo(groupInfoVO);
-        return "book/groupsuccess";
-    }
 
     @RequestMapping("/single")
     public String single(ModelMap model,HttpServletRequest request) {
@@ -71,8 +60,9 @@ public class BookController {
         model.put("menus",menus);
         model.put("type", type);
         model.put("timeType",timeType);
-        model.put("chooseDayVO",new ChooseDayVO(chooseDay));
+        model.put("chooseDayVO", new ChooseDayVO(chooseDay));
         return "book/details";
 
     }
+
 }

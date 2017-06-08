@@ -44,7 +44,7 @@
         <ul>
             <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/drift/ba1.jpg"/></a></li>
             <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/drift/ba2.jpg"/></a></li>
-            <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/drift/ba3.jpg"/></a></li>
+           <#-- <li><a class="pic" href="javascript:void(0);"><img src="${springMacroRequestContext.contextPath}/drift/ba3.jpg"/></a></li>-->
         </ul>
     </div>
 
@@ -59,12 +59,13 @@
 
 
 <div class="g-detail">
-        <a href="${springMacroRequestContext.contextPath}/book/typemenu/1">
-             <img src="${springMacroRequestContext.contextPath}/drift/typemenu1.jpg" alt="">
-        </a>
         <a href="${springMacroRequestContext.contextPath}/book/typemenu/2">
             <img src="${springMacroRequestContext.contextPath}/drift/typemenu2.jpg" alt="">
         </a>
+        <a href="${springMacroRequestContext.contextPath}/book/typemenu/1">
+             <img src="${springMacroRequestContext.contextPath}/drift/typemenu1.jpg" alt="">
+        </a>
+
 </div>
 
 

@@ -43,7 +43,7 @@ public class
     public static final int ORDER_STATUS_WASTE = 9;
 
     //优惠券可用
-    public static final BigDecimal COUPON_DEFAULT_PRICE = new BigDecimal("50.00");
+    public static final BigDecimal COUPON_DEFAULT_PRICE = new BigDecimal("10.00");
 
     //优惠券可用
     public static final int COUPON_STATUS_VALID = 1;
@@ -78,9 +78,17 @@ public class
     public static final String TIME_MENU_NIGHT ="2";
     public static final String TIME_MENU_NIGHT_NAME ="晚餐";
     public static final String TYPE_MENU_THIN="1";
-    public static final String TYPE_MENU_THIN_NAME="极致瘦身";
+    public static final String TYPE_MENU_THIN_NAME="元气健身";
 
     public static final String TYPE_MENU_SLIM ="2";
     public static final String TYPE_MENU_SLIM_NAME="均衡纤体";
+
+
+    public static final int BOOK_GROUP_PENDING = 0;//提交等待审核
+    public static final int BOOK_GROUP_OK = 1;     //审核通过
+    public static final int BOOK_GROUP_FAIL = 2;    //审核不同过
+
+
+    public static final int GROUP_OEDER_EDIT_LAST_HOUR=20;//订单最后修改时间
 
 }

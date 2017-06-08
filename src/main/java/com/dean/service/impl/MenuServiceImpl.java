@@ -1,8 +1,11 @@
 package com.dean.service.impl;
 
+import com.dean.config.ZxingProperties;
 import com.dean.dao.AddressInfoDao;
+import com.dean.dao.GroupInfoDao;
 import com.dean.dao.PkgMenuDao;
 import com.dean.dao.ScheduleMenuInfoDao;
+import com.dean.domain.GroupInfo;
 import com.dean.domain.PkgMenu;
 import com.dean.domain.ScheduleMenuInfo;
 import com.dean.service.MenuInfoVO;
@@ -10,40 +13,47 @@ import com.dean.service.MenuService;
 import com.dean.service.PkgMenuVO;
 import com.dean.util.Constants;
 import com.dean.util.DateUtils;
+import com.dean.util.ZxingUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
 
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by dongxu on 2017/2/14.
  */
 @Service
+@EnableConfigurationProperties(ZxingProperties.class)
 public class MenuServiceImpl implements MenuService {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private ZxingProperties zxingProperties;
     @Autowired
     private ScheduleMenuInfoDao scheduleMenuInfoDao;
     @Autowired
     private PkgMenuDao pkgMenuDao;
+  /*  @Autowired
+    private AddressInfoDao addressInfoDao;*/
     @Autowired
-    private AddressInfoDao addressInfoDao;
+    private GroupInfoDao groupInfoDao;
 
 
     @Override
+    @Transactional
     public void initMenuFromExcel() throws IOException, InvalidFormatException {
         List<ArrayList<ArrayList<String>>> excelInfo = this.ReadMenuFormExcel();
-        if(excelInfo.size()!=2){
+        if(excelInfo.size()!=3){
             logger.info("解析menuexcel异常,sheet数量不对");
         }else{
             ArrayList<ArrayList<String>> menuInfos = excelInfo.get(0);
@@ -52,6 +62,9 @@ public class MenuServiceImpl implements MenuService {
             String scheduleDayTmp = "";
             String typeMenu = "";
             for (ArrayList<String> al : menuInfos){
+                if(StringUtils.isEmpty(al.get(2))){
+                    continue;
+                }
                 if(!StringUtils.isEmpty(al.get(0))){
                     scheduleDayTmp = al.get(0);
                 }
@@ -101,6 +114,7 @@ public class MenuServiceImpl implements MenuService {
                 pkgMenu.setPkgDays(Double.valueOf(al.get(3)).intValue());
                 pkgMenu.setOriginalPrice(new BigDecimal(al.get(4)).setScale(2));
                 pkgMenu.setSalePrice(new BigDecimal(al.get(5)).setScale(2));
+                pkgMenu.setLogisticsPrice(new BigDecimal(StringUtils.isEmpty(al.get(6))?"0.00":al.get(6)).setScale(2));
                 pkgMenu.setUpdateTime(new Date());
                 pkgMenus.add(pkgMenu);
             }
@@ -115,10 +129,42 @@ public class MenuServiceImpl implements MenuService {
                 }
                 addressInfos.add(addressInfo);
             }*/
+            ArrayList<ArrayList<String>> groupexcels = excelInfo.get(2);
+            Map<String,String> groupInfos = new HashMap<String,String>();
+            for (ArrayList<String> al : groupexcels){
+                groupInfos.put(al.get(0), al.get(5));
+            }
+            try{
+                this.updateDateFromExcel(scheduleMenuInfos,pkgMenus);
+                this.updateGroupStatus(groupInfos);
+            }catch (Exception e){
+                logger.error("导入菜单失败[{}]",e.getMessage());
+            }
 
-            this.updateDateFromExcel(scheduleMenuInfos,pkgMenus);
         }
 
+    }
+
+    private void updateGroupStatus(Map<String,String> map){
+        if(map.size()>0){
+            logger.info("审核公司有记录,条数为[{}]",map.size());
+            Iterator iter = map.entrySet().iterator();
+            GroupInfo info = null;
+            Integer status = null;
+           while (iter.hasNext()) {
+                Map.Entry entry = (Map.Entry) iter.next();
+               status = new BigDecimal((String) entry.getValue()).intValue();
+               info = groupInfoDao.findOne(new BigDecimal((String) entry.getKey()).longValue());
+               if(info!=null&&status==1){
+                   String linkPath = String.format(zxingProperties.getGroupUrl(),info.getId());
+                   ZxingUtils.createImg(linkPath,zxingProperties.getFilePath(),"zx"+info.getId()+".png");
+               }
+               info.setStatus(status);
+               groupInfoDao.save(info);
+            }
+        }else{
+            logger.info("审核公司无记录");
+        }
     }
 
     @Override
@@ -162,16 +208,16 @@ public class MenuServiceImpl implements MenuService {
         for (PkgMenu pkgMenu : pkgMenus){
             pkgMenuVO = new PkgMenuVO();
             pkgMenuVO.setId(pkgMenu.getId());
-            pkgMenuVO.setOriginalPrice(pkgMenu.getOriginalPrice());
-            pkgMenuVO.setSalePrice(pkgMenu.getSalePrice());
+            pkgMenuVO.setOriginalPrice(pkgMenu.getOriginalPrice().setScale(2));
+            pkgMenuVO.setSalePrice(pkgMenu.getSalePrice().setScale(2));
             pkgMenuVO.setTypeMenu(pkgMenu.getTypeMenu());
             pkgMenuVO.setPkgMenu(pkgMenu.getPkgMenu());
             pkgMenuVO.setPkgDays(pkgMenu.getPkgDays());
+            pkgMenuVO.setLogisticsPrice(pkgMenu.getLogisticsPrice()==null?new BigDecimal("0.00"):pkgMenu.getLogisticsPrice().setScale(2));
             pkgMenuVOs.add(pkgMenuVO);
         }
         return pkgMenuVOs;
     }
-
 
     @Transactional
     private void updateDateFromExcel(List<ScheduleMenuInfo> scheduleMenuInfos,List<PkgMenu> pkgMenus){
@@ -236,7 +282,7 @@ public class MenuServiceImpl implements MenuService {
 
     private List<ArrayList<ArrayList<String>>> ReadMenuFormExcel() {
         List<ArrayList<ArrayList<String>>> excelInfo = new ArrayList<ArrayList<ArrayList<String>>>();
-        File file = new File("/home/up/menu.xlsx");
+        File file = new File(zxingProperties.getExcelPath());
         Workbook workbook = null;
         try {
             workbook = WorkbookFactory.create(file);
@@ -299,7 +345,11 @@ public class MenuServiceImpl implements MenuService {
             }
             excelInfo.add(excelSheet);
         }
-
+        try {
+            workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         logger.info("***********************************************");
 
         for (int i = 0; i < excelInfo.size(); i++) {

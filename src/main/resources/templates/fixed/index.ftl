@@ -26,6 +26,19 @@
 
       </a>
 </div>
+<div class="g-qhd">
+    <a href="${springMacroRequestContext.contextPath}/fixed/time/1">
+        午餐时间
+        <span id="s_nn_t">${userDeliveryTimeVO.nnTime!''}</span>
+    </a>
+</div>
+
+<div class="g-qhd">
+    <a href="${springMacroRequestContext.contextPath}/fixed/time/2">
+        晚餐时间
+        <span id="s_nt_t">${userDeliveryTimeVO.ntTime!''}</span>
+    </a>
+</div>
 <div class="g-rhd">
 <#assign sumSurplus=0>
 <#list surplusList as AccountSurplusVO>
@@ -47,7 +60,7 @@
 </div>
 
 <div class="g-plan">
-    <h2><img src="${springMacroRequestContext.contextPath}/img/ar_dn.png">点击红色排餐和空白处可以修改<img src="${springMacroRequestContext.contextPath}/img/ar_dn.png"></h2>
+    <h2><img src="${springMacroRequestContext.contextPath}/img/ar_dn.png">点击排餐和空白处可以修改<img src="${springMacroRequestContext.contextPath}/img/ar_dn.png"></h2>
 
     <table>
         <tr>
@@ -62,7 +75,7 @@
                 <td class="u-tab2 j-swid" data-time='1' data-type="${accountFixedVO.nn!}" >
                     <#if accountFixedVO.nn??>
                         <#if accountFixedVO.nn=='1'>
-                            极致瘦身
+                            元气健身
                         <#else>
                             均衡纤体
                         </#if>
@@ -70,8 +83,8 @@
                 </td>
                 <td class="u-tab3 j-swid" data-time='2' data-type="${accountFixedVO.nt!}" >
                         <#if accountFixedVO.nt??>
-                            <#if accountFixedVO.nn=='1'>
-                                极致瘦身
+                            <#if accountFixedVO.nt=='1'>
+                                元气健身
                             <#else>
                                 均衡纤体
                             </#if>
@@ -115,9 +128,9 @@
 
     </#list>
 
-        <a href="javascript:void(0);"  data-surplus="1,1,${time1Type1}" class="hide">极致瘦身</a>
+        <a href="javascript:void(0);"  data-surplus="1,1,${time1Type1}" class="hide">元气健身</a>
         <a href="javascript:void(0);"  data-surplus="1,2,${time1Type2}" class="hide">均衡纤体</a>
-        <a href="javascript:void(0);" data-surplus="2,1,${time2Type1}" class="hide">极致瘦身</a>
+        <a href="javascript:void(0);" data-surplus="2,1,${time2Type1}" class="hide">元气健身</a>
         <a href="javascript:void(0);"  data-surplus="2,2,${time2Type2}" class="hide">均衡纤体</a>
         <a href="javascript:void(0);" class="j-cancle hide">取消套餐</a>
     </div>
@@ -137,6 +150,8 @@
             }
             var _arr = $('.g-plan table tr:gt(0)');
             var _data = [];
+            _nn_time_check = false;
+            _nt_time_check = false;
             _arr.each(function(index, el) {
                 var _fixDate = $(this).attr('data-date');
                 var _nn_type = $(this).children(':eq(1)').attr('data-type');
@@ -147,6 +162,7 @@
                     _o._nn = _nn_type;
                     _o._devId = _devid.val();
                     _data.push(_o);
+                    _nn_time_check = true;
                 }
                 if(_nt_type!=undefined&&_nt_type!=null&&_nt_type!=''){
                     var _o = {};
@@ -154,8 +170,19 @@
                     _o._nt = _nt_type;
                     _o._devId = _devid.val();
                     _data.push(_o);
+                    _nt_time_check = true;
                 }
             });
+            var _s_nn_t = $('#s_nn_t').text();
+            var _s_nt_t = $('#s_nt_t').text();
+            if(_nn_time_check&&_s_nn_t==''){
+                alert('请选择午餐时间!');
+                return false;
+            }
+            if(_nt_time_check&&_s_nt_t==''){
+                alert('请选择晚餐时间!');
+                return false;
+            }
             $.ajax({
                 type: "POST",
                 url: "${springMacroRequestContext.contextPath}/fixed/save",
@@ -164,7 +191,7 @@
                 //dataType: "json",
                 success: function (message) {
                     alert('提交成功!');
-                    location.reload();
+                    location.href='${springMacroRequestContext.contextPath}/fixed/index';
                 },
                 error: function (message) {
 

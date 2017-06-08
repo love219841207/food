@@ -17,6 +17,7 @@ public class Int {
         String nextDate_1 = sf.format(cal.getTime());
         System.out.println(nextDate_1);
 */
-
+    String a = "1.0";
+        System.out.print(new BigDecimal(a).intValue());
     }
 }

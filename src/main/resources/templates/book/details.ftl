@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title><#if type=='1'>极致瘦身<#else>均衡纤体</#if></title>
+    <title><#if type=='1'>元气健身<#else>均衡纤体</#if></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
     <meta name="format-detection" content="telephone=no,address=no,email=no" />
     <meta name="mobileOptimized" content="width" />
@@ -114,7 +114,7 @@
     <#list menus as menu>
         <div class="u-det j-sel <#if menu_index gt 0>u-hide</#if>">
             <#list menu.pkgMenuVOs as pkgMenuVO>
-                 <a href="#" v="${pkgMenuVO.pkgDays}"  class="<#if pkgMenuVO_index == 0>on</#if>" orip="${pkgMenuVO.originalPrice}" salep="${pkgMenuVO.salePrice}">${pkgMenuVO.pkgMenu}</a>
+                 <a href="#" v="${pkgMenuVO.pkgDays}" lp="${pkgMenuVO.logisticsPrice?string('0.00')}" class="<#if pkgMenuVO_index == 0>on</#if>" orip="${pkgMenuVO.originalPrice}" salep="${pkgMenuVO.salePrice}">${pkgMenuVO.pkgMenu}</a>
             </#list>
 
         </div>
@@ -225,8 +225,9 @@
         var _timeMenu = d.attr('v');
         var _o = $('.j-sel a:visible').filter('.on');
         var pkg = _o.attr('v');
+        var lp = _o.attr('lp');
        // location.href="${springMacroRequestContext.contextPath}/order/create/"+_typeMenu+"/"+_timeMenu+"/"+pkg;
-        location.href="${springMacroRequestContext.contextPath}/order/create?type="+_typeMenu+"&timeMenu="+_timeMenu+"&pkgDays="+pkg;
+        location.href="${springMacroRequestContext.contextPath}/order/create?type="+_typeMenu+"&timeMenu="+_timeMenu+"&pkgDays="+pkg+"&lp="+lp;
     })
 
 

@@ -29,8 +29,12 @@
         <a href="${springMacroRequestContext.contextPath}/order/list"> <img src="${springMacroRequestContext.contextPath}/img/icon2.png" alt="">全部订单</a>
         <a href="${springMacroRequestContext.contextPath}/delivery/list"> <img src="${springMacroRequestContext.contextPath}/img/icon3.png" alt="">配送地址</a>
         <a href="${springMacroRequestContext.contextPath}/book/single"> <img src="${springMacroRequestContext.contextPath}/img/icon4.png" alt="">套餐购买</a>
-        <a href="${springMacroRequestContext.contextPath}/book/group"> <img src="${springMacroRequestContext.contextPath}/img/icon4.png" alt="">团体预定</a>
+        <a href="${springMacroRequestContext.contextPath}/group/group"> <img src="${springMacroRequestContext.contextPath}/img/icon4.png" alt="">团体预定</a>
         <a href="${springMacroRequestContext.contextPath}/fixed/index"> <img src="${springMacroRequestContext.contextPath}/img/icon5.png" alt="">排餐</a>
+    </div>
+
+    <div class="con">
+        <span> 客服电话：021-62960659（09:00---20:00）</span>
     </div>
 </div>
 

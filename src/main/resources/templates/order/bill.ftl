@@ -22,6 +22,7 @@
     <input type="hidden" name="typeMenu"  value="${orderInfoVO.typeMenu}">
     <input type="hidden" name="timeMenu"  value="${orderInfoVO.timeMenu}">
     <input type="hidden" name="pkgDays"  value="${orderInfoVO.pkgDays}">
+    <input type="hidden" name="logisticsPrice"  value="${orderInfoVO.logisticsPrice}">
     <input type="hidden" name="userId"  value="${orderInfoVO.userId}">
     <input type="hidden" name="pkgMenu"  value="${orderInfoVO.pkgMenu}">
     <div class="g-qhd">
@@ -34,9 +35,9 @@
     </div>
 
     <div class="g-qcon">
-        <p class="fcb">送餐时间 <a href="#" class="frt"><#if orderInfoVO.timeMenu == '1'>11:30-12:30<#else>17:30-18:30</#if> </a></p>
+        <#--<p class="fcb">送餐时间 <a href="#" class="frt"><#if orderInfoVO.timeMenu == '1'>11:30-12:30<#else>17:30-18:30</#if> </a></p>-->
     <#if couponVO??>
-        <p class="fcb">抵用券 <span class="frt j-selt" v='${couponVO.price}' couponId='${couponVO.id}'></span></p>
+        <p class="fcb">抵用券 <span class="frt j-selt" v='${couponVO.price?string("0.00")}' couponId='${couponVO.id}'></span></p>
         <input type="hidden" name="couponId" value="" id="couponId">
         <input type="hidden" name="couponPrice" value="" id="couponPrice">
     </#if>
@@ -44,7 +45,7 @@
     </div>
 
     <div class="g-qcon">
-        <p class="fcb">配送费 <em class="frt">${orderInfoVO.logisticsPrice!'0.00'}￥</em></p>
+        <p class="fcb">配送费 <em class="frt">${orderInfoVO.logisticsPrice?string("0.00")}￥</em></p>
     <#if couponVO??>
         <p class="fcb j-con">抵用券 <em class="frt" >0.00￥</em></p>
     </#if>
@@ -66,7 +67,13 @@
                 $('.j-con .frt').text('-'+$(this).attr('v')+'￥');
                 var _lastPrice = $('.u-col .frt').attr('v');
                 var _couPrice = $(this).attr('v');
-                (_lastPrice>_couPrice)?_lastPrice=_lastPrice-_couPrice : _lastPrice='0.00';
+                if(parseFloat(_lastPrice)>parseFloat(_couPrice)){
+
+                    _lastPrice=_lastPrice-_couPrice;
+                }else{
+
+                    _lastPrice='0.00';
+                }
                 $('.u-col .frt').text(Number(_lastPrice).toFixed(2) +'￥');
                 $('#couponId').val($(this).attr('couponId'));
                 $('#couponPrice').val($(this).attr('v'));

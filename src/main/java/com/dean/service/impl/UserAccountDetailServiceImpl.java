@@ -34,6 +34,9 @@ public class UserAccountDetailServiceImpl implements UserAccountDetailService {
     @Autowired
     private DeliveryAddressService deliveryAddressService;
 
+    @Autowired
+    private UserDeliveryTimeService userDeliveryTimeService;
+
     @Override
     public void orderAdd(OrderInfoVO orderInfoVO) {
         if(orderInfoVO!=null){
@@ -115,50 +118,58 @@ public class UserAccountDetailServiceImpl implements UserAccountDetailService {
     @Override
     @Transactional
     public void saveDetailfs(String str,Long userId) {
-        JsonNode info = null;
-        try {
-            info =  new ObjectMapper().readTree(str);
-        } catch (IOException e) {
-            logger.error("解析排餐数据格式错误[{}]",info);
-        }
-        List<UserAccountDetail> list = new ArrayList<UserAccountDetail>();
-        UserAccountDetail userAccountDetail = null;
-        if(info.isArray()){
-            for (JsonNode objNode : info){
-                userAccountDetail = new UserAccountDetail();
-                logger.info(objNode.toString());
-                userAccountDetail.setUserId(userId);
-                userAccountDetail.setHappenTime(new Date());
-                userAccountDetail.setType(Constants.USER_ACCOUNT_FIX_MUL);
-                //排餐为单份排餐
-                userAccountDetail.setNum(-Constants.USER_ACCOUNT_FIX_NUM);
-                String fixDate = objNode.path("_fixDate").asText();
-                userAccountDetail.setFixDate(DateUtils.getDate(fixDate));
-                String _str = null;
-                Long deliveryId = null;
-                DeliveryAddressVO deliveryAddressVO = null;
-                if(objNode.has("_nn")){
-                    _str = objNode.path("_nn").asText();
-                    userAccountDetail.setTimeMenu(Constants.TIME_MENU_NOON);
-                    userAccountDetail.setTypeMenu(_str);
-                }
-                if(objNode.has("_nt")){
-                    _str = objNode.path("_nt").asText();
-                    userAccountDetail.setTimeMenu(Constants.TIME_MENU_NIGHT);
-                    userAccountDetail.setTypeMenu(_str);
-                }
-                if(objNode.has("_devId")){
-                    if(deliveryAddressVO==null){
-                        deliveryAddressVO = deliveryAddressService.findById(objNode.path("_devId").asLong());
-                    }
-                    userAccountDetail.setDeliveryPhone(deliveryAddressVO.getPhone());
-                    userAccountDetail.setDeliveryName(deliveryAddressVO.getName());
-                    userAccountDetail.setDeliveryAdd(deliveryAddressVO.getAddressName()+"-"+deliveryAddressVO.getAddressExtend());
-                }
-                list.add(userAccountDetail);
+        UserDeliveryTimeVO userDeliveryTimeVO = userDeliveryTimeService.findByUserId(userId);
+        if(userDeliveryTimeVO==null){
+            logger.error("排餐的时候出现送餐时间为空无法操作!");
+        }else{
+            JsonNode info = null;
+            try {
+                info =  new ObjectMapper().readTree(str);
+            } catch (IOException e) {
+                logger.error("解析排餐数据格式错误[{}]",info);
             }
+            List<UserAccountDetail> list = new ArrayList<UserAccountDetail>();
+            UserAccountDetail userAccountDetail = null;
+            if(info.isArray()){
+                for (JsonNode objNode : info){
+                    userAccountDetail = new UserAccountDetail();
+                    logger.info(objNode.toString());
+                    userAccountDetail.setUserId(userId);
+                    userAccountDetail.setHappenTime(new Date());
+                    userAccountDetail.setType(Constants.USER_ACCOUNT_FIX_MUL);
+                    //排餐为单份排餐
+                    userAccountDetail.setNum(-Constants.USER_ACCOUNT_FIX_NUM);
+                    String fixDate = objNode.path("_fixDate").asText();
+                    userAccountDetail.setFixDate(DateUtils.getDate(fixDate));
+                    String _str = null;
+                    Long deliveryId = null;
+                    DeliveryAddressVO deliveryAddressVO = null;
+                    if(objNode.has("_nn")){
+                        _str = objNode.path("_nn").asText();
+                        userAccountDetail.setTimeMenu(Constants.TIME_MENU_NOON);
+                        userAccountDetail.setTypeMenu(_str);
+                        userAccountDetail.setDeliveryTime(userDeliveryTimeVO.getNnTime());
+                    }
+                    if(objNode.has("_nt")){
+                        _str = objNode.path("_nt").asText();
+                        userAccountDetail.setTimeMenu(Constants.TIME_MENU_NIGHT);
+                        userAccountDetail.setTypeMenu(_str);
+                        userAccountDetail.setDeliveryTime(userDeliveryTimeVO.getNtTime());
+                    }
+                    if(objNode.has("_devId")){
+                        if(deliveryAddressVO==null){
+                            deliveryAddressVO = deliveryAddressService.findById(objNode.path("_devId").asLong());
+                        }
+                        userAccountDetail.setDeliveryPhone(deliveryAddressVO.getPhone());
+                        userAccountDetail.setDeliveryName(deliveryAddressVO.getName());
+                        userAccountDetail.setDeliveryAdd(deliveryAddressVO.getAddressName()+"-"+deliveryAddressVO.getAddressExtend());
+                    }
+                    list.add(userAccountDetail);
+                }
+            }
+            userAccountDetailDao.deleteDetails(userId, Constants.USER_ACCOUNT_FIX_MUL);
+            userAccountDetailDao.save(list);
         }
-        userAccountDetailDao.deleteDetails(userId, Constants.USER_ACCOUNT_FIX_MUL);
-        userAccountDetailDao.save(list);
+
     }
 }

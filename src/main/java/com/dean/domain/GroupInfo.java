@@ -20,6 +20,33 @@ public class GroupInfo {
     private String name;
     private String phone;
     private String remark;
+    private Date updateTime;
+    private Long wechatId;
+    private Integer status;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Long getWechatId() {
+        return wechatId;
+    }
+
+    public void setWechatId(Long wechatId) {
+        this.wechatId = wechatId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;
