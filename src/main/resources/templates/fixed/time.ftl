@@ -19,12 +19,20 @@
     <input type="hidden" id="id" name="id" value="${userDeliveryTimeVO.id!''}">
     <input type="hidden" id="slev" name="slev" value="${slev!''}">
     <input type="hidden" id="userId" name="userId" value="${userDeliveryTimeVO.userId!''}">
-<div class="g-time j-time">
-    <a href="#">10:30-11:15</a>
-    <a href="#">11:15-12:00</a>
-    <a href="#">12:00-12:45</a>
-    <a href="#">12:45-13:30</a>
-</div>
+    <div class="g-time j-time">
+    <#if timemenu=='1'>
+        <a href="#">10:30-11:15</a>
+        <a href="#">11:15-12:00</a>
+        <a href="#">12:00-12:45</a>
+        <a href="#">12:45-13:30</a>
+        <#else>
+            <a href="#">17:00-18:00</a>
+            <a href="#">18:00-19:00</a>
+            <a href="#">19:00-20:00</a>
+    </#if>
+
+
+    </div>
 
 </form>
 
