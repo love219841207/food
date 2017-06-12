@@ -19,7 +19,7 @@
 <body class="g-ptom">
 
 <div class="g-serch">
-    <p class="j-ser"><input type="text"><img src="img/del.png" alt="" class="j-del-val"></p>
+    <p class="j-ser"><input type="text"><img src="${springMacroRequestContext.contextPath}/img/del.png" alt="" class="j-del-val"></p>
     <a href="#" class="j-btn btn">取消</a>
 
     <!-- 搜索提示弹框 -->

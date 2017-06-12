@@ -593,3 +593,5 @@ CREATE TABLE `user_delivery_time` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_userid` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+alter table address_info add COLUMN  address_ext varchar(150);
