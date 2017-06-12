@@ -108,6 +108,7 @@ body.g-ptom{padding-bottom: 70px;}
 .g-wid .u-btn span em.u-org{font-weight: bolder;text-decoration:line-through;font-size: 1.2rem;}
 .g-wid .u-btn span em.u-now{color: red;font-weight: bolder;padding-right: 0.5rem;font-size: 1.2rem;}
 .g-wid .u-btn a{width: 30%;background-color: #f8d80b;height: 2rem;line-height: 2rem;color: #333;display: inline-block;text-align: center;margin-top: 1rem;float: right;}
+.g-padtom .u-cen {text-align: center;font-size: 1.5rem;color: #f8d80b;}
 .g-rhd{background-color: #FFE7E7;width: 90%;margin:1rem auto;padding:.7rem 2%;font-size: .9rem;}
 .g-rhd span{display: block;}
 .g-plan h2{text-align: center;color: #999;font-size: .7rem;}

@@ -32,6 +32,7 @@
 
 <div class="g-tab">
     <div class="u-hd fcb j-tab">
+
     <#list menus as menu>
         <a href="#" class="
             <#if menu_index ==0>
@@ -102,6 +103,7 @@
     </div>
 </#list>
 
+
 <div class="g-bottom">
     <a href="#" class="j-wid">预定套餐</a>
 </div>
@@ -125,7 +127,12 @@
         <a href="#" id="j-book">下单</a>
     </div>
 </div>
+<#if menus?size<1>
+<div class="u-cen">
+    今天厨师们休息哦～
+</div>
 
+</#if>
 <script>
     $(function() {
         FastClick.attach(document.body);
