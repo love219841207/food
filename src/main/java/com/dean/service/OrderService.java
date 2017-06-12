@@ -8,7 +8,7 @@ import java.util.List;
  */
 public interface OrderService {
 
-    OrderInfoVO initOrderInfo(String typeMenu, String timeMenu, Long userId, int pkgDays,BigDecimal logisticsPrice);
+    OrderInfoVO initOrderInfo(String typeMenu, String timeMenu, Long userId, Integer pkgDays,BigDecimal logisticsPrice);
 
     OrderInfoVO createOrderInfo(OrderInfoVO orderInfoVO);
 

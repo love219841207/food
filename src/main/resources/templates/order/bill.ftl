@@ -26,6 +26,17 @@
     <input type="hidden" name="userId"  value="${orderInfoVO.userId}">
     <input type="hidden" name="pkgMenu"  value="${orderInfoVO.pkgMenu}">
     <div class="g-qhd">
+        <a href="${springMacroRequestContext.contextPath}/delivery/list?choose=2"><img src="${springMacroRequestContext.contextPath}/img/icon3.png" alt="">
+        <#if deliveryAddressVO??>
+            姓名:${deliveryAddressVO.name} 手机号码:${deliveryAddressVO.phone}
+            <input type="hidden" id="deliveryId" value = "${deliveryAddressVO.id}"/>
+        <#else>
+            <input type="hidden" id="deliveryId" value = ""/>
+        </#if>
+
+        </a>
+    </div>
+    <div class="g-qhd">
     <#-- <a href="#"><img src="${springMacroRequestContext.contextPath}/img/icon3.png" alt="">请选择收货地址</a>-->
         <div class="u-bd fcb">
             <img src="${springMacroRequestContext.contextPath}/img/img_ic.jpg" alt="" class="flt">
@@ -50,6 +61,7 @@
         <p class="fcb j-con">抵用券 <em class="frt" >0.00￥</em></p>
     </#if>
         <p class="fcb u-col">实际支付 <em class="frt" v="${orderInfoVO.lastPrice}">${orderInfoVO.lastPrice}￥</em></p>
+        <p class="fcb u-col">备注<em class="frt">请注意:午餐和晚餐不能互通共用</em></p>
     </div>
 
     <div class="g-bottom">
@@ -86,59 +98,66 @@
         });
 
         $('.j-wid').click(function(){
-            $.ajax({
-                type: 'POST',
-                url: '${springMacroRequestContext.contextPath}/order/charge',
-                timeout: 3000,
-                data:$('#confirm_form').serialize(),
-                success: function(response){
-                    var config = response.config;
-                    var pconfig = response.pconfig;
-                    var not_pay = response.not_pay;
-                    var error_msg = response.error_msg;
-                    if(error_msg!=undefined &&error_msg!=''){
-                        alert(error_msg);
-                        location.reload();
-                        return false;
-                    }
-                    if(not_pay!=undefined&&not_pay){
-                        location.href = "${springMacroRequestContext.contextPath}/order/list";
-                        return false;
-                    }
-                    var orderInfoVO = response.orderInfoVO;
-                    $('#id').val(orderInfoVO.id);
-                    wx.config({
-                        debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                        appId : config.appId, // 必填，公众号的唯一标识
-                        timestamp : config.timestamp, // 必填，生成签名的时间戳
-                        nonceStr : config.nonce, // 必填，生成签名的随机串
-                        signature :config.signature,// 必填，签名，见附录1
-                        jsApiList : [ 'chooseWXPay' ]// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-                    });
-
-                   wx.ready(function() {
-
-                        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-                        wx.chooseWXPay({
-                            timestamp : config.timestamp, //时间戳
-                            nonceStr : config.nonce, //随机串
-                            'package' : pconfig.prepayId, //扩展包
-                            signType : 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                            paySign : pconfig.paySign, // 支付签名
-                            success : function(res) {
-                                if(res.errMsg=='chooseWXPay:ok'){
-                                    window.location.href = "${springMacroRequestContext.contextPath}/order/payment?id="+orderInfoVO.id;
-                                    return false;
-                                }
-                            }
+            var _dev=$('#deliveryId');
+            if(_dev.val()==''){
+                alert('请配置送货地址!');
+                return false;
+            }else{
+                $.ajax({
+                    type: 'POST',
+                    url: '${springMacroRequestContext.contextPath}/order/charge',
+                    timeout: 3000,
+                    data:$('#confirm_form').serialize(),
+                    success: function(response){
+                        var config = response.config;
+                        var pconfig = response.pconfig;
+                        var not_pay = response.not_pay;
+                        var error_msg = response.error_msg;
+                        if(error_msg!=undefined &&error_msg!=''){
+                            alert(error_msg);
+                            location.reload();
+                            return false;
+                        }
+                        if(not_pay!=undefined&&not_pay){
+                            location.href = "${springMacroRequestContext.contextPath}/order/list";
+                            return false;
+                        }
+                        var orderInfoVO = response.orderInfoVO;
+                        $('#id').val(orderInfoVO.id);
+                        wx.config({
+                            debug : false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId : config.appId, // 必填，公众号的唯一标识
+                            timestamp : config.timestamp, // 必填，生成签名的时间戳
+                            nonceStr : config.nonce, // 必填，生成签名的随机串
+                            signature :config.signature,// 必填，签名，见附录1
+                            jsApiList : [ 'chooseWXPay' ]// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
                         });
-                    });
-                },
-                error: function(xhr, type){
-                    alert('系统繁忙，请稍后再试!');
-                    return false;
-                }
-            });
+
+                        wx.ready(function() {
+
+                            // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                            wx.chooseWXPay({
+                                timestamp : config.timestamp, //时间戳
+                                nonceStr : config.nonce, //随机串
+                                'package' : pconfig.prepayId, //扩展包
+                                signType : 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                                paySign : pconfig.paySign, // 支付签名
+                                success : function(res) {
+                                    if(res.errMsg=='chooseWXPay:ok'){
+                                        window.location.href = "${springMacroRequestContext.contextPath}/order/payment?id="+orderInfoVO.id;
+                                        return false;
+                                    }
+                                }
+                            });
+                        });
+                    },
+                    error: function(xhr, type){
+                        alert('系统繁忙，请稍后再试!');
+                        return false;
+                    }
+                });
+            }
+
         })
     })
 

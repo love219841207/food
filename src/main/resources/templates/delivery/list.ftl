@@ -22,14 +22,17 @@
                 <div class="select"></div>
             </#if>
 
-        <#if isChoose==true>
+        <#if choose=='1'>
             <a href="${springMacroRequestContext.contextPath}/fixed/index?deliveryId=${deliver.id}">
         </#if>
+            <#if choose=='2'>
+            <a href="${springMacroRequestContext.contextPath}/order/create?deliveryId=${deliver.id}">
+            </#if>
             <div class="body j-sel">
                 ${deliver.name}<span>${deliver.phone}</span>
                 <p>${deliver.addressName} -> ${deliver.addressExtend}</p>
             </div>
-        <#if isChoose==true>
+            <#if choose??>
             </a>
             </#if>
             <div class="control j-edit" v="${deliver.id}"></div>
@@ -62,10 +65,10 @@
     });
     $(function(){
         $('.j-btn').tap(function(){
-            location.href="${springMacroRequestContext.contextPath}/delivery/edit?choose=<#if isChoose==true>1</#if>";
+            location.href="${springMacroRequestContext.contextPath}/delivery/edit?choose=${choose}";
         });
         $('.j-edit').tap(function(){
-            location.href="${springMacroRequestContext.contextPath}/delivery/edit?id="+$(this).attr('v')+"&choose=<#if isChoose==true>1</#if>";
+            location.href="${springMacroRequestContext.contextPath}/delivery/edit?id="+$(this).attr('v')+"&choose=${choose}";
         })
     })
 </script>

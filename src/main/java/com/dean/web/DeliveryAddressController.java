@@ -49,7 +49,7 @@ public class DeliveryAddressController {
             deliveryAddressVO.setUserId(userVO.getUserInfo().getId());
         }
         model.put("deliveryAddressVO", deliveryAddressVO);
-        model.put("isChoose", choose);
+        model.put("choose", choose);
         return "delivery/edit";
     }
 
@@ -73,12 +73,7 @@ public class DeliveryAddressController {
     @RequestMapping("/save")
     public String save(DeliveryAddressVO deliveryAddressVO,@RequestParam(value = "choose",required = false) String choose){
         deliveryAddressService.save(deliveryAddressVO);
-        if(StringUtils.isEmpty(choose)){
-            return "forward:/delivery/list";
-        }else{
-            return "forward:/delivery/list?choose=1";
-        }
-
+        return "forward:/delivery/list";
     }
 
     @RequestMapping("/list")
@@ -90,7 +85,7 @@ public class DeliveryAddressController {
 
         List<DeliveryAddressVO> list =  deliveryAddressService.findByUserId(userVO.getUserInfo().getId());
         model.put("list", list);
-        model.put("isChoose", !StringUtils.isEmpty(choose));
+        model.put("choose", StringUtils.isEmpty(choose)?"":choose);
         return "delivery/list";
     }
 

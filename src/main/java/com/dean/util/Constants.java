@@ -92,4 +92,6 @@ public class
 
     public static final int GROUP_OEDER_EDIT_LAST_HOUR=23;//订单最后修改时间
 
+    public static final String INIT_ORDER_KEY = "orderInfoVO";
+
 }

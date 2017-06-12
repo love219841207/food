@@ -31,20 +31,31 @@ public class OrderController {
     private CouponService couponService;
     @Autowired
     private WechatService wechatService;
+    @Autowired
+    private DeliveryAddressService deliveryAddressService;
 
     private static final String LOCALURL = "order/create";
     @RequestMapping(value="/create")
      public String create(HttpServletRequest request,
                           ModelMap model,
-                          @RequestParam(value = "type") String type,
-                          @RequestParam(value = "timeMenu") String timeMenu,
-                          @RequestParam(value = "pkgDays") int pkgDays,
-                          @RequestParam(value = "lp") BigDecimal lp){
+                          @RequestParam(value = "type" ,required = false) String type,
+                          @RequestParam(value = "timeMenu" ,required = false) String timeMenu,
+                          @RequestParam(value = "pkgDays" ,required = false) Integer pkgDays,
+                          @RequestParam(value = "deliveryId",required = false) Long deliveryId,
+                          @RequestParam(value = "lp" ,required = false) BigDecimal lp){
         logger.info("/create/{}/{}/{}", type, timeMenu, pkgDays);
         UserVO userVO = (UserVO) request.getSession().getAttribute(Constants.SESSION_USER_KEY);
-        logger.info("session id [{}]",request.getSession().getId());
-        OrderInfoVO orderInfoVO = orderService.initOrderInfo(type, timeMenu, userVO.getUserInfo().getId(), pkgDays,lp);
+        logger.info("session id [{}]", request.getSession().getId());
+        OrderInfoVO orderInfoVO = null;
+        if(StringUtils.isEmpty(type)){
+            orderInfoVO = (OrderInfoVO)request.getSession().getAttribute(Constants.INIT_ORDER_KEY);
+        }else{
+            orderInfoVO = orderService.initOrderInfo(type, timeMenu, userVO.getUserInfo().getId(), pkgDays,lp);
+            request.getSession().setAttribute(Constants.INIT_ORDER_KEY,orderInfoVO);
+        }
         model.put("orderInfoVO", orderInfoVO);
+        DeliveryAddressVO deliveryAddressVO = deliveryAddressService.getPlanDeliveryAddressVO(deliveryId, userVO.getUserInfo().getId());
+        model.put("deliveryAddressVO", deliveryAddressVO);
         CouponVO couponVO = couponService.findByUserId(userVO.getUserInfo().getId());
         model.put("couponVO", couponVO);
         return "order/bill";
@@ -59,7 +70,7 @@ public class OrderController {
         model.put("orders", orders);
         return "order/list";*/
        // logger.info("userVO1[{},{}]", userVO == null, request.getSession().getId());
-        return "forward:list";
+        return "forward:/fixed/index";
     }
 
     @RequestMapping(value="/list")
