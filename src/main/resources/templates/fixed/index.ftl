@@ -203,10 +203,16 @@
         var _globe_st;
         var _mask = $('.mask'),_wid = $('.g-wid');
         $('.j-swid').click(function(event) {
+
             _globe_st = $(this);
             var _date = $(this).addClass("j-on").parent().attr('data-date');
             var _type = $(this).attr('data-type');
             var _time = $(this).attr('data-time');
+            var _currentDate = new Date();
+            if(_currentDate.getHours()>22 && checkDay(_date)){
+                alert('第二天排餐已结束!');
+                return false;
+            }
             if( _globe_st.attr('data-type')==''){
                 var _h2 = '排餐：';
                 _h2+=_date;
@@ -296,6 +302,19 @@
             _wid.hide();
         });
     })
+
+    function checkDay(_d){
+        _nDate = new Date(_d);
+        var _next= new Date();
+        _next.setDate(_next.getDate()+1);
+        if(_nDate.getFullYear()==_next.getFullYear()
+        &&_nDate.getMonth() == _next.getMonth()
+        &&_nDate.getDate() == _next.getDate()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 </script>
 
 </body>
