@@ -4,6 +4,7 @@ import javax.persistence.Convert;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by dongxu on 2017/2/15.
@@ -17,7 +18,6 @@ public class Int {
         String nextDate_1 = sf.format(cal.getTime());
         System.out.println(nextDate_1);
 */
-    String a = "1.0";
-        System.out.print(new BigDecimal(a).intValue());
+System.out.print(new Date().getHours());
     }
 }

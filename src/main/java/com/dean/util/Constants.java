@@ -71,7 +71,8 @@ public class
     //排餐显示的页面的可排日期默认显示30天
     public static final int FIX_NEXT_DATE = 90;
 
-
+    //排餐23点后排的是后一天
+    public static final int FIX_NEXT_DATE_HOUR = 23;
 
     public static final String TIME_MENU_NOON="1";
     public static final String TIME_MENU_NOON_NAME="午餐";

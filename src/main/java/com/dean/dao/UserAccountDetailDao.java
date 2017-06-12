@@ -21,4 +21,10 @@ public interface UserAccountDetailDao extends CrudRepository<UserAccountDetail,L
     @Modifying
     @Query(value="delete t from user_account_detail t where t.user_id=?1 and t.type=?2 and t.fix_date>CURDATE()",nativeQuery=true)
     void deleteDetails(Long userId,int type);
+
+    @Modifying
+    @Query(value="delete t from user_account_detail t where t.user_id=?1 and t.type=?2 and t.fix_date>CURDATE()+1",nativeQuery=true)
+    void deleteDetailsExt(Long userId,int type);
+
+
 }

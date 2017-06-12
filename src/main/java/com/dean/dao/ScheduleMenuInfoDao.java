@@ -17,4 +17,7 @@ public interface ScheduleMenuInfoDao extends CrudRepository<ScheduleMenuInfo,Lon
 
     @Query(value = "select DISTINCT t.schedule_day from schedule_menu_info t where t.schedule_day>CURDATE() ORDER BY t.schedule_day LIMIT ?1",nativeQuery = true)
     List<Date> findNextFixDate(int next);
+
+    @Query(value = "select DISTINCT t.schedule_day from schedule_menu_info t where t.schedule_day>CURDATE()+1 ORDER BY t.schedule_day LIMIT ?1",nativeQuery = true)
+    List<Date> findNextFixDateExt(int next);
 }
