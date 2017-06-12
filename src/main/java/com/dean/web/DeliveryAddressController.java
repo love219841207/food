@@ -1,9 +1,6 @@
 package com.dean.web;
 
-import com.dean.service.AddressInfoService;
-import com.dean.service.DeliveryAddressService;
-import com.dean.service.DeliveryAddressVO;
-import com.dean.service.UserVO;
+import com.dean.service.*;
 import com.dean.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +30,8 @@ public class DeliveryAddressController {
 
     @RequestMapping("/edit")
     public String edit(@RequestParam(value = "id",required = false) Long id
-                         ,@RequestParam(value = "choose",required = false) String choose
+                         ,@RequestParam(value = "choose",required = false) String choose,
+                       @RequestParam(value = "sid",required = false) Long sid
                        ,HttpServletRequest request
             ,ModelMap model){
         logger.info("个人地址编辑id为[{}]", id);
@@ -48,8 +46,18 @@ public class DeliveryAddressController {
             deliveryAddressVO = new DeliveryAddressVO();
             deliveryAddressVO.setUserId(userVO.getUserInfo().getId());
         }
+        AddressInfoVO addressInfoVO = null;
+        if(sid!=null){
+            addressInfoVO =  addressInfoService.findById(sid);
+            deliveryAddressVO.setAddressId(sid);
+        }else{
+            if(deliveryAddressVO.getAddressId()!=null){
+                addressInfoVO =  addressInfoService.findById(deliveryAddressVO.getAddressId());
+            }
+        }
+        model.put("addressInfoVO", addressInfoVO==null?"":addressInfoVO.getAddress()+" ("+addressInfoVO.getAddressExt() +" )");
         model.put("deliveryAddressVO", deliveryAddressVO);
-        model.put("isChoose", choose);
+        model.put("choose", choose);
         return "delivery/edit";
     }
 
@@ -73,12 +81,7 @@ public class DeliveryAddressController {
     @RequestMapping("/save")
     public String save(DeliveryAddressVO deliveryAddressVO,@RequestParam(value = "choose",required = false) String choose){
         deliveryAddressService.save(deliveryAddressVO);
-        if(StringUtils.isEmpty(choose)){
-            return "forward:/delivery/list";
-        }else{
-            return "forward:/delivery/list?choose=1";
-        }
-
+        return "forward:/delivery/list";
     }
 
     @RequestMapping("/list")
@@ -90,8 +93,18 @@ public class DeliveryAddressController {
 
         List<DeliveryAddressVO> list =  deliveryAddressService.findByUserId(userVO.getUserInfo().getId());
         model.put("list", list);
-        model.put("isChoose", !StringUtils.isEmpty(choose));
+        model.put("choose", StringUtils.isEmpty(choose) ? "" : choose);
         return "delivery/list";
+    }
+
+    @RequestMapping("/search")
+    public String search(ModelMap model,@RequestParam(value = "id",required = false) String id
+    ,@RequestParam(value = "choose",required = false) String choose){
+        List<AddressInfoVO> list = addressInfoService.findAll();
+        model.put("list",list);
+        model.put("id",id);
+        model.put("choose", StringUtils.isEmpty(choose) ? "" : choose);
+        return "delivery/search";
     }
 
 }

@@ -167,7 +167,12 @@ public class UserAccountDetailServiceImpl implements UserAccountDetailService {
                     list.add(userAccountDetail);
                 }
             }
-            userAccountDetailDao.deleteDetails(userId, Constants.USER_ACCOUNT_FIX_MUL);
+            int hour = new Date().getHours();
+            if(hour<Constants.FIX_NEXT_DATE_HOUR){
+                userAccountDetailDao.deleteDetails(userId, Constants.USER_ACCOUNT_FIX_MUL);
+            }else{
+                userAccountDetailDao.deleteDetailsExt(userId, Constants.USER_ACCOUNT_FIX_MUL);
+            }
             userAccountDetailDao.save(list);
         }
 

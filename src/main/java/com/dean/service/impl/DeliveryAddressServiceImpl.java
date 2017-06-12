@@ -36,7 +36,7 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
         for (UserDeliveryAddress uda : list){
             deliveryAddressVO = new DeliveryAddressVO();
             BeanUtils.copyProperties(uda, deliveryAddressVO);
-            deliveryAddressVO.setAddressName(uda.getAddress().getAddress());
+            deliveryAddressVO.setAddressName(uda.getAddress().getAddressExt()+ " <br> (" +uda.getAddress().getAddress() +" )");
             deliveryAddressVO.setAddressId(uda.getAddress().getId());
             retlist.add(deliveryAddressVO);
         }

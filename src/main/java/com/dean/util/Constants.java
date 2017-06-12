@@ -69,9 +69,10 @@ public class
     public static final int USER_ACCOUNT_FIX_NUM = 1;
 
     //排餐显示的页面的可排日期默认显示30天
-    public static final int FIX_NEXT_DATE = 30;
+    public static final int FIX_NEXT_DATE = 90;
 
-
+    //排餐23点后排的是后一天
+    public static final int FIX_NEXT_DATE_HOUR = 23;
 
     public static final String TIME_MENU_NOON="1";
     public static final String TIME_MENU_NOON_NAME="午餐";
@@ -89,6 +90,8 @@ public class
     public static final int BOOK_GROUP_FAIL = 2;    //审核不同过
 
 
-    public static final int GROUP_OEDER_EDIT_LAST_HOUR=20;//订单最后修改时间
+    public static final int GROUP_OEDER_EDIT_LAST_HOUR=23;//订单最后修改时间
+
+    public static final String INIT_ORDER_KEY = "orderInfoVO";
 
 }

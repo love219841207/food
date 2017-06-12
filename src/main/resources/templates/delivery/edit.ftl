@@ -23,10 +23,10 @@
         <input type="hidden" name="dft" id="dft" value="${deliveryAddressVO.dft!''}">
     <input type="hidden" name="userId" value="${deliveryAddressVO.userId!''}">
     <input type="hidden" name="addressId" id="addressId" value="${deliveryAddressVO.addressId!''}">
-        <input type="hidden" name="choose" id="choose" value="${isChoose!''}">
+        <input type="hidden" name="choose" id="choose" value="${choose!''}">
 
     <div class="form-list">
-        <input type="text" id='picker' name="picker" placeholder="选择地址" value="${deliveryAddressVO.addressName!''}" data-values="${deliveryAddressVO.addressId!''}"/>
+        <input type="text" id='picker' name="picker" placeholder="选择地址" value="${addressInfoVO}"/>
     </div>
     <div class="form-list">
         <input type="text" name="addressExtend" id="addressExtend" placeholder="详情地址" maxlength="20" value="${deliveryAddressVO.addressExtend!''}"/>
@@ -64,7 +64,7 @@
     $(function() {
         FastClick.attach(document.body);
     });
-    $.ajax({
+  /*  $.ajax({
         type: 'GET',
         url: '${springMacroRequestContext.contextPath}/delivery/listAddress/',
         timeout: 3000,
@@ -79,11 +79,15 @@
             alert('系统繁忙，请稍后再试!')
         }
     });
-
+*/
+    $('#picker').click(function(){
+        var _id = $('#id').val();
+        location.href="${springMacroRequestContext.contextPath}/delivery/search?id="+_id+"&choose=${choose!''}";
+    });
 
     $('.j-del').click(function(){
         var _id = $('#id').val();
-        location.href="${springMacroRequestContext.contextPath}/delivery/del?id="+_id;
+        location.href="${springMacroRequestContext.contextPath}/delivery/del?id="+_id+"&choose=${choose!''}";
     });
 
     $('.j-save').click(function(){
@@ -100,8 +104,7 @@
         }else{
             $('#dft').val('');
         }
-        $('#addressId').val($('#picker').attr('data-values'));
-        if($('#picker').attr('data-values')==''){
+        if($('#addressId').val()==''){
             $.alert("请选择地址!");
             return false;
         }

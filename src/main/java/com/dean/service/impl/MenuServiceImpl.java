@@ -197,7 +197,8 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Date> findFixDate(int nextOffset) {
-        List<Date> ls = scheduleMenuInfoDao.findNextFixDate(nextOffset);
+        List<Date> ls = null;
+        ls = scheduleMenuInfoDao.findNextFixDate(nextOffset);
         return ls;
     }
 

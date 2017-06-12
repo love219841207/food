@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
     private UserAccountDetailService userAccountDetailService;
 
     @Override
-    public OrderInfoVO initOrderInfo(String typeMenu,String timeMenu,Long userId,int pkgDays,BigDecimal logisticsPrice) {
+    public OrderInfoVO initOrderInfo(String typeMenu,String timeMenu,Long userId,Integer pkgDays,BigDecimal logisticsPrice) {
         OrderInfoVO orderInfoVO =  new OrderInfoVO();
         orderInfoVO.setTypeMenu(typeMenu);
         orderInfoVO.setTimeMenu(timeMenu);
