@@ -15,6 +15,15 @@ public class AddressInfo {
     @GeneratedValue
     private Long id;
     private String address;
+    private String addressExt;
+
+    public String getAddressExt() {
+        return addressExt;
+    }
+
+    public void setAddressExt(String addressExt) {
+        this.addressExt = addressExt;
+    }
 
     public Long getId() {
         return id;

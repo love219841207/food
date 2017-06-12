@@ -296,3 +296,18 @@ ul.g-sel li:nth-child(2){width: 2rem;line-height: 1.2rem;}
 .g-time{margin-top:5%;}
 .g-time a{border-bottom: 1px solid #ccc;display: block;padding:4% 5% 4% 12%;color: #000;background:#fff url(../img/ico_n.png) 5% 50% no-repeat;background-size:20px; }
 .g-time a.on{background-image:url(../img/ico_y.png);}
+
+
+.g-serch{width: 100%;background-color: #ccc;padding: 3% 0;position: relative;}
+.g-serch p{position: relative;display: inline-block;width:90%;margin-left:5%;}
+.g-serch p input{width:100%;padding: .5rem 0;border-radius: .3rem;background:#fff url(../img/search.png) 50% 50% no-repeat;background-size: 15px;text-indent: 35px;
+ font-size: .9rem;}
+.g-serch p.on{width: 75%;}
+.g-serch p.on input{background-position:5% 50%;}
+.g-serch p img{width: 15px;position: absolute;right: 0;top:0;padding:10px;display:none;}
+.g-serch a.btn{display: none;color: #007aff;width: 15%;text-align: center;}
+.g-ser-con{background-color: #fff;margin-top:1rem;}
+.g-ser-con a{display: block;color: #333;border-bottom:1px solid #ccc;padding: 3% 5%;}
+.g-ser-con a em{display: block;color: #999;font-size: .8rem;}
+.g-ser-wid{position: absolute;left:0;top:72%;width: 100%;display: none;z-index: 1000;}
+.g-mask{top:72%;}
