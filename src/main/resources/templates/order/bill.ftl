@@ -119,7 +119,7 @@
                             return false;
                         }
                         if(not_pay!=undefined&&not_pay){
-                            location.href = "${springMacroRequestContext.contextPath}/order/list";
+                            location.href = "${springMacroRequestContext.contextPath}/fixed/index";
                             return false;
                         }
                         var orderInfoVO = response.orderInfoVO;
