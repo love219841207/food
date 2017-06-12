@@ -89,6 +89,6 @@ public class
     public static final int BOOK_GROUP_FAIL = 2;    //审核不同过
 
 
-    public static final int GROUP_OEDER_EDIT_LAST_HOUR=20;//订单最后修改时间
+    public static final int GROUP_OEDER_EDIT_LAST_HOUR=23;//订单最后修改时间
 
 }
