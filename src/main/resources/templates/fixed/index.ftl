@@ -70,8 +70,8 @@
         </tr>
 
         <#list fixedList as accountFixedVO>
-            <tr data-date="${accountFixedVO.fixDate?date}">
-                <td class="u-tab1">${accountFixedVO.fixDate?date} <em>${accountFixedVO.weekDay}</em></td>
+            <tr data-date="${accountFixedVO.fixDate?string("yyyy-MM-dd")}">
+                <td class="u-tab1">${accountFixedVO.fixDate?string("yyyy-MM-dd")} <em>${accountFixedVO.weekDay}</em></td>
                 <td class="u-tab2 j-swid" data-time='1' data-type="${accountFixedVO.nn!}" >
                     <#if accountFixedVO.nn??>
                         <#if accountFixedVO.nn=='1'>
