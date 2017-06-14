@@ -28,14 +28,14 @@
 </div>
 <div class="g-qhd">
     <a href="${springMacroRequestContext.contextPath}/fixed/time/1">
-        午餐时间
+        午餐送达时间
         <span id="s_nn_t">${userDeliveryTimeVO.nnTime!''}</span>
     </a>
 </div>
 
 <div class="g-qhd">
     <a href="${springMacroRequestContext.contextPath}/fixed/time/2">
-        晚餐时间
+        晚餐送达时间
         <span id="s_nt_t">${userDeliveryTimeVO.ntTime!''}</span>
     </a>
 </div>
